@@ -14,8 +14,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "APPLIES")
-public class Apply {
+@Table(name = "APPLICATIONS")
+public class Application {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

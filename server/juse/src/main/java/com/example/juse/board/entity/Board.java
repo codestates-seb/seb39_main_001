@@ -1,11 +1,10 @@
 package com.example.juse.board.entity;
 
-import com.example.juse.apply.entity.Apply;
+import com.example.juse.apply.entity.Application;
 import com.example.juse.bookmark.entity.Bookmark;
 import com.example.juse.like.entity.Like;
 import com.example.juse.question.entity.Question;
 import com.example.juse.tag.entity.BoardTag;
-import com.example.juse.tag.entity.Tag;
 import com.example.juse.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,6 +38,7 @@ public class Board {
     private int backend;
     private int frontend;
     private int designer;
+    private int etc;
 
     @Column(nullable = false)
     private int people;
@@ -86,7 +86,7 @@ public class Board {
 
     @Builder.Default
     @OneToMany(mappedBy = "board")
-    private List<Apply> applyList = new ArrayList<>();
+    private List<Application> applicationList = new ArrayList<>();
 
 
     @Getter
