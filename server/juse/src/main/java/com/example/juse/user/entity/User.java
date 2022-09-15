@@ -1,7 +1,7 @@
 package com.example.juse.user.entity;
 
 import com.example.juse.answer.entity.Answer;
-import com.example.juse.apply.entity.Application;
+import com.example.juse.application.entity.Application;
 import com.example.juse.board.entity.Board;
 import com.example.juse.bookmark.entity.Bookmark;
 import com.example.juse.like.entity.Like;

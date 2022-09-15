@@ -3,6 +3,7 @@ package com.example.juse.board.dto;
 import com.example.juse.board.entity.Board;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class BoardRequestDto {
@@ -20,8 +21,8 @@ public class BoardRequestDto {
         private Integer etc;
         private Integer people;
         private String contact;
-        private LocalDateTime dueDate;
-        private LocalDateTime startingDate;
+        private LocalDate dueDate;
+        private LocalDate startingDate;
         private String period;
         private String onOffline;
 

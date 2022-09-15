@@ -1,6 +1,6 @@
 package com.example.juse.board.entity;
 
-import com.example.juse.apply.entity.Application;
+import com.example.juse.application.entity.Application;
 import com.example.juse.bookmark.entity.Bookmark;
 import com.example.juse.like.entity.Like;
 import com.example.juse.question.entity.Question;
@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,10 +43,10 @@ public class Board {
     private String contact;
 
     @Column(nullable = false)
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
 
     @Column(nullable = false)
-    private LocalDateTime startingDate;
+    private LocalDate startingDate;
 
     @Column(nullable = false)
     private String period;

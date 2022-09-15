@@ -4,6 +4,7 @@ import com.example.juse.board.entity.Board;
 import com.example.juse.user.dto.UserResponseDto;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class BoardResponseDto {
@@ -22,8 +23,8 @@ public class BoardResponseDto {
         private Integer etc;
         private Integer people;
         private String contact;
-        private LocalDateTime dueDate;
-        private LocalDateTime startingDate;
+        private LocalDate dueDate;
+        private LocalDate startingDate;
         private String period;
         private String onOffline;
         private String content;
