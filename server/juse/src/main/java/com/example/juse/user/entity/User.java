@@ -7,10 +7,7 @@ import com.example.juse.bookmark.entity.Bookmark;
 import com.example.juse.like.entity.Like;
 import com.example.juse.question.entity.Question;
 import com.example.juse.tag.entity.UserTag;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -30,6 +27,8 @@ public class User {
 
     private Byte[] profileImage;
 
+    private String img;
+
     @Column(nullable = false)
     private String introduction;
 
@@ -38,7 +37,13 @@ public class User {
 
     private String portfolio;
 
-    @Column(nullable = false)
+    private String role;
+
+    private String provider;
+
+    private String providerId;
+
+    @Column(nullable = false, unique = true)
     private String nickname;
 
     @Builder.Default
