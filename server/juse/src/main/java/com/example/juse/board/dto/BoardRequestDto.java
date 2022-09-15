@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class BoardRequestDto {
 
@@ -40,16 +41,12 @@ public class BoardRequestDto {
     public static class Patch {
 
         private String content;
-        private Integer backend;
-        private Integer frontend;
-        private Integer designer;
-        private Integer etc;
-        private Integer people;
         private String contact;
-        private LocalDateTime dueDate;
-        private LocalDateTime startingDate;
+        private LocalDate dueDate;
+        private LocalDate startingDate;
         private String period;
         private String onOffline;
+        private List<String> tagList;
 
         private Board.Type type;
 

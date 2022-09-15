@@ -1,4 +1,4 @@
-package com.example.juse.user;
+package com.example.juse.user.repository;
 
 import com.example.juse.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

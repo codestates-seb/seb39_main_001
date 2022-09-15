@@ -1,4 +1,4 @@
-package com.example.juse.application.dto;
+package com.example.juse.bookmark.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,12 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ApplicationResponseDto {
+public class BookmarkRequestDto {
 
-    private Long id;
-    private Long userId;
     private Long boardId;
-    private String position;
-    private boolean isAccepted;
+    private Long userId;
 
 }
