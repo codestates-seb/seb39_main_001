@@ -31,10 +31,6 @@ public class Board {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Type type;
-
     private int backend;
     private int frontend;
     private int designer;
@@ -61,6 +57,10 @@ public class Board {
     @Column(nullable = false)
     @Builder.Default
     private Status status = Status.OPENING;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Type type;
 
     private int view;
 
