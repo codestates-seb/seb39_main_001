@@ -4,6 +4,6 @@ import com.example.juse.application.entity.Application;
 
 public interface ApplicationService {
 
-    Application create(Application post);
+    Application create(Application mappedObj);
 
 }

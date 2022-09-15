@@ -1,21 +1,21 @@
-package com.example.juse.application.service;
+package com.example.juse.question.service;
 
-import com.example.juse.application.entity.Application;
 import com.example.juse.helper.stubservice.StubService;
+import com.example.juse.question.entity.Question;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Profile("test")
 @RequiredArgsConstructor
 @Service
-public class ApplicationServiceStub implements ApplicationService {
+public class QuestionServiceStub implements QuestionService {
 
     private final StubService stubService;
 
     @Override
-    public Application create(Application mappedObj) {
-
-        return stubService.getApplicationStub();
+    public Question create(Question post) {
+        return stubService.getQuestionStub();
     }
 }

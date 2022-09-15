@@ -2,6 +2,7 @@ package com.example.juse.helper.stubservice;
 
 import com.example.juse.application.entity.Application;
 import com.example.juse.board.entity.Board;
+import com.example.juse.question.entity.Question;
 import com.example.juse.user.entity.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
@@ -54,6 +55,16 @@ public class StubService {
                 .user(getUserStub())
                 .board(getBoardStub())
                 .position("backend")
+                .build();
+    }
+
+    @Bean
+    public Question getQuestionStub() {
+        return Question.builder()
+                .id(1L)
+                .content("정신이 있나요?")
+                .user(getUserStub())
+                .board(getBoardStub())
                 .build();
     }
 

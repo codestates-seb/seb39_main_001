@@ -46,8 +46,8 @@ public class BoardRequestDto {
         private Integer etc;
         private Integer people;
         private String contact;
-        private LocalDateTime dueDate;
-        private LocalDateTime startingDate;
+        private LocalDate dueDate;
+        private LocalDate startingDate;
         private String period;
         private String onOffline;
 
