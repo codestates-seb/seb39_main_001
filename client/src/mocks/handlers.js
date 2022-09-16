@@ -1,4 +1,5 @@
 import { rest } from 'msw';
+import { users } from './db';
 
 export const handlers = [
   rest.get('/todos', (req, res, ctx) => {
@@ -8,5 +9,11 @@ export const handlers = [
   // 로그인
   rest.post('/login', (req, res, ctx) => {
     return res(ctx.status(201));
+  }),
+
+  //회원가입
+  rest.post('/join', (req, res, ctx) => {
+    users.push(req.body);
+    return res(ctx.status(200));
   }),
 ];
