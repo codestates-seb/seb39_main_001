@@ -6,9 +6,15 @@ import { ThemeProvider } from 'styled-components';
 import App from './App';
 import GlobalStyles from './assets/styles/GlobalStyle';
 import theme from './assets/styles/Theme';
+import { worker } from './mocks/worker';
+
+if (process.env.NODE_ENV === 'development') {
+  worker.start();
+}
 
 const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <React.StrictMode>
     <BrowserRouter>
@@ -19,5 +25,5 @@ root.render(
         </ThemeProvider>
       </QueryClientProvider>
     </BrowserRouter>
-  </React.StrictMode>,
+  </React.StrictMode>
 );

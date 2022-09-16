@@ -1,22 +1,17 @@
-import styled from 'styled-components';
+import { Routes, Route } from 'react-router-dom';
+import NavbarPublic from './components/NavbarPublic';
+import Home from './pages/Home';
 
 function App() {
   return (
-    <div className="App">
-      <Styled>JUSE</Styled>
-    </div>
+    <>
+      <NavbarPublic />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/oauth2/redirect" element={<Home />} />
+      </Routes>
+    </>
   );
 }
-
-const Styled = styled.p`
-  color: #be99ff;
-  font-size: 100px;
-  border: 1px solid ${({ theme }) => theme.colors.purple1};
-  margin: 50px;
-  font-weight: 900;
-  :hover {
-    color: ${({ theme }) => theme.colors.purple2};
-  }
-`;
 
 export default App;
