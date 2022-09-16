@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class BoardRequestDto {
 
@@ -50,6 +51,7 @@ public class BoardRequestDto {
         private LocalDate startingDate;
         private String period;
         private String onOffline;
+        private List<String> tagList;
 
         private Board.Type type;
 

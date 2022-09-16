@@ -21,9 +21,9 @@ public class ApplicationController {
 
     @PostMapping("/{board-id}/{user-id}")
     public ResponseEntity<SingleResponseDto<ApplicationResponseDto>> post(
-        @PathVariable("board-id") long boardId,
-        @PathVariable("user-id") long userId,
-        @RequestParam(required = true, name = "position") String position
+            @PathVariable("board-id") long boardId,
+            @PathVariable("user-id") long userId,
+            @RequestParam(required = true, name = "position") String position
     ) {
         ApplicationRequestDto.Post post =
                 ApplicationRequestDto.Post.builder()
@@ -39,4 +39,23 @@ public class ApplicationController {
     }
 
 
+    @PatchMapping("/{application-id}/{user-id}")
+    public ResponseEntity<SingleResponseDto<ApplicationResponseDto>> accept(
+            @PathVariable("application-id") long applicationId,
+            @PathVariable("user-id") long userId
+    ) {
+        Application acceptedEntity = applicationService.accept(applicationId, userId);
+        ApplicationResponseDto responseDto = applicationMapper.toResponseDtoFrom(acceptedEntity);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{application-id}/{user-id}")
+    public void deny(
+            @PathVariable("application-id") long applicationId,
+            @PathVariable("user-id") long userId
+    ) {
+        applicationService.deny(applicationId, userId);
+    }
 }

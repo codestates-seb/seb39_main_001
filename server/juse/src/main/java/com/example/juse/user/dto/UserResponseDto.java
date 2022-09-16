@@ -17,4 +17,20 @@ public class UserResponseDto {
     private String portfolio;
     private String nickname;
 
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class MyJuse {
+
+        private Long id;
+        private Byte[] profileImage;
+        private String introduction;
+        private String email;
+        private String portfolio;
+        private String nickname;
+
+    }
+
+
 }

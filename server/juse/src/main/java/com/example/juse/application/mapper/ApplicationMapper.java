@@ -15,6 +15,7 @@ public interface ApplicationMapper {
 
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "boardId", source = "board.id")
+    @Mapping(target = "isAccepted", source = "accepted")
     ApplicationResponseDto toResponseDtoFrom(Application entity);
 
 }

@@ -15,6 +15,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -29,12 +30,18 @@ public class Board {
     private Long id;
 
     @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
     private String content;
 
     private int backend;
     private int frontend;
     private int designer;
     private int etc;
+    private int bookmarks;
+    private int liked;
+    private int views;
 
     @Column(nullable = false)
     private int people;
@@ -62,8 +69,6 @@ public class Board {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    private int view;
-
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
@@ -88,6 +93,13 @@ public class Board {
     @OneToMany(mappedBy = "board")
     private List<Application> applicationList = new ArrayList<>();
 
+    public List<String> getTagNames() {
+        return this.boardTagList.stream().map(boardTag -> boardTag.getTag().getName()).collect(Collectors.toList());
+    }
+
+    public int getLikedCount() {
+        return this.likeList.size();
+    }
 
     @Getter
     public enum Type {

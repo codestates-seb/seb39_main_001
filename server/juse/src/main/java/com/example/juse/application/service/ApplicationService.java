@@ -6,4 +6,10 @@ public interface ApplicationService {
 
     Application create(Application mappedObj);
 
+    Application update(Application mappedObj);
+
+    Application accept(long applicationId, long userId);
+
+    void deny(long applicationId, long userId);
+
 }

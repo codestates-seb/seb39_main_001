@@ -13,6 +13,11 @@ public interface QuestionMapper {
     @Mapping(target = "board.id", source = "boardId")
     Question toEntityFrom(QuestionRequestDto.Post postDto);
 
+    @Mapping(target = "user.id", source = "userId")
+    @Mapping(target = "board.id", source = "boardId")
+    Question toEntityFrom(QuestionRequestDto.Patch patchDto);
+
+
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "boardId", source = "board.id")
     QuestionResponseDto toResponseDtoFrom(Question entity);

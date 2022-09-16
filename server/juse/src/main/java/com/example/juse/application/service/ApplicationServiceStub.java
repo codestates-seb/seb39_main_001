@@ -16,6 +16,21 @@ public class ApplicationServiceStub implements ApplicationService {
     @Override
     public Application create(Application mappedObj) {
 
-        return stubService.getApplicationStub();
+        return stubService.getApplication();
+    }
+
+    @Override
+    public Application update(Application mappedObj) {
+        return null;
+    }
+
+    @Override
+    public Application accept(long applicationId, long userId) {
+        return stubService.getAcceptedApplication();
+    }
+
+    @Override
+    public void deny(long applicationId, long userId) {
+
     }
 }

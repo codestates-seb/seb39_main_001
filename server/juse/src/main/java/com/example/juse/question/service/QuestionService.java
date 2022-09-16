@@ -5,4 +5,6 @@ import com.example.juse.question.entity.Question;
 public interface QuestionService {
 
     Question create(Question post);
+
+    Question update(Question patch);
 }

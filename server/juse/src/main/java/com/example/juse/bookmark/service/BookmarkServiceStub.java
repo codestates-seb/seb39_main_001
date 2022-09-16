@@ -1,7 +1,7 @@
-package com.example.juse.question.service;
+package com.example.juse.bookmark.service;
 
+import com.example.juse.bookmark.entity.Bookmark;
 import com.example.juse.helper.stubservice.StubService;
-import com.example.juse.question.entity.Question;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -9,17 +9,17 @@ import org.springframework.stereotype.Service;
 @Profile("test")
 @RequiredArgsConstructor
 @Service
-public class QuestionServiceStub implements QuestionService {
+public class BookmarkServiceStub implements BookmarkService {
 
     private final StubService stubService;
 
     @Override
-    public Question create(Question post) {
-        return stubService.getQuestion();
+    public Bookmark create(long boardId, long userId) {
+        return stubService.getBookmark();
     }
 
     @Override
-    public Question update(Question patch) {
-        return patch;
+    public void delete(long boardId, long userId) {
+
     }
 }

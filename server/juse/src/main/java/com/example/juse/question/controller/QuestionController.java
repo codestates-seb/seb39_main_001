@@ -34,4 +34,20 @@ public class QuestionController {
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.CREATED);
     }
 
+    @PatchMapping("/{board-id}/{user-id}")
+    public ResponseEntity<SingleResponseDto<QuestionResponseDto>> update(
+            @PathVariable("board-id") long boardId,
+            @PathVariable("user-id") long userId,
+            @RequestBody QuestionRequestDto.Patch patchDto
+    ) {
+        patchDto.setUserId(userId);
+        Question mappedObj = questionMapper.toEntityFrom(patchDto);
+        Question updatedEntity = questionService.update(mappedObj);
+        QuestionResponseDto responseDto = questionMapper.toResponseDtoFrom(updatedEntity);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
+    }
+
+
+
 }

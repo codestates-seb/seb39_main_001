@@ -16,5 +16,6 @@ public class ApplicationResponseDto {
     private Long userId;
     private Long boardId;
     private String position;
+    private boolean isAccepted;
 
 }
