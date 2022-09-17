@@ -1,5 +1,6 @@
 package com.example.juse.helper.stubservice;
 
+import com.example.juse.answer.entity.Answer;
 import com.example.juse.application.entity.Application;
 import com.example.juse.board.entity.Board;
 import com.example.juse.bookmark.entity.Bookmark;
@@ -172,5 +173,13 @@ public class StubService {
         );
     }
 
-
+    @Bean
+    public Answer getAnswer() {
+        return Answer.builder()
+                .id(1L)
+                .content("중구가시키드나")
+                .question(getQuestion())
+                .user(User.builder().id(1L).build())
+                .build();
+    }
 }
