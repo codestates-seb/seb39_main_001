@@ -19,7 +19,12 @@ public class AnswerServiceStub implements AnswerService {
     }
 
     @Override
-    public Answer udpate(Answer mappedObj) {
+    public Answer update(Answer mappedObj) {
         return mappedObj;
+    }
+
+    @Override
+    public void delete(long answerId, long userId) {
+
     }
 }

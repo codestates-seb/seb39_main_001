@@ -182,4 +182,60 @@ public class StubService {
                 .user(User.builder().id(1L).build())
                 .build();
     }
+
+    @Bean
+    public User getMyJuse() {
+        return User.builder()
+                .id(1L)
+                .bookmarkList(
+                        List.of(
+                                Bookmark.builder()
+                                        .id(1L)
+                                        .board(getBoard())
+                                        .build(),
+                                Bookmark.builder()
+                                        .id(2L)
+                                        .board(
+                                                Board.builder()
+                                                        .id(2L)
+                                                        .title("board2")
+                                                        .dueDate(LocalDate.of(2022, 10, 15))
+                                                        .period("6")
+                                                        .user(
+                                                                User.builder()
+                                                                        .id(1L)
+                                                                        .nickname("user2")
+                                                                        .build()
+                                                        )
+                                                        .type(Board.Type.STUDY)
+                                                        .views(100)
+                                                        .bookmarks(2)
+                                                        .build()
+                                        ).build()
+                        )
+                ).applicationList(
+                        List.of(
+                                Application.builder()
+                                        .board(
+                                                Board.builder()
+                                                        .id(3L)
+                                                        .title("aws project")
+                                                        .bookmarks(5)
+                                                        .views(15)
+                                                        .type(Board.Type.PROJECT)
+                                                        .dueDate(LocalDate.of(2022, 10, 19))
+                                                        .period("6")
+                                                        .user(
+                                                                User.builder()
+                                                                        .id(5L)
+                                                                        .nickname("민수씨!")
+                                                                        .build()
+                                                        ).build()
+                                        ).build()
+                        )
+                )
+                .build();
+
+    }
+
 }

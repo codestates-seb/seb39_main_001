@@ -22,4 +22,9 @@ public class QuestionServiceStub implements QuestionService {
     public Question update(Question patch) {
         return patch;
     }
+
+    @Override
+    public void delete(long questionId, long userId) {
+
+    }
 }

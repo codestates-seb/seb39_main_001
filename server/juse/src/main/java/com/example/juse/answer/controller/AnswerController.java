@@ -44,9 +44,18 @@ public class AnswerController {
         patchDto.setUserId(userId);
 
         Answer mappedObj = answerMapper.toEntityFrom(patchDto);
-        Answer updatedEntity = answerService.udpate(mappedObj);
+        Answer updatedEntity = answerService.update(mappedObj);
         AnswerResponseDto responseDto = answerMapper.toResponseDtoFrom(updatedEntity);
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{answer-id}/{user-id}")
+    public void delete(
+            @PathVariable("answer-id") long answerId,
+            @PathVariable("user-id") long userId
+    ) {
+        answerService.delete(answerId, userId);
     }
 }

@@ -6,5 +6,7 @@ public interface AnswerService {
 
     Answer create(Answer mappedObj);
 
-    Answer udpate(Answer mappedObj);
+    Answer update(Answer mappedObj);
+
+    void delete(long answerId, long userId);
 }

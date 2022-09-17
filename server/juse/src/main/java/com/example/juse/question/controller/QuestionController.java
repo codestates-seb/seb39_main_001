@@ -48,6 +48,12 @@ public class QuestionController {
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
 
-
-
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{question-id}/{user-id}")
+    public void delete(
+            @PathVariable("question-id") long questionId,
+            @PathVariable("user-id") long userId
+    ) {
+        questionService.delete(questionId, userId);
+    }
 }
