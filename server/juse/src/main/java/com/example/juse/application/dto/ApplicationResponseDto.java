@@ -1,6 +1,5 @@
 package com.example.juse.application.dto;
 
-import com.example.juse.user.dto.UserResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

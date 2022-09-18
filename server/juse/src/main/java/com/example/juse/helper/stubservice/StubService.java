@@ -4,11 +4,12 @@ import com.example.juse.answer.entity.Answer;
 import com.example.juse.application.entity.Application;
 import com.example.juse.board.entity.Board;
 import com.example.juse.bookmark.entity.Bookmark;
+import com.example.juse.like.entity.Like;
 import com.example.juse.question.entity.Question;
 import com.example.juse.tag.entity.BoardTag;
 import com.example.juse.tag.entity.Tag;
+import com.example.juse.tag.entity.UserTag;
 import com.example.juse.user.entity.User;
-import org.hibernate.validator.internal.metadata.aggregated.FieldCascadable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,62 @@ public class StubService {
                 .email("user1")
                 .portfolio("github.com/user1")
                 .nickname("user mouth")
+                .boardList(
+                        List.of(
+                                Board.builder()
+                                        .id(23L)
+                                        .type(Board.Type.STUDY)
+                                        .people(5)
+                                        .title("흐느껴 울고 웃으며어~")
+                                        .dueDate(LocalDate.of(2099, 10, 10))
+                                        .onOffline("이곳저곳")
+                                        .build()
+                        )
+                )
+                .userTagList(
+                        List.of(
+                                UserTag.builder()
+                                        .id(1L)
+                                        .tag(
+                                                Tag.builder()
+                                                        .name("java 11")
+                                                        .build()
+                                        ).build(),
+                                UserTag.builder()
+                                        .id(2L)
+                                        .tag(
+                                                Tag.builder()
+                                                        .name("react")
+                                                        .build()
+                                        ).build(),
+                                UserTag.builder()
+                                        .id(5L)
+                                        .tag(
+                                                Tag.builder()
+                                                        .name("laziness")
+                                                        .build()
+                                        ).build()
+                        )
+                )
+                .liked(10)
+                .likeList(
+                        List.of(
+                                Like.builder()
+                                        .user(
+                                                User.builder()
+                                                        .id(10L)
+                                                        .nickname("젠틀맨곽철용")
+                                                        .build()
+                                        ).build(),
+                                Like.builder()
+                                        .user(
+                                                User.builder()
+                                                        .id(999L)
+                                                        .nickname("달건이곽철용")
+                                                        .build()
+                                        ).build()
+                        )
+                )
                 .build();
     }
 
@@ -187,6 +244,11 @@ public class StubService {
     public User getMyJuse() {
         return User.builder()
                 .id(1L)
+                .boardList(
+                        List.of(
+                                getBoard()
+                        )
+                )
                 .bookmarkList(
                         List.of(
                                 Bookmark.builder()
@@ -231,7 +293,28 @@ public class StubService {
                                                                         .nickname("민수씨!")
                                                                         .build()
                                                         ).build()
-                                        ).build()
+                                        )
+                                        .isAccepted(true)
+                                        .build(),
+                                Application.builder()
+                                        .board(
+                                                Board.builder()
+                                                        .id(4L)
+                                                        .title("spitz")
+                                                        .bookmarks(10)
+                                                        .views(24)
+                                                        .type(Board.Type.STUDY)
+                                                        .dueDate(LocalDate.of(2022, 11, 25))
+                                                        .period("long")
+                                                        .user(
+                                                                User.builder()
+                                                                        .id(5L)
+                                                                        .nickname("용남이형!")
+                                                                        .build()
+                                                        ).build()
+                                        )
+                                        .isAccepted(false)
+                                        .build()
                         )
                 )
                 .build();

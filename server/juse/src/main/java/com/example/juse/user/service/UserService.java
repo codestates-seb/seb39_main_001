@@ -5,4 +5,6 @@ import com.example.juse.user.entity.User;
 public interface UserService {
 
     User getJuse(long userId);
+
+    User getProfile(long userId);
 }

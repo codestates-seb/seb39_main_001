@@ -25,6 +25,7 @@ public class Like {
     @JoinColumn(name = "USER_ID")
     private User user;
 
+    //todo : user로 바뀌어야 한다. 컬럼이름을 바꾸든지 해서 구별하는 게 좋을 듯
     @ManyToOne
     @JoinColumn(name = "BOARD_ID")
     private Board board;

@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -37,6 +38,7 @@ public class User {
     private String email;
 
     private String portfolio;
+    private int liked;
 
     @Column(nullable = false)
     private String nickname;
@@ -68,4 +70,25 @@ public class User {
     @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<Application> applicationList = new ArrayList<>();
+
+    public List<Board> getMyBookmarkList() {
+        return this.bookmarkList.stream().map(Bookmark::getBoard).collect(Collectors.toList());
+    }
+
+    public List<Board> getMyParticipationList() {
+        return this.applicationList.stream().filter(Application::isAccepted).map(Application::getBoard).collect(Collectors.toList());
+    }
+
+    public List<Board> getMyApplicationList() {
+        return this.applicationList.stream().filter(application -> !application.isAccepted()).map(Application::getBoard).collect(Collectors.toList());
+    }
+
+    public List<String> getSkillStackTags() {
+        return this.userTagList.stream().map(userTag -> userTag.getTag().getName()).collect(Collectors.toList());
+    }
+
+    public List<User> getMyUserList() {
+        return this.likeList.stream().map(Like::getUser).collect(Collectors.toList());
+    }
+
 }

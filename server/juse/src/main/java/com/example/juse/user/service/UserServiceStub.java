@@ -15,6 +15,11 @@ public class UserServiceStub implements UserService {
 
     @Override
     public User getJuse(long userId) {
-        return ;
+        return stubService.getMyJuse();
+    }
+
+    @Override
+    public User getProfile(long userId) {
+        return stubService.getUser();
     }
 }
