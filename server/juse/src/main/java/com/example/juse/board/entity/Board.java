@@ -6,10 +6,7 @@ import com.example.juse.like.entity.Like;
 import com.example.juse.question.entity.Question;
 import com.example.juse.tag.entity.BoardTag;
 import com.example.juse.user.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -25,6 +22,7 @@ import java.util.stream.Collectors;
 @Table(name = "BOARDS")
 public class Board {
 
+    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

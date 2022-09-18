@@ -21,7 +21,8 @@ public class BoardServiceStub implements BoardSerivice{
 
     @Override
     public Board create(Board post) {
-        return stubService.getBoard();
+        post.setId(1L);
+        return post;
     }
 
     @Override

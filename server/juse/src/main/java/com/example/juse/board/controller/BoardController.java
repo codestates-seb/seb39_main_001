@@ -83,12 +83,13 @@ public class BoardController {
             @RequestParam(name = "type", required = false) String type,
             @RequestParam(name = "tag", required = false) String tag,
             @RequestParam(name = "period", required = false) String period,
+            @RequestParam(name = "status", required = false) String status,
             @RequestParam(name = "page", required = true, defaultValue = "1") int page
     ) {
         Pageable pageable = PageRequest.of(page - 1, 5, Sort.by("createdAt").descending());
 
         Page<Board> pagedBoardList = boardSerivice.getBoards(pageable);
-        FilterOptions filterOptions = FilterOptions.of(type, tag, period);
+        FilterOptions filterOptions = FilterOptions.of(type, tag, period, status);
         Pagination pagination = Pagination.of(pagedBoardList, filterOptions);
 
         List<BoardResponseDto.Multi> data = boardMapper.toListDtoFromListEntities(pagedBoardList.getContent());

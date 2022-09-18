@@ -5,15 +5,18 @@ import com.example.juse.board.dto.BoardRequestDto;
 import com.example.juse.board.dto.BoardResponseDto;
 import com.example.juse.board.entity.Board;
 import com.example.juse.question.mapper.QuestionMapper;
+import com.example.juse.tag.mapper.TagMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring",
-uses = {ApplicationMapper.class, QuestionMapper.class})
+uses = {ApplicationMapper.class, QuestionMapper.class, TagMapper.class})
 public interface BoardMapper {
 
+    @Mapping(target = "user.id", source = "userId")
+    @Mapping(target = "boardTagList", source = "tagList")
     Board toEntityFrom(BoardRequestDto.Post postDto);
 
     @Mapping(target = "tagList", source = "tagNames")
