@@ -1,20 +1,18 @@
 package com.example.juse.board.entity;
 
-import com.example.juse.apply.entity.Application;
+import com.example.juse.application.entity.Application;
 import com.example.juse.bookmark.entity.Bookmark;
 import com.example.juse.like.entity.Like;
 import com.example.juse.question.entity.Question;
 import com.example.juse.tag.entity.BoardTag;
 import com.example.juse.user.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -24,21 +22,24 @@ import java.util.List;
 @Table(name = "BOARDS")
 public class Board {
 
+    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String content;
+    private String title;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Type type;
+    private String content;
 
     private int backend;
     private int frontend;
     private int designer;
     private int etc;
+    private int bookmarks;
+    private int liked;
+    private int views;
 
     @Column(nullable = false)
     private int people;
@@ -47,10 +48,10 @@ public class Board {
     private String contact;
 
     @Column(nullable = false)
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
 
     @Column(nullable = false)
-    private LocalDateTime startingDate;
+    private LocalDate startingDate;
 
     @Column(nullable = false)
     private String period;
@@ -62,7 +63,9 @@ public class Board {
     @Builder.Default
     private Status status = Status.OPENING;
 
-    private int view;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Type type;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
@@ -80,14 +83,21 @@ public class Board {
     @OneToMany(mappedBy = "board")
     private List<BoardTag> boardTagList = new ArrayList<>();
 
-    @Builder.Default
-    @OneToMany(mappedBy = "board")
-    private List<Like> likeList = new ArrayList<>();
+//    @Builder.Default
+//    @OneToMany(mappedBy = "board")
+//    private List<Like> likeList = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "board")
     private List<Application> applicationList = new ArrayList<>();
 
+    public List<String> getTagNames() {
+        return this.boardTagList.stream().map(boardTag -> boardTag.getTag().getName()).collect(Collectors.toList());
+    }
+
+    public int getLikedCount() {
+        return this.bookmarkList.size();
+    }
 
     @Getter
     public enum Type {

@@ -1,20 +1,18 @@
 package com.example.juse.user.entity;
 
 import com.example.juse.answer.entity.Answer;
-import com.example.juse.apply.entity.Application;
+import com.example.juse.application.entity.Application;
 import com.example.juse.board.entity.Board;
 import com.example.juse.bookmark.entity.Bookmark;
 import com.example.juse.like.entity.Like;
 import com.example.juse.question.entity.Question;
 import com.example.juse.tag.entity.UserTag;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -24,6 +22,7 @@ import java.util.List;
 @Table(name = "USERS")
 public class User {
 
+    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,6 +36,7 @@ public class User {
     private String email;
 
     private String portfolio;
+    private int liked;
 
     @Column(nullable = false)
     private String nickname;
@@ -50,8 +50,13 @@ public class User {
     private List<Bookmark> bookmarkList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "user")
-    private List<Like> likeList = new ArrayList<>();
+    @OneToMany(mappedBy = "whoLikes")
+    private List<Like> whoLikesList = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "whoIsLiked")
+    private List<Like> whoIsLikeList = new ArrayList<>();
+
 
     @Builder.Default
     @OneToMany(mappedBy = "user")
@@ -68,4 +73,25 @@ public class User {
     @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<Application> applicationList = new ArrayList<>();
+
+    public List<Board> getMyBookmarkList() {
+        return this.bookmarkList.stream().map(Bookmark::getBoard).collect(Collectors.toList());
+    }
+
+    public List<Board> getMyParticipationList() {
+        return this.applicationList.stream().filter(Application::isAccepted).map(Application::getBoard).collect(Collectors.toList());
+    }
+
+    public List<Board> getMyApplicationList() {
+        return this.applicationList.stream().filter(application -> !application.isAccepted()).map(Application::getBoard).collect(Collectors.toList());
+    }
+
+    public List<String> getSkillStackTags() {
+        return this.userTagList.stream().map(userTag -> userTag.getTag().getName()).collect(Collectors.toList());
+    }
+
+    public List<User> getMyUserList() {
+        return this.whoLikesList.stream().map(Like::getWhoIsLiked).collect(Collectors.toList());
+    }
+
 }

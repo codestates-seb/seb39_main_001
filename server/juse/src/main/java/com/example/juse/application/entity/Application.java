@@ -1,4 +1,4 @@
-package com.example.juse.apply.entity;
+package com.example.juse.application.entity;
 
 import com.example.juse.board.entity.Board;
 import com.example.juse.user.entity.User;
