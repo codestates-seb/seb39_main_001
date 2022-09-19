@@ -32,6 +32,7 @@ public class SocialUser {
 
     private String providerId;
 
+    @Setter
     @OneToOne(mappedBy = "socialUser")
     @JsonIgnore
     private User user;

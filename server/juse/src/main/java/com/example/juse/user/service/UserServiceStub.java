@@ -2,6 +2,7 @@ package com.example.juse.user.service;
 
 import com.example.juse.helper.stubservice.StubService;
 import com.example.juse.user.entity.User;
+import com.example.juse.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceStub implements UserService {
 
     private final StubService stubService;
+    private final UserRepository userRepository;
 
     @Override
     public User getJuse(long userId) {
@@ -37,5 +39,10 @@ public class UserServiceStub implements UserService {
     public User create(User mappedObj) {
         mappedObj.setId(1L);
         return mappedObj;
+    }
+
+    @Override
+    public User findBySocialUserId(long socialUserId) {
+        return null;
     }
 }

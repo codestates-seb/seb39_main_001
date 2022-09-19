@@ -1,22 +1,18 @@
 package com.example.juse.user.controller;
 
 import com.example.juse.response.SingleResponseDto;
-import com.example.juse.security.jwt.JwtTokenProvider;
 import com.example.juse.security.oauth.PrincipalDetails;
 import com.example.juse.social.entity.SocialUser;
-import com.example.juse.user.dto.UserPostDto;
 import com.example.juse.user.dto.UserRequestDto;
 import com.example.juse.user.dto.UserResponseDto;
 import com.example.juse.user.entity.User;
 import com.example.juse.user.mapper.UserMapper;
 import com.example.juse.user.repository.UserRepository;
 import com.example.juse.user.service.UserService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -42,8 +38,8 @@ public class UserController {
 
         mappedObj.setEmail(principalDetails.getSocialUser().getEmail());
 
-        // User 에 Social User id 등록
-        mappedObj.addSocialUser(principalDetails.getSocialUser());
+        SocialUser socialUser = principalDetails.getSocialUser();
+        mappedObj.addSocialUser(socialUser);
 
         UserResponseDto.Profile response = userMapper.toProfileDtoFrom(userRepository.save(mappedObj));
 
