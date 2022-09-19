@@ -1,6 +1,7 @@
 package com.example.juse.social.entity;
 
 import com.example.juse.user.entity.User;
+
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 

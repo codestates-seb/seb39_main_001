@@ -28,11 +28,6 @@ public class PrincipalDetails implements  OAuth2User {
     public PrincipalDetails(SocialUser socialUser) {
         this.socialUser = socialUser;
     }
-//    @Autowired
-//    public PrincipalDetails(SocialUser socialUser, Map<String, Object> attributes) {
-//        this.socialUser = socialUser;
-//        this.attributes = attributes;
-//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

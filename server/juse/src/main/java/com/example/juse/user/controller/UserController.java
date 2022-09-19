@@ -68,6 +68,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<com.example.juse.dto.SingleResponseDto<UserResponseDto.Profile>> getProfile(
             @AuthenticationPrincipal PrincipalDetails principalDetails
+
     ) {
 
         long userId = principalDetails.getSocialUser().getUser().getId();
@@ -81,6 +82,7 @@ public class UserController {
     @PatchMapping
     public ResponseEntity<com.example.juse.dto.SingleResponseDto<UserResponseDto.Profile>> patch(
             @AuthenticationPrincipal PrincipalDetails principalDetails,
+
             @RequestBody UserRequestDto.Patch patchDto
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();

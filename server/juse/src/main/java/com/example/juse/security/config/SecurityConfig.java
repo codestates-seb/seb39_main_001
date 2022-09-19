@@ -31,6 +31,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.headers().frameOptions().disable();
 
+
         http.authorizeRequests()
                 .antMatchers("/**").permitAll()
                 .anyRequest().permitAll()
