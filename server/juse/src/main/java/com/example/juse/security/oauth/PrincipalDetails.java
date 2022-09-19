@@ -20,17 +20,17 @@ import java.util.Map;
 @AllArgsConstructor
 public class PrincipalDetails implements  OAuth2User {
 
-    private SocialUser user;
+    private SocialUser socialUser;
     private Map<String, Object> attributes;
 
 
     @Autowired
     public PrincipalDetails(SocialUser socialUser) {
-        this.user = socialUser;
+        this.socialUser = socialUser;
     }
 //    @Autowired
-//    public PrincipalDetails(SocialUser user, Map<String, Object> attributes) {
-//        this.user = user;
+//    public PrincipalDetails(SocialUser socialUser, Map<String, Object> attributes) {
+//        this.socialUser = socialUser;
 //        this.attributes = attributes;
 //    }
 
@@ -40,7 +40,7 @@ public class PrincipalDetails implements  OAuth2User {
         collection.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {
-                return user.getRole();
+                return socialUser.getRole();
             }
         });
         return collection;
@@ -53,7 +53,7 @@ public class PrincipalDetails implements  OAuth2User {
 
     @Override
     public String getName() {
-        return user.getEmail();
+        return socialUser.getEmail();
     }
 
 }

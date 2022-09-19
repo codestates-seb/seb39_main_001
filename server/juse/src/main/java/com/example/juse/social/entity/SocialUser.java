@@ -1,10 +1,7 @@
 package com.example.juse.social.entity;
 
 import com.example.juse.user.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
@@ -15,6 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Table(name = "SOCIAL_USERS")
+@Setter
 public class SocialUser {
 
     @Id

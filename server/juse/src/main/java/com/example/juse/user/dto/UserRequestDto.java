@@ -33,6 +33,7 @@ public class UserRequestDto {
         private String nickname;
 
         private List<String> skillStackTags;
+        private Byte[] profileImage;
 
     }
 

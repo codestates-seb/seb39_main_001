@@ -62,7 +62,7 @@ public class SuccessHandler implements AuthenticationSuccessHandler {
 
         // 최초 로그인 시 회원가입하기 위해 이동.
         if (userRepository.findByEmail(socialUser.getEmail()) == null) {
-            response.sendRedirect("/join");
+            response.sendRedirect("/users/join");
         }
         else {
             response.sendRedirect("/index");

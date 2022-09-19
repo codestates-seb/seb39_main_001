@@ -16,6 +16,5 @@ public class UserPostDto {
     private String portfolio;
     private String introduction;
 
-//    @Builder.Default
-//    private List<String> tags = new ArrayList<>();
+    private List<String> skillStackTags;
 }
