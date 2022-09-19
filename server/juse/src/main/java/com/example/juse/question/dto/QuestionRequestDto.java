@@ -30,7 +30,7 @@ public class QuestionRequestDto {
         private String content;
 
         @Setter
-        private Long boardId;
+        private Long questionId;
 
         @Setter
         private Long userId;

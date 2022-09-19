@@ -34,6 +34,7 @@ public class User {
     @Column(nullable = false)
     private String introduction;
 
+    @Setter
     @Column(nullable = false)
     private String email;
 
@@ -103,4 +104,11 @@ public class User {
         return this.whoLikesList.stream().map(Like::getWhoIsLiked).collect(Collectors.toList());
     }
 
+
+    public void addSocialUser(SocialUser socialUser) {
+        this.socialUser = socialUser;
+        if (socialUser.getUser() != this) {
+            socialUser.setUser(this);
+        }
+    }
 }

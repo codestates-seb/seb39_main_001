@@ -14,7 +14,7 @@ public interface QuestionMapper {
     Question toEntityFrom(QuestionRequestDto.Post postDto);
 
     @Mapping(target = "user.id", source = "userId")
-    @Mapping(target = "board.id", source = "boardId")
+    @Mapping(target = "id", source = "questionId")
     Question toEntityFrom(QuestionRequestDto.Patch patchDto);
 
 

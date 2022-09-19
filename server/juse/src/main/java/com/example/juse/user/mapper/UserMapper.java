@@ -16,8 +16,6 @@ public interface UserMapper {
 
     UserResponseDto.MyJuse toMyJuseDtoFrom(User entity);
 
-    UserResponseDto toDtoFrom(User entity);
-
     UserResponseDto.Profile toProfileDtoFrom(User entity);
 
     @Mapping(target = "userTagList", source = "skillStackTags")

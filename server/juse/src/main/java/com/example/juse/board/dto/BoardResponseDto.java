@@ -58,6 +58,7 @@ public class BoardResponseDto {
         private Board.Status status;
         private LocalDate startingDate;
         private String title;
+        private String period;
         private List<String> tagList;
 
         private int views;

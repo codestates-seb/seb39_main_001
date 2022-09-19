@@ -9,6 +9,9 @@ import com.example.juse.dto.MultiResponseDto;
 import com.example.juse.dto.Pagination;
 import com.example.juse.dto.SingleResponseDto;
 import com.example.juse.helper.filterings.FilterOptions;
+import com.example.juse.security.oauth.PrincipalDetails;
+import com.example.juse.user.entity.User;
+import com.example.juse.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,11 +32,17 @@ public class BoardController {
     private final BoardSerivice boardSerivice;
     private final BoardMapper boardMapper;
 
-    @PostMapping("/{user-id}")
+    private final UserRepository userRepository;
+
+    //todo : user 정보를 받아올 수 있는 메서드를 서비스 레이어에 만들어 두고 공통으로 쓰면 될 것 같다.
+    //todo : principal에서 유저 정보 추출 (이메일 또는 아이디) -> 서비스에서 조회 후 예외처리
+
+    @PostMapping
     public ResponseEntity<SingleResponseDto<BoardResponseDto.Single>> post(
-            @PathVariable("user-id") long userId,
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
             @RequestBody BoardRequestDto.Post postDto
     ) {
+        long userId = principalDetails.getSocialUser().getUser().getId();
         postDto.setUserId(userId);
         Board mappedObj = boardMapper.toEntityFrom(postDto);
         Board createdEntity = boardSerivice.create(mappedObj);
@@ -52,13 +62,14 @@ public class BoardController {
     }
 
 
-    @PatchMapping("/{board-id}/{user-id}")
+    @PatchMapping("/{board-id}")
     public ResponseEntity<SingleResponseDto<BoardResponseDto.Single>> patch(
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
             @PathVariable("board-id") long boardId,
-            @PathVariable("user-id") long userId,
             @RequestBody BoardRequestDto.Patch patchDto
     ) {
 
+        Long userId = principalDetails.getSocialUser().getUser().getId();
         patchDto.setUserId(userId);
         patchDto.setBoardId(boardId);
         Board mappedObj = boardMapper.toEntityFrom(patchDto);
@@ -68,12 +79,12 @@ public class BoardController {
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{board-id}/{user-id}")
+    @DeleteMapping("/{board-id}")
     public ResponseEntity<SingleResponseDto<String>> delete(
             @PathVariable("board-id") long boardId,
-            @PathVariable("user-id") long userId
+            @AuthenticationPrincipal PrincipalDetails principalDetails
     ) {
-
+        long userId = principalDetails.getSocialUser().getUser().getId();
         boardSerivice.delete(boardId, userId);
         return new ResponseEntity<>(new SingleResponseDto<>("success"), HttpStatus.NO_CONTENT);
     }
