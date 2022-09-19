@@ -1,7 +1,9 @@
+import { Routes, Route } from 'react-router-dom';
+import NavbarPublic from './components/NavbarPublic';
+import Home from './pages/Home';
+import Join from './pages/Join';
+
 function App() {
-<<<<<<< Updated upstream
-  return <div className='App'>hello</div>;
-=======
   return (
     <>
       <NavbarPublic />
@@ -11,7 +13,6 @@ function App() {
       </Routes>
     </>
   );
->>>>>>> Stashed changes
 }
 
 export default App;

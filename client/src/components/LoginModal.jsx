@@ -24,11 +24,12 @@ const LoginModalContainer = styled.div`
 `;
 
 const LoginModal = ({ showModal, setShowModal }) => {
-  const LoginGoogle = () =>
+  const LoginGoogle = () => {
     axios
-      .post(`/oauth2/authorization/google`)
+      .post(`https://cors-jwy.herokuapp.com//oauth2/authorization/google`)
       .then((res) => res.json())
       .then((data) => console.log(data));
+  };
 
   return (
     <>

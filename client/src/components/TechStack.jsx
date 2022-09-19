@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const TechStack = ({ selected, setSelected }) => {
   // 모든 스택 이름
   const stacks = {
-    프론트엔드: ['JavaScript', 'TypeScript', 'React', 'Vue', 'Svelte', 'Next'],
+    프론트엔드: ['JavaScript', 'TypeScript', 'React', 'Vue', 'Svelte', 'Next', 'GraphQl'],
     백엔드: [
       'Java',
       'Spring',
@@ -19,10 +19,9 @@ const TechStack = ({ selected, setSelected }) => {
       'Django',
       'php',
       'GraphQL',
-      'Firebase',
     ],
     모바일: ['Flutter', 'Swift', 'Kotlin', 'ReactNative', 'Unity'],
-    기타: ['AWS', 'Kubernetes', 'Docker', 'Git', 'Figma', 'Zeplin', 'Jest', 'C'],
+    기타: ['AWS', 'Kubernetes', 'Docker', 'Git', 'Jest'],
   };
 
   const [currentTab, setCurrentTab] = useState('프론트엔드');

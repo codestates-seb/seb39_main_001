@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import Card from '../components/Card';
+import ScrollToTop from '../components/ScrollToTop';
 import TechStack from '../components/TechStack';
+import { boards } from '../mocks/db';
 
 const Home = () => {
   const [techFilter, setTechFilter] = useState([]);
@@ -20,7 +23,7 @@ const Home = () => {
     setPeriodFilter(deletedArr);
   };
 
-  const naming = (e) => {
+  const periodNaming = (e) => {
     if (e === 'short') {
       return '1개월 미만';
     } else if (e === 'long') {
@@ -55,7 +58,7 @@ const Home = () => {
           <SelectedContainer>
             {periodFilter.map((e, i) => (
               <div key={i}>
-                {naming(e)}
+                {periodNaming(e)}
                 <button onClick={() => periodDeleteHandler(i)}>X</button>
               </div>
             ))}
@@ -78,6 +81,12 @@ const Home = () => {
         </TypeSelector>
         <CreateButton>모집 글 작성</CreateButton>
       </ListHeader>
+      <BoardsContainer>
+        {boards.data.map((e, i) => (
+          <Card key={i} data={e}></Card>
+        ))}
+      </BoardsContainer>
+      <ScrollToTop />
     </HomeContainer>
   );
 };
@@ -85,6 +94,7 @@ const Home = () => {
 const HomeContainer = styled.div`
   max-width: 1300px;
   margin: auto;
+  padding-bottom: 100px;
 `;
 
 const StyledCarousel = styled.div`
@@ -114,6 +124,7 @@ const ListHeader = styled.div`
 const TypeSelector = styled.ul`
   display: flex;
   margin: 15px 0;
+  font-size: 24px;
   > li {
     color: ${({ theme }) => theme.colors.grey3};
     padding: 10px 0;
@@ -127,6 +138,13 @@ const TypeSelector = styled.ul`
 
 const CreateButton = styled.button`
   padding: 5px 15px;
+`;
+
+const BoardsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px 60px;
 `;
 
 export default Home;
