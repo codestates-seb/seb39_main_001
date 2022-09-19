@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import NavbarPublic from './components/NavbarPublic';
 import NavbarPrivate from './components/NavbarPrivate';
 import Home from './pages/Home';
 
 function App() {
+  // TODO: 서버로 부터 token 받으면 클라이언트에 cookie에 담기
   return (
     <>
       {/* <NavbarPublic /> */}

@@ -47,10 +47,10 @@ const NavButtons = styled.div`
 `;
 
 const Notification = styled.div`
-  display: flex;
-  align-items: center;
   font-size: 18px;
   color: ${({ theme }) => theme.colors.grey4};
+  display: flex;
+  align-items: center;
   cursor: pointer;
   :hover {
     color: ${({ theme }) => theme.colors.black1};
@@ -67,22 +67,22 @@ const Profile = styled.div`
 `;
 
 const DropdownNav = styled.nav`
-  position: absolute;
-  width: 140px;
-  top: 60px;
-  right: 0;
   background: #ffffff;
   border-radius: 8px;
+  position: absolute;
+  top: 60px;
+  right: 0;
+  width: 140px;
   box-shadow: 0 1px 8px ${({ theme }) => theme.colors.grey2};
 `;
 
 const DropdownLink = styled(Link)`
   display: flex;
   justify-content: space-between;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.grey2};
   padding: 15px 20px;
   font-size: 14px;
   color: ${({ theme }) => theme.colors.grey4};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.grey2};
   > i {
     margin-right: 10px;
   }
