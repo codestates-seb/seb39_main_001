@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class UserResponseDto {
-
     private Long id;
+    private Byte[] profileImage;
     private String introduction;
     private String email;
     private String portfolio;
