@@ -22,7 +22,7 @@ public class Tag {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private Type type;
 
     @Getter

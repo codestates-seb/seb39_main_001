@@ -6,8 +6,10 @@ import com.example.juse.board.entity.Board;
 import com.example.juse.bookmark.entity.Bookmark;
 import com.example.juse.like.entity.Like;
 import com.example.juse.question.entity.Question;
+import com.example.juse.social.entity.SocialUser;
 import com.example.juse.tag.entity.UserTag;
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -27,8 +29,6 @@ public class User {
 
     private Byte[] profileImage;
 
-    private String img;
-
     @Column(nullable = false)
     private String introduction;
 
@@ -36,12 +36,6 @@ public class User {
     private String email;
 
     private String portfolio;
-
-    private String role;
-
-    private String provider;
-
-    private String providerId;
 
     @Column(nullable = false, unique = true)
     private String nickname;
@@ -59,7 +53,7 @@ public class User {
     private List<Like> likeList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<UserTag> userTagList = new ArrayList<>();
 
     @Builder.Default
@@ -73,4 +67,9 @@ public class User {
     @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<Application> applicationList = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name = "SOCIAL_USER_ID")
+    @JsonIgnore
+    private SocialUser socialUser;
 }

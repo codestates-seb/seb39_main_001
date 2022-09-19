@@ -1,9 +1,7 @@
-package com.example.juse.security.config.oauth;
+package com.example.juse.security.oauth;
 
 import com.example.juse.social.entity.SocialUser;
 import com.example.juse.social.repository.SocialUserRepository;
-import com.example.juse.user.entity.User;
-import com.example.juse.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -11,8 +9,6 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -39,6 +35,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                     .role(role)
                     .provider(provider)
                     .providerId(providerId)
+                    .name(oAuth2User.getAttribute("name"))
                     .img(img)
                     .build();
 
@@ -46,5 +43,14 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         }
 
         return new PrincipalDetails(socialuser, oAuth2User.getAttributes());
+    }
+
+    public PrincipalDetails loadUserByEmail(String email) {
+        SocialUser socialUser = socialUserRepository.findByEmail(email);
+        if (socialUser != null) {
+            return new PrincipalDetails(socialUser);
+        }
+
+        throw new RuntimeException("Not Found Email");
     }
 }
