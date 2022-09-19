@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @Builder
 @Entity
 @Table(name = "USERS")
+@Setter
 public class User {
 
     @Setter
@@ -104,6 +105,8 @@ public class User {
         return this.whoLikesList.stream().map(Like::getWhoIsLiked).collect(Collectors.toList());
     }
 
+
+    // USER 테이블의 SOCIAL_USER_ID 컬럼에 Social User Id를 추가한다.
 
     public void addSocialUser(SocialUser socialUser) {
         this.socialUser = socialUser;

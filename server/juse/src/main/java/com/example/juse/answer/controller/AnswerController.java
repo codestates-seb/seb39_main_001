@@ -29,7 +29,7 @@ public class AnswerController {
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
         postDto.setUserId(userId);
-        postDto.setUserId(questionId);
+        postDto.setQuestionId(questionId);
         Answer mappedObj = answerMapper.toEntityFrom(postDto);
         Answer createdEntity = answerService.create(mappedObj);
         AnswerResponseDto responseDto = answerMapper.toResponseDtoFrom(createdEntity);
