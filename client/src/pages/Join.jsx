@@ -35,22 +35,22 @@ const Join = () => {
         </JoinHeader>
         <ProfileUpload>
           <p>프로필 사진</p>
-          <div className="uploader">
-            <div className="image-container">사진</div>
+          <div className='uploader'>
+            <div className='image-container'>사진</div>
             <StyledButton>업로드</StyledButton>
           </div>
         </ProfileUpload>
         <JoinInput>
           <p>닉네임</p>
-          <input type="text" onChange={nicknameHandler}></input>
+          <input type='text' onChange={nicknameHandler}></input>
           <p>이메일</p>
-          <input type="text" value="milk@gmail.com"></input>
+          <input type='text' value='milk@gmail.com'></input>
           <p>포트폴리오 링크 (깃헙, 노션, 블로그...)</p>
-          <input type="text" onChange={portfolioHandler}></input>
+          <input type='text' onChange={portfolioHandler}></input>
           <p>기술 스택</p>
           <TechStack selected={stack} setSelected={setStack} />
           <p>한 줄 소개</p>
-          <textarea type="text" onChange={introductionHandler}></textarea>
+          <textarea type='text' onChange={introductionHandler}></textarea>
         </JoinInput>
         <StyledButton onClick={() => joinSubmit(user)}>회원 가입</StyledButton>
       </JoinContainer>

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const TechStack = ({ selected, setSelected }) => {
   // 모든 스택 이름
   const stacks = {
-    프론트엔드: ['JavaScript', 'TypeScript', 'React', 'Vue', 'Svelte', 'Next'],
+    프론트엔드: ['JavaScript', 'TypeScript', 'React', 'Vue', 'Svelte', 'Next', 'GraphQl'],
     백엔드: [
       'Java',
       'Spring',
@@ -19,19 +19,9 @@ const TechStack = ({ selected, setSelected }) => {
       'Django',
       'php',
       'GraphQL',
-      'Firebase',
     ],
     모바일: ['Flutter', 'Swift', 'Kotlin', 'ReactNative', 'Unity'],
-    기타: [
-      'AWS',
-      'Kubernetes',
-      'Docker',
-      'Git',
-      'Figma',
-      'Zeplin',
-      'Jest',
-      'C',
-    ],
+    기타: ['AWS', 'Kubernetes', 'Docker', 'Git', 'Jest'],
   };
 
   const [currentTab, setCurrentTab] = useState('프론트엔드');
@@ -64,20 +54,13 @@ const TechStack = ({ selected, setSelected }) => {
 
   return (
     <TechStackContainer>
-      <StackTab className="tab">
+      <StackTab className='tab'>
         {Object.keys(stacks).map((e, i) => (
-          <li
-            onClick={tabHandler}
-            className={currentTab === e ? 'is-active' : ''}
-            key={i}
-          >
+          <li onClick={tabHandler} className={currentTab === e ? 'is-active' : ''} key={i}>
             {e}
           </li>
         ))}
-        <li
-          onClick={tabHandler}
-          className={currentTab === '모두보기' ? 'is-active' : ''}
-        >
+        <li onClick={tabHandler} className={currentTab === '모두보기' ? 'is-active' : ''}>
           모두보기
         </li>
       </StackTab>
@@ -87,45 +70,32 @@ const TechStack = ({ selected, setSelected }) => {
               <div
                 key={i}
                 onClick={stackClickHandler}
-                className={
-                  !selected.includes(e) && selected.length > 0
-                    ? 'not-selected'
-                    : ''
-                }
-              >
+                className={!selected.includes(e) && selected.length > 0 ? 'not-selected' : ''}>
                 {e}
               </div>
             ))
-          : [
-              ...stacks.프론트엔드,
-              ...stacks.백엔드,
-              ...stacks.모바일,
-              ...stacks.기타,
-            ].map((e, i) => (
+          : [...stacks.프론트엔드, ...stacks.백엔드, ...stacks.모바일, ...stacks.기타].map((e, i) => (
               <div
                 key={i}
                 onClick={stackClickHandler}
-                className={
-                  !selected.includes(e) && selected.length > 0
-                    ? 'not-selected'
-                    : ''
-                }
-              >
+                className={!selected.includes(e) && selected.length > 0 ? 'not-selected' : ''}>
                 {e}
               </div>
             ))}
       </StackContainer>
-      <SelectedContainer>
-        {selected.map((e, i) => (
-          <div key={i}>
-            {e}
-            <button onClick={() => stackDeleteHandler(i)}>X</button>
-          </div>
-        ))}
-      </SelectedContainer>
       {selected.length ? (
-        <button onClick={stackResetHandler}>선택 초기화</button>
-      ) : null}
+        <SelectedContainer>
+          {selected.map((e, i) => (
+            <div key={i}>
+              {e}
+              <button onClick={() => stackDeleteHandler(i)}>X</button>
+            </div>
+          ))}
+          <button onClick={stackResetHandler}>선택 초기화</button>
+        </SelectedContainer>
+      ) : (
+        ''
+      )}
     </TechStackContainer>
   );
 };

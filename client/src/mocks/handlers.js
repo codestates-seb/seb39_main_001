@@ -1,5 +1,7 @@
 import { rest } from 'msw';
 import { users } from './db';
+import { boards } from './db';
+
 
 export const handlers = [
   rest.get('/todos', (req, res, ctx) => {
@@ -16,4 +18,8 @@ export const handlers = [
     users.push(req.body);
     return res(ctx.status(200));
   }),
+
+  //게시물 목록 불러오기
+  rest.get('/boards?'),
+
 ];
