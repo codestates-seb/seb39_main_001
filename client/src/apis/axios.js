@@ -11,3 +11,4 @@ export const joinSubmit = (data) => {
 export const getBoards = () => {
   axios.get('');
 };
+

@@ -1,70 +1,18 @@
-# Getting Started with Create React App
+# JU:SE - Junior to Senior 👨‍👧
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 개발 입문자와 주니어를 위한 프로젝트 / 스터디 매칭 플랫폼 📍
 
-## Available Scripts
+|                                                                                                                                                                                                                                                             방현수(BE 팀장)                                                                                                                                                                                                                                                             |                                                                                                                                                                                                                                                                  최영민(BE)                                                                                                                                                                                                                                                                   |                                                                                                                                                                                                                                                                  정우용(FE)                                                                                                                                                                                                                                                                   |                                                                                                                                                                                                                                                                    김은주(FE)                                                                                                                                                                                                                                                                     |
+| :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| <img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/f5db5537-1f98-4d35-9e76-ad906917a370/gumba.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220915%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220915T121426Z&X-Amz-Expires=86400&X-Amz-Signature=33d7edc05cb8c1fa44bba01b20242a7f45529ba6535dc07c2f8432db8395160e&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22gumba.png%22&x-id=GetObject" width=150 height=150> | <img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/c54e775b-8c3d-43c7-a0a8-0ccbde792f46/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220915%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220915T121723Z&X-Amz-Expires=86400&X-Amz-Signature=1417100f825f25f2090d4df0cf30185bea7137c1dd484bd57bdcbc8657141da8&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject" width=150 height=150> | <img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/c9df2e52-60e3-418d-af0a-c4f133d40990/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220915%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220915T121853Z&X-Amz-Expires=86400&X-Amz-Signature=e24cec85da3a8e6917f30c350b5ff2d887f4ef2943ef7778fab515ff98d9958b&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject" width=150 height=150> | <img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/2dbf2127-b80e-40df-94c1-d0888070018b/IMG_8535.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220915%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220915T121926Z&X-Amz-Expires=86400&X-Amz-Signature=33b4c3b905546ab8150563977635ebe814a1a89fc54499ab5b57abe06787c7fd&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22IMG_8535.PNG.png%22&x-id=GetObject" width=150 height=150> |
+|                                                                                                                                                                                                                                               [thom-droid](https://github.com/thom-droid)                                                                                                                                                                                                                                               |                                                                                                                                                                                                                                                    [aprochoi](https://github.com/aprochoi)                                                                                                                                                                                                                                                    |                                                                                                                                                                                                                                                    [cleats01](https://github.com/cleats01)                                                                                                                                                                                                                                                    |                                                                                                                                                                                                                                                        [ekim49](https://github.com/ekim49)                                                                                                                                                                                                                                                        |
 
-In the project directory, you can run:
+## 🔗 배포 링크
 
-### `npm start`
+## ✅ 기능
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 📚 기술 스택
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Frontend
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Backend

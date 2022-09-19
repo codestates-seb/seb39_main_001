@@ -2,6 +2,7 @@ import { rest } from 'msw';
 import { users } from './db';
 import { boards } from './db';
 
+
 export const handlers = [
   rest.get('/todos', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json('hi'));
@@ -20,4 +21,5 @@ export const handlers = [
 
   //게시물 목록 불러오기
   rest.get('/boards?'),
+
 ];

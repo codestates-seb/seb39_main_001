@@ -1,4 +1,5 @@
 export const users = [];
+
 export const boards = {
   data: [
     {
