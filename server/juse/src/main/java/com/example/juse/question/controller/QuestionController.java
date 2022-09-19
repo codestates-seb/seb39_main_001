@@ -6,9 +6,11 @@ import com.example.juse.question.dto.QuestionResponseDto;
 import com.example.juse.question.entity.Question;
 import com.example.juse.question.mapper.QuestionMapper;
 import com.example.juse.question.service.QuestionService;
+import com.example.juse.security.oauth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -49,11 +51,12 @@ public class QuestionController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{question-id}/{user-id}")
+    @DeleteMapping("/{question-id}")
     public void delete(
             @PathVariable("question-id") long questionId,
-            @PathVariable("user-id") long userId
-    ) {
+            @AuthenticationPrincipal PrincipalDetails principalDetails
+            ) {
+        long userId = principalDetails.getSocialUser().getUser().getId();
         questionService.delete(questionId, userId);
     }
 }
