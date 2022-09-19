@@ -29,6 +29,8 @@ public class User {
 
     private Byte[] profileImage;
 
+    private String img;
+
     @Column(nullable = false)
     private String introduction;
 
@@ -38,7 +40,13 @@ public class User {
     private String portfolio;
     private int liked;
 
-    @Column(nullable = false)
+    private String role;
+
+    private String provider;
+
+    private String providerId;
+
+    @Column(nullable = false, unique = true)
     private String nickname;
 
     @Builder.Default
