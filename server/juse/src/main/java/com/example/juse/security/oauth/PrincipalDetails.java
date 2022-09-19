@@ -1,14 +1,11 @@
 package com.example.juse.security.oauth;
 
 import com.example.juse.social.entity.SocialUser;
-import com.example.juse.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
@@ -20,19 +17,14 @@ import java.util.Map;
 @AllArgsConstructor
 public class PrincipalDetails implements  OAuth2User {
 
-    private SocialUser user;
+    private SocialUser socialUser;
     private Map<String, Object> attributes;
 
 
     @Autowired
     public PrincipalDetails(SocialUser socialUser) {
-        this.user = socialUser;
+        this.socialUser = socialUser;
     }
-//    @Autowired
-//    public PrincipalDetails(SocialUser user, Map<String, Object> attributes) {
-//        this.user = user;
-//        this.attributes = attributes;
-//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -40,7 +32,7 @@ public class PrincipalDetails implements  OAuth2User {
         collection.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {
-                return user.getRole();
+                return socialUser.getRole();
             }
         });
         return collection;
@@ -53,7 +45,7 @@ public class PrincipalDetails implements  OAuth2User {
 
     @Override
     public String getName() {
-        return user.getEmail();
+        return socialUser.getEmail();
     }
 
 }

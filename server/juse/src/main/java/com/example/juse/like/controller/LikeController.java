@@ -5,24 +5,27 @@ import com.example.juse.like.dto.LikeResponseDto;
 import com.example.juse.like.entity.Like;
 import com.example.juse.like.mapper.LikeMapper;
 import com.example.juse.like.service.LikeService;
+import com.example.juse.security.oauth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
-@RequestMapping("/users")
 @RestController
+@RequestMapping("/likes")
 public class LikeController {
 
     private final LikeService likeService;
     private final LikeMapper likeMapper;
 
-    @PostMapping("/{user-who-likes}/likes/{user-who-is-liked}")
+    @PostMapping("/{user-who-is-liked}")
     public ResponseEntity<SingleResponseDto<LikeResponseDto>> like(
-        @PathVariable("user-who-likes") long whoLikes,
-        @PathVariable("user-who-is-liked") long whoIsLiked
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @PathVariable("user-who-is-liked") long whoIsLiked
     ) {
+        long whoLikes = principalDetails.getSocialUser().getUser().getId();
         Like createdEntity = likeService.create(whoLikes, whoIsLiked);
         LikeResponseDto responseDto = likeMapper.toResponseDtoFrom(createdEntity);
 
@@ -30,11 +33,13 @@ public class LikeController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{user-who-likes}/likes/{user-who-is-liked}")
+    @DeleteMapping("/{user-who-is-liked}")
     public void delete(
-            @PathVariable("user-who-likes") long whoLikes,
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
             @PathVariable("user-who-is-liked") long whoIsLiked
     ) {
+        long whoLikes = principalDetails.getSocialUser().getUser().getId();
+
         likeService.delete(whoLikes, whoIsLiked);
     }
 

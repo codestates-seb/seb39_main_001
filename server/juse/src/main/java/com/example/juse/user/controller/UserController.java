@@ -1,27 +1,22 @@
 package com.example.juse.user.controller;
 
 import com.example.juse.response.SingleResponseDto;
-import com.example.juse.security.jwt.JwtTokenProvider;
 import com.example.juse.security.oauth.PrincipalDetails;
 import com.example.juse.social.entity.SocialUser;
-import com.example.juse.user.dto.UserPostDto;
 import com.example.juse.user.dto.UserRequestDto;
 import com.example.juse.user.dto.UserResponseDto;
 import com.example.juse.user.entity.User;
 import com.example.juse.user.mapper.UserMapper;
 import com.example.juse.user.repository.UserRepository;
 import com.example.juse.user.service.UserService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@AllArgsConstructor
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
@@ -37,37 +32,28 @@ public class UserController {
 
     @PostMapping("/join")
     public ResponseEntity userJoin(@AuthenticationPrincipal PrincipalDetails principalDetails,
-                                   @RequestBody UserPostDto userPostDto) {
+                                   @RequestBody UserRequestDto.Post userPostDto) {
 
-        User user = User.builder()
-                .email(principalDetails.getUser().getEmail())
-                .socialUser(SocialUser.builder().id(principalDetails.getUser().getId()).build())
-                .introduction(userPostDto.getIntroduction())
-                .nickname(userPostDto.getNickname())
-                .portfolio(userPostDto.getPortfolio())
-                .build();
+        User mappedObj = userMapper.toEntityFrom(userPostDto);
 
-        userRepository.save(user);
+        mappedObj.setEmail(principalDetails.getSocialUser().getEmail());
 
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        SocialUser socialUser = principalDetails.getSocialUser();
+        mappedObj.addSocialUser(socialUser);
 
-    }
+        UserResponseDto.Profile response = userMapper.toProfileDtoFrom(userRepository.save(mappedObj));
 
-    @GetMapping("/user")
-    public ResponseEntity getUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        System.out.println(principalDetails.getUser());
-
-        User user = userRepository.findByEmail(principalDetails.getUser().getEmail());
-
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(userMapper.userResponseDto(user)), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.CREATED);
 
     }
 
-    @GetMapping("/myjuse/{user-id}")
+    @GetMapping("/myjuse")
     public ResponseEntity<com.example.juse.dto.SingleResponseDto<UserResponseDto.MyJuse>> getMyjuse(
-            @PathVariable("user-id") long userId
-    ) {
+            @AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+        long userId = principalDetails.getSocialUser().getUser().getId();
+
+        System.out.println("userId = " + principalDetails.getSocialUser().getUser().getId());
 
         User foundUser = userService.getJuse(userId);
         UserResponseDto.MyJuse responseDto = userMapper.toMyJuseDtoFrom(foundUser);
@@ -75,21 +61,28 @@ public class UserController {
         return new ResponseEntity<>(new com.example.juse.dto.SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
 
-    @GetMapping("/{user-id}")
+    @GetMapping
     public ResponseEntity<com.example.juse.dto.SingleResponseDto<UserResponseDto.Profile>> getProfile(
-            @PathVariable("user-id") long userId
+            @AuthenticationPrincipal PrincipalDetails principalDetails
+
     ) {
+
+        long userId = principalDetails.getSocialUser().getUser().getId();
+
         User userProfile = userService.getProfile(userId);
         UserResponseDto.Profile responseDto = userMapper.toProfileDtoFrom(userProfile);
 
         return new ResponseEntity<>(new com.example.juse.dto.SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
 
-    @PatchMapping("/{user-id}")
+    @PatchMapping
     public ResponseEntity<com.example.juse.dto.SingleResponseDto<UserResponseDto.Profile>> patch(
-            @PathVariable("user-id") long userId,
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
+
             @RequestBody UserRequestDto.Patch patchDto
     ) {
+        long userId = principalDetails.getSocialUser().getUser().getId();
+
         patchDto.setId(userId);
         User mappedObj = userMapper.toEntityFrom(patchDto);
         User updatedEntity = userService.update(mappedObj);
@@ -99,10 +92,12 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{user-id}")
+    @DeleteMapping
     public void deleteAccount(
-            @PathVariable("user-id") long userId
+            @AuthenticationPrincipal PrincipalDetails principalDetails
     ) {
+        long userId = principalDetails.getSocialUser().getUser().getId();
+
         userService.deleteAccount(userId);
     }
 
