@@ -1,5 +1,6 @@
 package com.example.juse.security.config.oauth;
 
+import com.example.juse.social.entity.SocialUser;
 import com.example.juse.user.entity.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,12 +12,12 @@ import java.util.Collection;
 import java.util.Map;
 
 @Data
-public class PrincipalDetails implements UserDetails, OAuth2User {
+public class PrincipalDetails implements  OAuth2User {
 
-    private User user;
+    private SocialUser user;
     private Map<String, Object> attributes;
 
-    public PrincipalDetails(User user, Map<String, Object> attributes) {
+    public PrincipalDetails(SocialUser user, Map<String, Object> attributes) {
         this.user = user;
         this.attributes = attributes;
     }
@@ -40,36 +41,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     @Override
     public String getName() {
-        return user.getNickname();
-    }
-
-    @Override
-    public String getPassword() {
-        return null;
-    }
-
-    @Override
-    public String getUsername() {
         return user.getEmail();
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

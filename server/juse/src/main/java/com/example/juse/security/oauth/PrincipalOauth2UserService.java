@@ -1,5 +1,7 @@
 package com.example.juse.security.config.oauth;
 
+import com.example.juse.social.entity.SocialUser;
+import com.example.juse.social.repository.SocialUserRepository;
 import com.example.juse.user.entity.User;
 import com.example.juse.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +19,7 @@ import java.util.Optional;
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private SocialUserRepository socialUserRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -29,22 +31,20 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String img = oAuth2User.getAttribute("picture");
         String role = "ROLE_USER";
 
-        User user = userRepository.findByEmail(email);
+        SocialUser socialuser = socialUserRepository.findByEmail(email);
 
-        if (user == null) {
-            user = User.builder()
+        if (socialuser == null) {
+            socialuser = SocialUser.builder()
                     .email(email)
                     .role(role)
                     .provider(provider)
                     .providerId(providerId)
                     .img(img)
-                    .nickname("user1")
-                    .introduction("소개1")
                     .build();
 
-            userRepository.save(user);
+            socialUserRepository.save(socialuser);
         }
 
-        return new PrincipalDetails(user, oAuth2User.getAttributes());
+        return new PrincipalDetails(socialuser, oAuth2User.getAttributes());
     }
 }
