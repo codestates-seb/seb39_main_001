@@ -39,6 +39,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                     .img(img)
                     .build();
 
+            System.out.println("##########socialuser.toString() = " + socialuser.toString());
             socialUserRepository.save(socialuser);
         }
 
