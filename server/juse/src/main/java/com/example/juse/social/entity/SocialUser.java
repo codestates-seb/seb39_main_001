@@ -1,6 +1,7 @@
 package com.example.juse.social.entity;
 
 import com.example.juse.user.entity.User;
+
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 
@@ -31,6 +32,7 @@ public class SocialUser {
 
     private String providerId;
 
+    @Setter
     @OneToOne(mappedBy = "socialUser")
     @JsonIgnore
     private User user;

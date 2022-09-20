@@ -17,4 +17,5 @@ public class UserPostDto {
     private String introduction;
 
     private List<String> skillStackTags;
+
 }

@@ -21,12 +21,13 @@ public class QuestionController {
     private final QuestionService questionService;
     private final QuestionMapper questionMapper;
 
-    @PostMapping("/{board-id}/{user-id}")
+    @PostMapping("/{board-id}")
     public ResponseEntity<SingleResponseDto<QuestionResponseDto>> post(
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
             @PathVariable("board-id") long boardId,
-            @PathVariable("user-id") long userId,
             @RequestBody QuestionRequestDto.Post postDto
     ) {
+        long userId = principalDetails.getSocialUser().getUser().getId();
         postDto.setUserId(userId);
         postDto.setBoardId(boardId);
         Question mappedObj = questionMapper.toEntityFrom(postDto);
@@ -36,12 +37,13 @@ public class QuestionController {
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/{board-id}/{user-id}")
+    @PatchMapping("/{question-id}")
     public ResponseEntity<SingleResponseDto<QuestionResponseDto>> update(
-            @PathVariable("board-id") long boardId,
-            @PathVariable("user-id") long userId,
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @PathVariable("question-id") long questionId,
             @RequestBody QuestionRequestDto.Patch patchDto
     ) {
+        long userId = principalDetails.getSocialUser().getUser().getId();
         patchDto.setUserId(userId);
         Question mappedObj = questionMapper.toEntityFrom(patchDto);
         Question updatedEntity = questionService.update(mappedObj);
@@ -53,9 +55,9 @@ public class QuestionController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{question-id}")
     public void delete(
-            @PathVariable("question-id") long questionId,
-            @AuthenticationPrincipal PrincipalDetails principalDetails
-            ) {
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @PathVariable("question-id") long questionId
+    ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
         questionService.delete(questionId, userId);
     }

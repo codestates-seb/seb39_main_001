@@ -23,8 +23,8 @@ public class AnswerController {
 
     @PostMapping("/{question-id}")
     public ResponseEntity<SingleResponseDto<AnswerResponseDto>> post(
-            @PathVariable("question-id") long questionId,
             @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @PathVariable("question-id") long questionId,
             @RequestBody AnswerRequestDto.Post postDto
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
@@ -39,8 +39,8 @@ public class AnswerController {
 
     @PatchMapping("/{answer-id}")
     public ResponseEntity<SingleResponseDto<AnswerResponseDto>> update(
-            @PathVariable("answer-id") long answerId,
             @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @PathVariable("answer-id") long answerId,
             @RequestBody AnswerRequestDto.Patch patchDto
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
@@ -57,10 +57,9 @@ public class AnswerController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{answer-id}")
     public void delete(
-            @PathVariable("answer-id") long answerId,
-            @AuthenticationPrincipal PrincipalDetails principalDetails
-            ) {
-
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @PathVariable("answer-id") long answerId
+    ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
         answerService.delete(answerId, userId);
     }

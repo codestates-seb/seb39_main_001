@@ -5,9 +5,11 @@ import com.example.juse.bookmark.entity.Bookmark;
 import com.example.juse.bookmark.mapper.BookmarkMapper;
 import com.example.juse.bookmark.service.BookmarkService;
 import com.example.juse.dto.SingleResponseDto;
+import com.example.juse.security.oauth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -18,11 +20,12 @@ public class BookmarkController {
     private final BookmarkService bookmarkService;
     private final BookmarkMapper bookmarkMapper;
 
-    @PostMapping("/{board-id}/{user-id}")
+    @PostMapping("/{board-id}")
     public ResponseEntity<SingleResponseDto<BookmarkResponseDto>> post(
-            @PathVariable("board-id") long boardId,
-            @PathVariable("user-id") long userId
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @PathVariable("board-id") long boardId
     ) {
+        long userId = principalDetails.getSocialUser().getUser().getId();
         Bookmark createdEntity = bookmarkService.create(boardId, userId);
         BookmarkResponseDto responseDto = bookmarkMapper.toResponseDtoFrom(createdEntity);
 
@@ -30,11 +33,13 @@ public class BookmarkController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{board-id}/{user-id}")
+    @DeleteMapping("/{board-id}")
     public void delete(
-            @PathVariable("board-id") long boardId,
-            @PathVariable("user-id") long userId
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @PathVariable("board-id") long boardId
+
     ) {
+        long userId = principalDetails.getSocialUser().getUser().getId();
         bookmarkService.delete(boardId, userId);
     }
 }

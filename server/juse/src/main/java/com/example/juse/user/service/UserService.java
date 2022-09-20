@@ -13,4 +13,6 @@ public interface UserService {
     void deleteAccount(long userId);
 
     User create(User mappedObj);
+
+    User findBySocialUserId(long socialUserId);
 }
