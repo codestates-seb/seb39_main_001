@@ -38,7 +38,7 @@ const Card = ({ data }) => {
           <div className='name'>{data.user.nickname}</div>
         </AuthorInfo>
         <Views>
-          <i class='fi fi-rr-eye'></i>
+          <i className='fi fi-rr-eye'></i>
           {data.views}
         </Views>
       </CardInfo>
@@ -61,7 +61,7 @@ const CardHeader = styled.div`
 `;
 
 const CardType = styled.div`
-  background-color: ${({ theme }) => theme.colors.grey4};
+  background-color: ${({ theme }) => theme.colors.grey5};
   color: white;
   font-size: 13px;
   padding: 7px 10px;
@@ -81,7 +81,7 @@ const CardSummary = styled.div`
   padding: 10px 0;
   margin-bottom: 10px;
   .date {
-    color: ${({ theme }) => theme.colors.grey3};
+    color: ${({ theme }) => theme.colors.grey4};
     padding-top: 5px;
   }
   .title {

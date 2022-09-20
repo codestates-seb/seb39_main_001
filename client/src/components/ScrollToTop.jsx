@@ -12,7 +12,7 @@ export default function ScrollToTop() {
 
   return (
     <PositionContainer onClick={handleScroll}>
-      <i class='fi fi-rr-angle-circle-up'></i>
+      <i className='fi fi-rr-angle-circle-up'></i>
     </PositionContainer>
   );
 }

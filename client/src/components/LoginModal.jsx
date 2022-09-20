@@ -1,13 +1,9 @@
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import styled from 'styled-components';
 import google from '../assets/images/google.svg';
 
 const LoginModal = ({ showModal, setShowModal }) => {
-  const LoginGoogle = axios
-    .post('/oauth2/authorization/google')
-    .then((res) => res.json())
-    .then((data) => console.log(data));
-
   const closeModal = () => {
     setShowModal(!showModal);
   };
@@ -18,13 +14,24 @@ const LoginModal = ({ showModal, setShowModal }) => {
         <Background onClick={closeModal}>
           <LoginModalContainer showModal={showModal}>
             <CloseBtn onClick={closeModal}>
-              <i class="fi fi-sr-cross-circle" />
+              <i className='fi fi-sr-cross-circle' />
             </CloseBtn>
             <p>환영합니다</p>
-            <GoogleLoginBtn onClick={LoginGoogle}>
+            <GoogleLoginBtn>
               <GoogleLogo />
-              <p>Google 계정으로 로그인</p>
+              <a href='http://juse.iptime.org:8080/oauth2/authorization/google?redirect_uri=http://localhost:3000/oauth2/redirect'>
+                Google 계정으로 로그인
+              </a>
             </GoogleLoginBtn>
+            <GoogleOAuthProvider clientId='124440870106-l0gfn6q53m75am580s8noto6loh8pc4g.apps.googleusercontent.com'>
+              <GoogleLogin
+                onSuccess={(res) => {
+                  console.log(res);
+                }}
+                onError={(res) => console.log(res)}
+              />
+            </GoogleOAuthProvider>
+            <div>login get</div>
           </LoginModalContainer>
         </Background>
       ) : null}
