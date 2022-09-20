@@ -3,8 +3,10 @@ package com.example.juse.application.service;
 import com.example.juse.application.entity.Application;
 import com.example.juse.application.repository.ApplicationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+@Profile("plain")
 @RequiredArgsConstructor
 @Service
 public class ApplicationServiceImpl implements ApplicationService {

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -22,7 +24,8 @@ public class Tag {
     @Column(nullable = false)
     private String name;
 
-//    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    //    @Column(nullable = false)
     private Type type;
 
     @Getter
@@ -34,4 +37,8 @@ public class Tag {
         ETC
 
     }
+
+    @Builder.Default
+    @OneToMany(mappedBy = "tag")
+    private List<BoardTag> boardTagList = new ArrayList<>();
 }

@@ -10,8 +10,6 @@ import com.example.juse.dto.Pagination;
 import com.example.juse.dto.SingleResponseDto;
 import com.example.juse.helper.filterings.FilterOptions;
 import com.example.juse.security.oauth.PrincipalDetails;
-import com.example.juse.user.entity.User;
-import com.example.juse.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,11 +29,6 @@ public class BoardController {
 
     private final BoardSerivice boardSerivice;
     private final BoardMapper boardMapper;
-
-    private final UserRepository userRepository;
-
-    //todo : user 정보를 받아올 수 있는 메서드를 서비스 레이어에 만들어 두고 공통으로 쓰면 될 것 같다.
-    //todo : principal에서 유저 정보 추출 (이메일 또는 아이디) -> 서비스에서 조회 후 예외처리
 
     @PostMapping
     public ResponseEntity<SingleResponseDto<BoardResponseDto.Single>> post(

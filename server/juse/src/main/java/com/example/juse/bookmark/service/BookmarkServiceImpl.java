@@ -3,8 +3,10 @@ package com.example.juse.bookmark.service;
 import com.example.juse.bookmark.entity.Bookmark;
 import com.example.juse.bookmark.repository.BookmarkRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+@Profile("plain")
 @RequiredArgsConstructor
 @Service
 public class BookmarkServiceImpl implements BookmarkService{

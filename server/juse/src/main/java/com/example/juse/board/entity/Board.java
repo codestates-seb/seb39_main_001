@@ -34,11 +34,14 @@ public class Board {
     private String content;
 
     private int backend;
+    private int curBackend;
     private int frontend;
+    private int curFrontend;
     private int designer;
+    private int curDesigner;
     private int etc;
+    private int curEtc;
     private int bookmarks;
-    private int liked;
     private int views;
 
     @Column(nullable = false)
@@ -59,8 +62,9 @@ public class Board {
     @Column(nullable = false)
     private String onOffline;
 
-    @Column(nullable = false)
     @Builder.Default
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Status status = Status.OPENING;
 
     @Column(nullable = false)
@@ -72,15 +76,15 @@ public class Board {
     private User user;
 
     @Builder.Default
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Question> questionList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Bookmark> bookmarkList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<BoardTag> boardTagList = new ArrayList<>();
 
 //    @Builder.Default
@@ -88,7 +92,7 @@ public class Board {
 //    private List<Like> likeList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     private List<Application> applicationList = new ArrayList<>();
 
     public List<String> getTagNames() {
@@ -113,6 +117,13 @@ public class Board {
         OPENING,
         CLOSED
 
+    }
+
+    public void addUser(User user) {
+        this.user = user;
+        if (!this.user.getBoardList().contains(this)) {
+            this.user.getBoardList().add(this);
+        }
     }
 
 

@@ -3,8 +3,10 @@ package com.example.juse.like.service;
 import com.example.juse.like.entity.Like;
 import com.example.juse.like.repository.LikeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+@Profile("plain")
 @RequiredArgsConstructor
 @Service
 public class LikeServiceImpl implements LikeService {
