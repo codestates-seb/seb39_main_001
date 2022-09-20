@@ -4,7 +4,7 @@ import com.example.juse.board.dto.BoardRequestDto;
 import com.example.juse.board.dto.BoardResponseDto;
 import com.example.juse.board.entity.Board;
 import com.example.juse.board.mapper.BoardMapper;
-import com.example.juse.board.service.BoardSerivice;
+import com.example.juse.board.service.BoardService;
 import com.example.juse.dto.MultiResponseDto;
 import com.example.juse.dto.Pagination;
 import com.example.juse.dto.SingleResponseDto;
@@ -27,7 +27,7 @@ import java.util.List;
 @RestController
 public class BoardController {
 
-    private final BoardSerivice boardSerivice;
+    private final BoardService boardService;
     private final BoardMapper boardMapper;
 
     @PostMapping
@@ -38,7 +38,7 @@ public class BoardController {
         long userId = principalDetails.getSocialUser().getUser().getId();
         postDto.setUserId(userId);
         Board mappedObj = boardMapper.toEntityFrom(postDto);
-        Board createdEntity = boardSerivice.create(mappedObj);
+        Board createdEntity = boardService.create(mappedObj);
         BoardResponseDto.Single responseDto = boardMapper.toSingleResponseDto(createdEntity);
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.CREATED);
@@ -48,7 +48,7 @@ public class BoardController {
     public ResponseEntity<SingleResponseDto<BoardResponseDto.Single>> getBoard(
             @PathVariable("board-id") long boardId
     ) {
-        Board foundEntity = boardSerivice.getBoard(boardId);
+        Board foundEntity = boardService.getBoard(boardId);
         BoardResponseDto.Single responseDto = boardMapper.toSingleResponseDto(foundEntity);
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
@@ -66,7 +66,7 @@ public class BoardController {
         patchDto.setUserId(userId);
         patchDto.setBoardId(boardId);
         Board mappedObj = boardMapper.toEntityFrom(patchDto);
-        Board updatedEntity = boardSerivice.update(mappedObj);
+        Board updatedEntity = boardService.update(mappedObj);
         BoardResponseDto.Single responseDto = boardMapper.toSingleResponseDto(updatedEntity);
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
@@ -78,7 +78,7 @@ public class BoardController {
             @AuthenticationPrincipal PrincipalDetails principalDetails
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
-        boardSerivice.delete(boardId, userId);
+        boardService.delete(boardId, userId);
         return new ResponseEntity<>(new SingleResponseDto<>("success"), HttpStatus.NO_CONTENT);
     }
 
@@ -92,8 +92,9 @@ public class BoardController {
     ) {
         Pageable pageable = PageRequest.of(page - 1, 5, Sort.by("createdAt").descending());
 
-        Page<Board> pagedBoardList = boardSerivice.getBoards(pageable);
         FilterOptions filterOptions = FilterOptions.of(type, tag, period, status);
+        Page<Board> pagedBoardList = boardService.getBoards(pageable, filterOptions);
+
         Pagination pagination = Pagination.of(pagedBoardList, filterOptions);
 
         List<BoardResponseDto.Multi> data = boardMapper.toListDtoFromListEntities(pagedBoardList.getContent());

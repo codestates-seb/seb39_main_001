@@ -23,9 +23,13 @@ public class BoardResponseDto {
         private String title;
 
         private int backend;
+        private int curBackend;
         private int frontend;
+        private int curFrontend;
         private int designer;
+        private int curDesigner;
         private int etc;
+        private int curEtc;
         private int people;
         private String contact;
         private LocalDate dueDate;
@@ -35,7 +39,6 @@ public class BoardResponseDto {
         private String content;
         private int views;
         private int bookmarks;
-        private int liked;
 
         private List<String> tagList;
         private List<ApplicationResponseDto> applicationList;

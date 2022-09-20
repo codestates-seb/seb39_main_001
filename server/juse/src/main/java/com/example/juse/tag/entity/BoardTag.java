@@ -41,4 +41,11 @@ public class BoardTag {
             this.tag.getBoardTagList().add(this);
         }
     }
+
+    public static BoardTag of(Board board, Tag tag) {
+        BoardTag boardTag = new BoardTag();
+        boardTag.addBoard(board);
+        boardTag.addTag(tag);
+        return boardTag;
+    }
 }

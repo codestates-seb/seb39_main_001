@@ -1,8 +1,8 @@
 package com.example.juse.board.service;
 
 import com.example.juse.board.entity.Board;
+import com.example.juse.helper.filterings.FilterOptions;
 import com.example.juse.helper.stubservice.StubService;
-import com.example.juse.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Profile("test")
 @Service
-public class BoardServiceStub implements BoardSerivice{
+public class BoardServiceStub implements BoardService {
 
     private final StubService stubService;
 
@@ -40,7 +40,7 @@ public class BoardServiceStub implements BoardSerivice{
     }
 
     @Override
-    public Page<Board> getBoards(Pageable pageable) {
+    public Page<Board> getBoards(Pageable pageable, FilterOptions filterOptions) {
         List<Board> content = List.of(
                 stubService.getBoard(),
                 stubService.getBoard(),
@@ -55,5 +55,10 @@ public class BoardServiceStub implements BoardSerivice{
         );
 
         return new PageImpl<>(content, pageable, content.size());
+    }
+
+    @Override
+    public Board verifyBoardById(long boardId) {
+        return null;
     }
 }

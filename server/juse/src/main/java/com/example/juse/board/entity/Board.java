@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -22,7 +23,6 @@ import java.util.stream.Collectors;
 @Table(name = "BOARDS")
 public class Board {
 
-    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -127,5 +127,8 @@ public class Board {
     }
 
 
+    public boolean isCreatedBy(User user) {
+        return this.user == user;
+    }
 
 }
