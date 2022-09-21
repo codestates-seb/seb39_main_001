@@ -1,5 +1,3 @@
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-import axios from 'axios';
 import styled from 'styled-components';
 import google from '../assets/images/google.svg';
 
@@ -17,21 +15,10 @@ const LoginModal = ({ showModal, setShowModal }) => {
               <i className='fi fi-sr-cross-circle' />
             </CloseBtn>
             <p>환영합니다</p>
-            <GoogleLoginBtn>
+            <GoogleLoginBtn href='http://juse.iptime.org:8080/oauth2/authorization/google?redirect_uri=http://localhost:3000/oauth2/redirect'>
               <GoogleLogo />
-              <a href='http://juse.iptime.org:8080/oauth2/authorization/google?redirect_uri=http://localhost:3000/oauth2/redirect'>
-                Google 계정으로 로그인
-              </a>
+              <p>Google 계정으로 로그인</p>
             </GoogleLoginBtn>
-            <GoogleOAuthProvider clientId='124440870106-l0gfn6q53m75am580s8noto6loh8pc4g.apps.googleusercontent.com'>
-              <GoogleLogin
-                onSuccess={(res) => {
-                  console.log(res);
-                }}
-                onError={(res) => console.log(res)}
-              />
-            </GoogleOAuthProvider>
-            <div>login get</div>
           </LoginModalContainer>
         </Background>
       ) : null}
@@ -89,7 +76,7 @@ const GoogleLogo = styled.img.attrs({
   margin-right: 10px;
 `;
 
-const GoogleLoginBtn = styled.div`
+const GoogleLoginBtn = styled.a`
   display: flex;
   justify-content: center;
   align-items: center;

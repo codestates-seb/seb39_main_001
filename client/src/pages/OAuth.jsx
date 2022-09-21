@@ -1,9 +1,16 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const OAuth = () => {
+  const navigate = useNavigate();
   const token = window.location.search.slice(7);
-  console.log(token);
+  const [cookies, setCookie] = useCookies(['user']);
+
+  useEffect(() => {
+    setCookie('user', token);
+    navigate('/');
+  });
 
   return <div>login</div>;
 };

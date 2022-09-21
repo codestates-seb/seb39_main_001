@@ -112,6 +112,24 @@ const Board = () => {
       <Main>{data.content}</Main>
       <QuestionContainer>
         <SubTitle>문의 사항</SubTitle>
+        {data.questionList.map((e, i) => (
+          <QuestionContent key={i}>
+            <p>{e.content}</p>
+            <ButtonContainer>
+              <Link to=''>
+                <i className='fi fi-rr-edit'></i>
+              </Link>
+              <Link to=''>
+                <i className='fi fi-rr-trash'></i>
+              </Link>
+            </ButtonContainer>
+            <div>{e.userId}</div>
+          </QuestionContent>
+        ))}
+        <QuestionCreator>
+          <textarea placeholder='문의 사항을 입력하세요.' />
+          <button>문의 등록</button>
+        </QuestionCreator>
       </QuestionContainer>
     </BoardContainer>
   );
@@ -266,6 +284,37 @@ const Main = styled.div`
 
 const QuestionContainer = styled.div`
   padding: 15px 0;
+`;
+
+const QuestionContent = styled.div`
+  display: flex;
+  padding: 10px 0 20px 0;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.grey2};
+`;
+
+const ButtonContainer = styled.div`
+  margin-left: auto;
+  display: flex;
+  gap: 10px;
+  color: ${({ theme }) => theme.colors.grey4};
+`;
+
+const QuestionCreator = styled.div`
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  > textarea {
+    resize: none;
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid ${({ theme }) => theme.colors.grey2};
+  }
+  > button {
+    margin-left: auto;
+    padding: 10px;
+  }
 `;
 
 export default Board;

@@ -1,13 +1,19 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { NavbarContainer, Logo } from './NavbarPublic';
 
-const NavbarPrivate = () => {
+const NavbarPrivate = ({ removeCookie }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate();
 
   const dropdownClickHandler = () => {
     setDropdownOpen(!dropdownOpen);
+  };
+
+  const handleLogout = () => {
+    removeCookie('user');
+    navigate('');
   };
 
   return (
@@ -15,21 +21,21 @@ const NavbarPrivate = () => {
       <Logo />
       <NavButtons>
         <Notification>
-          <i class="fi fi-rr-bell" />
+          <i class='fi fi-rr-bell' />
         </Notification>
         <Profile onClick={dropdownClickHandler}>
           {dropdownOpen ? (
             <DropdownNav>
-              <DropdownLink to="/users/user-id">
-                <i class="fi fi-rr-user" />
+              <DropdownLink to='/users/user-id'>
+                <i class='fi fi-rr-user' />
                 <p>마이페이지</p>
               </DropdownLink>
-              <DropdownLink to="/users/myjuse/user-id">
-                <i class="fi fi-rr-bookmark" />
+              <DropdownLink to='/users/myjuse/user-id'>
+                <i class='fi fi-rr-bookmark' />
                 <p>나의 JUSE</p>
               </DropdownLink>
-              <DropdownLink to="/logout">
-                <i class="fi fi-sr-exit" />
+              <DropdownLink to='/' onClick={handleLogout}>
+                <i class='fi fi-sr-exit' />
                 <p>로그아웃</p>
               </DropdownLink>
             </DropdownNav>
