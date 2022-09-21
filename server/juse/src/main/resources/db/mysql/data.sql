@@ -1,3 +1,15 @@
+INSERT INTO TAGS (id, name, type)
+VALUES (1, 'java', 'BACKEND');
+
+INSERT INTO TAGS (id, name, type)
+VALUES (2, 'react', 'FRONTEND');
+
+INSERT INTO TAGS (id, name, type)
+VALUES (3, 'kotlin', 'MOBILE');
+
+INSERT INTO TAGS (id, name, type)
+VALUES (4, 'figma', 'ETC');
+
 INSERT INTO boards(backend, bookmarks, contact, content, cur_backend, cur_designer,
  cur_frontend, cur_etc, designer, frontend, etc, due_date,
   liked, on_offline, people, period, starting_date,

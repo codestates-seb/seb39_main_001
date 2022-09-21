@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -24,7 +25,6 @@ import java.util.stream.Collectors;
 @Setter
 public class Board {
 
-    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -44,7 +44,6 @@ public class Board {
     private int etc;
     private int curEtc;
     private int bookmarks;
-    private int liked;
     private int views;
 
     @Column(nullable = false)
@@ -65,8 +64,9 @@ public class Board {
     @Column(nullable = false)
     private String onOffline;
 
-    @Column(nullable = false)
     @Builder.Default
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Status status = Status.OPENING;
 
     @Column(nullable = false)
@@ -78,15 +78,15 @@ public class Board {
     private User user;
 
     @Builder.Default
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Question> questionList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Bookmark> bookmarkList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<BoardTag> boardTagList = new ArrayList<>();
 
 //    @Builder.Default
@@ -94,7 +94,7 @@ public class Board {
 //    private List<Like> likeList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     private List<Application> applicationList = new ArrayList<>();
 
     public List<String> getTagNames() {
@@ -121,6 +121,16 @@ public class Board {
 
     }
 
+    public void addUser(User user) {
+        this.user = user;
+        if (!this.user.getBoardList().contains(this)) {
+            this.user.getBoardList().add(this);
+        }
+    }
 
+
+    public boolean isCreatedBy(User user) {
+        return this.user == user;
+    }
 
 }

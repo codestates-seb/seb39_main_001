@@ -15,12 +15,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponseDto {
+
     private Long id;
     private Byte[] profileImage;
     private String introduction;
     private String email;
     private String portfolio;
     private String nickname;
+
+    private List<String> skillStackTags;
 
     @Getter
     @NoArgsConstructor

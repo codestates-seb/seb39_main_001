@@ -12,6 +12,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring",
 uses = {BoardMapper.class, TagMapper.class})
 public interface UserMapper {
+
+    @Mapping(target = "skillStackTags", source = "skillStackTags")
     UserResponseDto userResponseDto(User user);
 
     UserResponseDto.MyJuse toMyJuseDtoFrom(User entity);

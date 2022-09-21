@@ -1,16 +1,17 @@
 package com.example.juse.question.service;
 
-import com.example.juse.helper.stubservice.StubService;
 import com.example.juse.question.entity.Question;
+import com.example.juse.question.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-@Profile("real")
+@Profile("plain")
 @RequiredArgsConstructor
 @Service
-public class QuestionServiceImpl implements QuestionService {
+public class QuestionServiceImpl implements QuestionService{
 
+    private final QuestionRepository questionRepository;
 
     @Override
     public Question create(Question post) {
@@ -19,7 +20,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Question update(Question patch) {
-        return patch;
+        return null;
     }
 
     @Override

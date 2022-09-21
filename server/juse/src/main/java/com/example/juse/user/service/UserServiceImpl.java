@@ -1,16 +1,19 @@
 package com.example.juse.user.service;
 
-import com.example.juse.helper.stubservice.StubService;
 import com.example.juse.user.entity.User;
 import com.example.juse.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
+@Profile("plain")
 @RequiredArgsConstructor
-@Profile("real")
 @Service
 public class UserServiceImpl implements UserService {
+
+    private final UserRepository userRepository;
 
     @Override
     public User getJuse(long userId) {
@@ -24,7 +27,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(User mappedObj) {
-        return mappedObj;
+        return null;
     }
 
     @Override
@@ -34,12 +37,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(User mappedObj) {
-        mappedObj.setId(1L);
-        return mappedObj;
-    }
-
-    @Override
-    public User findBySocialUserId(long socialUserId) {
         return null;
     }
+
+
+    @Override
+    public User verifyUserById(long userId) {
+        return userRepository.findById(userId).orElseThrow(
+                NoSuchElementException::new
+        );
+    }
+
 }
