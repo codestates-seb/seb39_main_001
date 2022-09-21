@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Join from './pages/Join';
 import Board from './pages/Board';
 import OAuth from './pages/OAuth';
+import UserInfo from './pages/UserInfo';
 import { useCookies } from 'react-cookie';
 
 function App() {
@@ -23,6 +24,8 @@ function App() {
         <Route path='/join' element={<Join />} />
         <Route path='/boards/:boardId' element={<Board />} />
         <Route path='/oauth2/redirect' element={<OAuth />} />
+        <Route path='/users/' element={<UserInfo />}></Route>
+        <Route path='/users/:userId' element={<UserInfo />}></Route>
       </Routes>
     </>
   );

@@ -1,5 +1,3 @@
-export const users = [];
-
 export const boards = {
   data: [
     {
@@ -192,5 +190,33 @@ export const board1 = {
       stacks: ['java', 'react'],
       likes: 3,
     },
+  },
+};
+
+export const user = {
+  data: {
+    id: 1,
+    introduction: '안녕하세요 프론트엔드 개발 입문한지 5개월된 코린이입니다.',
+    email: 'chickenmilktea@gmail.com',
+    portfolio: 'github.com/user1',
+    nickname: '치킨밀크티',
+    skillStackTags: ['java', 'react', 'mongodb'],
+    myUserList: [
+      {
+        id: 10,
+        introduction: null,
+        email: null,
+        portfolio: null,
+        nickname: '젠틀맨',
+      },
+      {
+        id: 999,
+        introduction: null,
+        email: null,
+        portfolio: null,
+        nickname: '달건이',
+      },
+    ],
+    liked: 10,
   },
 };

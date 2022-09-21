@@ -26,7 +26,7 @@ const NavbarPrivate = ({ removeCookie }) => {
         <Profile onClick={dropdownClickHandler}>
           {dropdownOpen ? (
             <DropdownNav>
-              <DropdownLink to='/users/user-id'>
+              <DropdownLink to='/users'>
                 <i class='fi fi-rr-user' />
                 <p>마이페이지</p>
               </DropdownLink>
