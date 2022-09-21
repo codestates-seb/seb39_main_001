@@ -6,16 +6,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-@Profile({"test"})
+@Profile("real")
 @RequiredArgsConstructor
 @Service
-public class BookmarkServiceStub implements BookmarkService {
-
-    private final StubService stubService;
+public class BookmarkServiceImpl implements BookmarkService {
 
     @Override
     public Bookmark create(long boardId, long userId) {
-        return stubService.getBookmark();
+        return null;
     }
 
     @Override
