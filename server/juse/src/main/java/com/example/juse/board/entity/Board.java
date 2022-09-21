@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 @Builder
 @Entity
 @Table(name = "BOARDS")
+@ToString
+@Setter
 public class Board {
 
     @Setter
@@ -34,9 +36,13 @@ public class Board {
     private String content;
 
     private int backend;
+    private int curBackend;
     private int frontend;
+    private int curFrontend;
     private int designer;
+    private int curDesigner;
     private int etc;
+    private int curEtc;
     private int bookmarks;
     private int liked;
     private int views;
