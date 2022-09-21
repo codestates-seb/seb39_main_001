@@ -1,8 +1,6 @@
 package com.example.juse.user.dto;
 
 import com.example.juse.board.dto.BoardResponseDto;
-import com.example.juse.bookmark.dto.BookmarkResponseDto;
-import com.example.juse.tag.entity.UserTag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -56,5 +54,17 @@ public class UserResponseDto {
         private int liked;
 
     }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class Brief {
+
+        private long id;
+        private String nickname;
+        private String img;
+    }
+
 
 }
