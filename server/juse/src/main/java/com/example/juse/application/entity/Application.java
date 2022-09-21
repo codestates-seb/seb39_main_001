@@ -3,10 +3,7 @@ package com.example.juse.application.entity;
 import com.example.juse.audit.Auditing;
 import com.example.juse.board.entity.Board;
 import com.example.juse.user.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -25,6 +22,7 @@ public class Application extends Auditing {
     @Column(nullable = false)
     private String position;
 
+    @Setter
     private boolean isAccepted;
 
     @ManyToOne
@@ -34,4 +32,10 @@ public class Application extends Auditing {
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
+
+    public void checkApplicationWriter(long userId) {
+        if (this.getUser().getId() != userId) {
+            throw new RuntimeException("모집자만이 수락할 수 있습니다.");
+        }
+    }
 }

@@ -1,7 +1,7 @@
-package com.example.juse.security.oauth;
+package com.example.juse.security.config.oauth;
 
-import com.example.juse.social.entity.SocialUser;
-import com.example.juse.social.repository.SocialUserRepository;
+import com.example.juse.user.entity.User;
+import com.example.juse.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -10,12 +10,14 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @Slf4j
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
-    private SocialUserRepository socialUserRepository;
+    private UserRepository userRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -27,31 +29,22 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String img = oAuth2User.getAttribute("picture");
         String role = "ROLE_USER";
 
-        SocialUser socialuser = socialUserRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email);
 
-        if (socialuser == null) {
-            socialuser = SocialUser.builder()
+        if (user == null) {
+            user = User.builder()
                     .email(email)
                     .role(role)
                     .provider(provider)
                     .providerId(providerId)
-                    .name(oAuth2User.getAttribute("name"))
                     .img(img)
+                    .nickname("user1")
+                    .introduction("소개1")
                     .build();
 
-            System.out.println("##########socialuser.toString() = " + socialuser.toString());
-            socialUserRepository.save(socialuser);
+            userRepository.save(user);
         }
 
-        return new PrincipalDetails(socialuser, oAuth2User.getAttributes());
-    }
-
-    public PrincipalDetails loadUserByEmail(String email) {
-        SocialUser socialUser = socialUserRepository.findByEmail(email);
-        if (socialUser != null) {
-            return new PrincipalDetails(socialUser);
-        }
-
-        throw new RuntimeException("Not Found Email");
+        return new PrincipalDetails(user, oAuth2User.getAttributes());
     }
 }

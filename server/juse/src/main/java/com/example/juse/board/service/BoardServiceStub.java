@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Profile("test")
+@Profile({"test"})
 @Service
 public class BoardServiceStub implements BoardService {
 
