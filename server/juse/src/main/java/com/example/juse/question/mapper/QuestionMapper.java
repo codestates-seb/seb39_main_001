@@ -17,8 +17,6 @@ public interface QuestionMapper {
     Question toEntityFrom(QuestionRequestDto.Patch patchDto);
 
 
-    @Mapping(target = "userId", source = "user.id")
-    @Mapping(target = "boardId", source = "board.id")
     QuestionResponseDto toResponseDtoFrom(Question entity);
 
     @BeanMapping(

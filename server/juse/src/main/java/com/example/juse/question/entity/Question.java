@@ -1,5 +1,6 @@
 package com.example.juse.question.entity;
 
+import com.example.juse.answer.entity.Answer;
 import com.example.juse.audit.Auditing;
 import com.example.juse.board.entity.Board;
 import com.example.juse.user.entity.User;
@@ -30,6 +31,10 @@ public class Question extends Auditing {
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
+
+    @Setter
+    @OneToOne(mappedBy = "question", cascade = {CascadeType.REMOVE})
+    private Answer answer;
 
     public void addBoard(Board board) {
         this.board = board;

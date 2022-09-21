@@ -127,8 +127,8 @@ public class Board extends Auditing {
     }
 
 
-    public boolean isCreatedBy(User user) {
-        return this.user == user;
+    public boolean isCreatedBy(long userId) {
+        return this.user.getId() == userId;
     }
 
 }

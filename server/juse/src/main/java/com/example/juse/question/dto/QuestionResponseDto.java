@@ -1,5 +1,6 @@
 package com.example.juse.question.dto;
 
+import com.example.juse.answer.dto.AnswerResponseDto;
 import com.example.juse.user.dto.UserResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,10 +16,9 @@ import java.time.LocalDateTime;
 public class QuestionResponseDto {
 
     private long id;
-    private long userId;
-    private long boardId;
     private String content;
     private UserResponseDto.Brief user;
+    private AnswerResponseDto.AnswerToQuestion answer;
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;

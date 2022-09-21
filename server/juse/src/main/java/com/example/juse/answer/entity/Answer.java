@@ -33,4 +33,16 @@ public class Answer extends Auditing {
     @JoinColumn(name = "USER_ID")
     private User user;
 
+    public void addQuestion(Question question) {
+        this.question = question;
+        this.question.setAnswer(this);
+    }
+
+    public void addUser(User user) {
+        this.user = user;
+        if (!this.user.getAnswerList().contains(this)) {
+            this.user.getAnswerList().add(this);
+        }
+    }
+
 }
