@@ -22,7 +22,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getProfile(long userId) {
-        return null;
+
+        return verifyUserById(userId);
+        
     }
 
     @Override
