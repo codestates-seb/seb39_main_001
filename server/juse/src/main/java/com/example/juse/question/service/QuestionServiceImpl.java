@@ -11,13 +11,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Profile("plain")
-@RequiredArgsConstructor
 @Service
-public class QuestionServiceImpl implements QuestionService{
+public class QuestionServiceImpl extends AbstractQuestionService{
 
-    private final QuestionRepository questionRepository;
-    private final BoardService boardService;
-    private final UserService userService;
 
     @Override
     public Question create(Question post) {
@@ -35,6 +31,7 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public Question update(Question patch) {
+        Question question =
         return null;
     }
 
