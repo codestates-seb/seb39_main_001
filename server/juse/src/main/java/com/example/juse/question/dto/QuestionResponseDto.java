@@ -18,9 +18,8 @@ public class QuestionResponseDto {
     private long id;
     private String content;
     private UserResponseDto.Brief user;
-    private AnswerResponseDto.AnswerToQuestion answer;
-
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
+    private AnswerResponseDto.AnswerToQuestion answer;
 }

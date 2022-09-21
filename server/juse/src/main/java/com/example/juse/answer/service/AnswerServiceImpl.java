@@ -59,6 +59,13 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public void delete(long answerId, long userId) {
+        Answer answer = verifyAnswerById(answerId);
+
+        if (!answer.isCreatedBy(userId)) {
+            throw new RuntimeException("작성자가 아닙니다");
+        }
+
+        answerRepository.delete(answer);
 
     }
 
