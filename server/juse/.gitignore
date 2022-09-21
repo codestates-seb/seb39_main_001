@@ -40,3 +40,4 @@ application.yaml
 application-dev.yaml
 application-e.yaml
 application-mysql.yaml
+application-db.yaml
