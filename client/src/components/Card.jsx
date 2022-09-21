@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Card = ({ data }) => {
@@ -22,23 +23,25 @@ const Card = ({ data }) => {
           {data.bookmarks}
         </Bookmark>
       </CardHeader>
-      <CardSummary>
-        <div className='date'>{`${data.startingDate} (${periodNaming(data.period)})`}</div>
-        <p className='title'>{data.title}</p>
-        <div className='tags-container'>
-          {/* 스택 리스트는 5개 초과 시 첫 5개만 잘라서 보여줌 */}
-          {data.tagList.slice(0, 5).map((e, i) => (
-            <img className='tag' key={i} src={`/icons/stacks/${e}.png`} alt={`${e}`} />
-          ))}
-        </div>
-      </CardSummary>
+      <Link to={`/boards/${data.id}`}>
+        <CardSummary>
+          <div className='date'>{`${data.startingDate} (${periodNaming(data.period)})`}</div>
+          <p className='title'>{data.title}</p>
+          <div className='tags-container'>
+            {/* 스택 리스트는 5개 초과 시 첫 5개만 잘라서 보여줌 */}
+            {data.tagList.slice(0, 5).map((e, i) => (
+              <img className='tag' key={i} src={`/icons/stacks/${e}.png`} alt={`${e}`} />
+            ))}
+          </div>
+        </CardSummary>
+      </Link>
       <CardInfo>
         <AuthorInfo>
           <div className='picture'>프사</div>
           <div className='name'>{data.user.nickname}</div>
         </AuthorInfo>
         <Views>
-          <i class='fi fi-rr-eye'></i>
+          <i className='fi fi-rr-eye'></i>
           {data.views}
         </Views>
       </CardInfo>
@@ -61,7 +64,7 @@ const CardHeader = styled.div`
 `;
 
 const CardType = styled.div`
-  background-color: ${({ theme }) => theme.colors.grey4};
+  background-color: ${({ theme }) => theme.colors.grey5};
   color: white;
   font-size: 13px;
   padding: 7px 10px;
@@ -81,7 +84,7 @@ const CardSummary = styled.div`
   padding: 10px 0;
   margin-bottom: 10px;
   .date {
-    color: ${({ theme }) => theme.colors.grey3};
+    color: ${({ theme }) => theme.colors.grey4};
     padding-top: 5px;
   }
   .title {

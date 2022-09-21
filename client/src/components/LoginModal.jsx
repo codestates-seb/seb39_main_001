@@ -1,13 +1,7 @@
-import axios from 'axios';
 import styled from 'styled-components';
 import google from '../assets/images/google.svg';
 
 const LoginModal = ({ showModal, setShowModal }) => {
-  const LoginGoogle = axios
-    .post('/oauth2/authorization/google')
-    .then((res) => res.json())
-    .then((data) => console.log(data));
-
   const closeModal = () => {
     setShowModal(!showModal);
   };
@@ -18,10 +12,10 @@ const LoginModal = ({ showModal, setShowModal }) => {
         <Background onClick={closeModal}>
           <LoginModalContainer showModal={showModal}>
             <CloseBtn onClick={closeModal}>
-              <i class="fi fi-sr-cross-circle" />
+              <i className='fi fi-sr-cross-circle' />
             </CloseBtn>
             <p>환영합니다</p>
-            <GoogleLoginBtn onClick={LoginGoogle}>
+            <GoogleLoginBtn href='http://juse.iptime.org:8080/oauth2/authorization/google?redirect_uri=http://localhost:3000/oauth2/redirect'>
               <GoogleLogo />
               <p>Google 계정으로 로그인</p>
             </GoogleLoginBtn>
@@ -82,7 +76,7 @@ const GoogleLogo = styled.img.attrs({
   margin-right: 10px;
 `;
 
-const GoogleLoginBtn = styled.div`
+const GoogleLoginBtn = styled.a`
   display: flex;
   justify-content: center;
   align-items: center;

@@ -98,6 +98,7 @@ const JoinInput = styled.div`
   textarea {
     min-width: 400px;
     min-height: 100px;
+    resize: none;
   }
 `;
 
