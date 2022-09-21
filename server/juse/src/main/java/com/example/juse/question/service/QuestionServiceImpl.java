@@ -6,16 +6,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-@Profile({"test"})
+@Profile("real")
 @RequiredArgsConstructor
 @Service
-public class QuestionServiceStub implements QuestionService {
+public class QuestionServiceImpl implements QuestionService {
 
-    private final StubService stubService;
 
     @Override
     public Question create(Question post) {
-        return stubService.getQuestion();
+        return null;
     }
 
     @Override

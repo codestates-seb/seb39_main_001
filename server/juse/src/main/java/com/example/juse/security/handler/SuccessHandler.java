@@ -7,11 +7,13 @@ import com.example.juse.social.entity.SocialUser;
 import com.example.juse.social.repository.SocialUserRepository;
 import com.example.juse.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -22,7 +24,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Component
-public class SuccessHandler implements AuthenticationSuccessHandler {
+public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -33,6 +35,10 @@ public class SuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+
+        System.out.println("#######request.toString() = " + request.toString());
+        System.out.println("#######response.toString() = " + response.toString());
+        System.out.println("#######authentication = " + authentication.toString());
 
         // OAuth 로그인 성공 시 소셜 로그인 정보를 받아와 해당 객체로 저장한다.
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
@@ -60,13 +66,14 @@ public class SuccessHandler implements AuthenticationSuccessHandler {
 
         System.out.println("socialUser.getEmail() = " + socialUser.getEmail());
 
-        // 최초 로그인 시 회원가입하기 위해 이동.
+        // 최초 로그인 시 추가 회원가입하기 위해 이동.
         if (userRepository.findByEmail(socialUser.getEmail()) == null) {
-            response.sendRedirect("/users/join");
+
+            response.sendRedirect("http://localhost:3000/oauth2/redirect?token=" + tokenDto.getAccessToken());
 
         }
         else {
-            response.sendRedirect("/index");
+            response.sendRedirect("/boards");
         }
     }
 }

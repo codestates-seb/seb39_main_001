@@ -8,21 +8,18 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
-@Profile({"test"})
+@Profile("real")
 @Service
-public class UserServiceStub implements UserService {
-
-    private final StubService stubService;
-    private final UserRepository userRepository;
+public class UserServiceImpl implements UserService {
 
     @Override
     public User getJuse(long userId) {
-        return stubService.getMyJuse();
+        return null;
     }
 
     @Override
     public User getProfile(long userId) {
-        return stubService.getUser();
+        return null;
     }
 
     @Override
