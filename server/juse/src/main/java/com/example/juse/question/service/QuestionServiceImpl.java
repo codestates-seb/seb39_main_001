@@ -39,7 +39,7 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public Question update(Question patch) {
-        Question question = findById(patch.getId());
+        Question question = verifyQuestionById(patch.getId());
         long userId = patch.getUser().getId();
 
         if (!question.isCreatedBy(userId)) {
@@ -53,11 +53,17 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public void delete(long questionId, long userId) {
+        Question question = verifyQuestionById(questionId);
 
+        if (!question.isCreatedBy(userId)) {
+            throw new RuntimeException("작성자가 아닙니다");
+        }
+
+        questionRepository.delete(question);
     }
 
     @Override
-    public Question findById(long questionId) {
+    public Question verifyQuestionById(long questionId) {
         return questionRepository.findById(questionId)
                 .orElseThrow(NoSuchElementException::new);
     }

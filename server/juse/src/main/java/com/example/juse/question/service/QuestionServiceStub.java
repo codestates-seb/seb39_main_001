@@ -29,7 +29,7 @@ public class QuestionServiceStub implements QuestionService {
     }
 
     @Override
-    public Question findById(long questionId) {
+    public Question verifyQuestionById(long questionId) {
         return null;
     }
 }
