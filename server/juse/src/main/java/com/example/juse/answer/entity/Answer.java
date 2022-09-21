@@ -3,10 +3,7 @@ package com.example.juse.answer.entity;
 import com.example.juse.audit.Auditing;
 import com.example.juse.question.entity.Question;
 import com.example.juse.user.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -22,6 +19,7 @@ public class Answer extends Auditing {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
     @Column(nullable = false)
     private String content;
 
@@ -45,4 +43,7 @@ public class Answer extends Auditing {
         }
     }
 
+    public boolean isCreatedBy(long userId) {
+        return this.user.getId() == userId;
+    }
 }
