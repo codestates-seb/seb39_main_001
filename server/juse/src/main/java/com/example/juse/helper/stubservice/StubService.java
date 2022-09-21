@@ -110,7 +110,6 @@ public class StubService {
                 .type(Board.Type.PROJECT)
                 .user(getUser())
                 .bookmarks(4)
-                .liked(4)
                 .views(4)
                 .boardTagList(
                         List.of(

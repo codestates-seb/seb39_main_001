@@ -1,15 +1,17 @@
 package com.example.juse.answer.service;
 
 import com.example.juse.answer.entity.Answer;
-import com.example.juse.helper.stubservice.StubService;
+import com.example.juse.answer.repository.AnswerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-@Profile("real")
+@Profile("plain")
 @RequiredArgsConstructor
 @Service
 public class AnswerServiceImpl implements AnswerService {
+
+    private final AnswerRepository answerRepository;
 
     @Override
     public Answer create(Answer mappedObj) {
@@ -18,7 +20,7 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public Answer update(Answer mappedObj) {
-        return mappedObj;
+        return null;
     }
 
     @Override
