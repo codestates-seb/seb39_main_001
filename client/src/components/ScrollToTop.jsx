@@ -1,19 +1,43 @@
 import styled from 'styled-components';
+import { useEffect, useState } from 'react';
 
 export default function ScrollToTop() {
-  const handleScroll = (e) => {
-    if (!window.scrollY) return;
+  const [scrollY, setScrollY] = useState(0);
+  const [btnStatus, setBtnStatus] = useState(false); // 버튼 상태
 
+  const handleFollow = () => {
+    setScrollY(window.pageYOffset);
+    if (scrollY > 500) {
+      setBtnStatus(true);
+    } else {
+      setBtnStatus(false);
+    }
+  };
+
+  const handleScroll = () => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
   };
 
+  useEffect(() => {
+    const watch = () => {
+      window.addEventListener('scroll', handleFollow);
+    };
+    watch();
+  });
+
   return (
-    <PositionContainer onClick={handleScroll}>
-      <i className='fi fi-rr-angle-circle-up'></i>
-    </PositionContainer>
+    <div>
+      {btnStatus ? (
+        <PositionContainer onClick={handleScroll}>
+          <i className='fi fi-rr-angle-circle-up'></i>
+        </PositionContainer>
+      ) : (
+        ''
+      )}
+    </div>
   );
 }
 
@@ -27,6 +51,6 @@ const PositionContainer = styled.div`
   font-size: 50px;
   color: ${({ theme }) => theme.colors.purple1};
   border-radius: 50%;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
 `;
