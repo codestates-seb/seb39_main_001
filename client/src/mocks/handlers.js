@@ -1,5 +1,4 @@
 import { rest } from 'msw';
-import { users } from './db';
 
 export const handlers = [
   rest.get('/todos', (req, res, ctx) => {
@@ -11,9 +10,6 @@ export const handlers = [
     return res(ctx.status(201));
   }),
 
-  //회원가입
-  rest.post('/join', (req, res, ctx) => {
-    users.push(req.body);
-    return res(ctx.status(200));
-  }),
+  //게시물 목록 불러오기
+  rest.get('/boards?'),
 ];

@@ -12,10 +12,10 @@ const LoginModal = ({ showModal, setShowModal }) => {
         <Background onClick={closeModal}>
           <LoginModalContainer showModal={showModal}>
             <CloseBtn onClick={closeModal}>
-              <i className="fi fi-sr-cross-circle" />
+              <i className='fi fi-sr-cross-circle' />
             </CloseBtn>
             <p>환영합니다</p>
-            <GoogleLoginBtn href="http://juse.iptime.org:8080/oauth2/authorization/google?redirect_uri=http://localhost:3000/oauth2/redirect">
+            <GoogleLoginBtn href='http://juse.iptime.org:8080/oauth2/authorization/google?redirect_uri=http://localhost:3000/oauth2/redirect'>
               <GoogleLogo />
               <p>Google 계정으로 로그인</p>
             </GoogleLoginBtn>

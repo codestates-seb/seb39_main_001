@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import TechStack from '../components/TechStack';
 import { joinSubmit } from '../apis/axios';
 
-const Join = () => {
+const EditUser = () => {
   const [stack, setStack] = useState([]);
   const [nickname, setNickname] = useState('');
   const [portfolio, setPortfolio] = useState('');
@@ -14,6 +14,7 @@ const Join = () => {
     nickname,
     portfolio,
     introduction,
+    skillStackTags: stack,
   };
 
   //인풋 핸들러들
@@ -31,7 +32,7 @@ const Join = () => {
     <div>
       <JoinContainer>
         <JoinHeader>
-          <h2>회원가입</h2>
+          <h2>회원 정보 수정</h2>
         </JoinHeader>
         <ProfileUpload>
           <p>프로필 사진</p>
@@ -52,7 +53,7 @@ const Join = () => {
           <p>한 줄 소개</p>
           <textarea type='text' onChange={introductionHandler}></textarea>
         </JoinInput>
-        <StyledButton onClick={() => joinSubmit(user)}>회원 가입</StyledButton>
+        <StyledButton onClick={() => joinSubmit(user)}>정보 수정</StyledButton>
       </JoinContainer>
     </div>
   );
@@ -61,6 +62,7 @@ const Join = () => {
 const JoinContainer = styled.div`
   max-width: 1300px;
   margin: auto;
+  padding-bottom: 30px;
 `;
 
 const JoinHeader = styled.header`
@@ -113,4 +115,4 @@ const StyledButton = styled.button`
   }
 `;
 
-export default Join;
+export default EditUser;

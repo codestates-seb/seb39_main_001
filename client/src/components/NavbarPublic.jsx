@@ -30,7 +30,7 @@ export const NavbarContainer = styled.div`
 
 export const Logo = () => {
   return (
-    <LogoLink to="/">
+    <LogoLink to='/'>
       JU:SE
       <p>Junior to Senior</p>
     </LogoLink>
