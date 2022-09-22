@@ -1,5 +1,6 @@
 package com.example.juse.application.entity;
 
+import com.example.juse.audit.Auditing;
 import com.example.juse.board.entity.Board;
 import com.example.juse.user.entity.User;
 import lombok.*;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "APPLICATIONS")
-public class Application {
+public class Application extends Auditing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
