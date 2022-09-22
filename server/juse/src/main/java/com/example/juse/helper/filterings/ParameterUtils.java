@@ -16,14 +16,6 @@ public class ParameterUtils {
         return Arrays.stream(QueryParameters.Tags.values()).map(Enum::toString).map(String::toLowerCase).collect(Collectors.toList());
     }
 
-    public static List<String> setDefaultType() {
-        return Arrays.stream(Board.Type.values()).map(Enum::toString).collect(Collectors.toList());
-    }
-
-    public static List<String> setDefaultStatus() {
-        return Arrays.stream(Board.Status.values()).map(Enum::toString).collect(Collectors.toList());
-    }
-
     public static List<String> setDefaultPeriod() {
         return List.of("short", "1", "2", "3", "4", "5", "6", "long");
 
