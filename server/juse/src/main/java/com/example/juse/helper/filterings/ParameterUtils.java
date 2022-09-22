@@ -8,7 +8,7 @@ public class ParameterUtils {
     public static Collection<String> toCollection(String str) {
         Arrays.stream(str.split(","));
         return null;
-        
+
     }
 
 }

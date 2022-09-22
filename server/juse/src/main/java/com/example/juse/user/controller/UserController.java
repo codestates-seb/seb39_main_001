@@ -1,5 +1,6 @@
 package com.example.juse.user.controller;
 
+import com.example.juse.board.entity.Board;
 import com.example.juse.response.SingleResponseDto;
 import com.example.juse.security.oauth.PrincipalDetails;
 import com.example.juse.social.entity.SocialUser;
@@ -56,6 +57,8 @@ public class UserController {
         System.out.println("userId = " + principalDetails.getSocialUser().getUser().getId());
 
         User foundUser = userService.getJuse(userId);
+
+
         UserResponseDto.MyJuse responseDto = userMapper.toMyJuseDtoFrom(foundUser);
 
         return new ResponseEntity<>(new com.example.juse.dto.SingleResponseDto<>(responseDto), HttpStatus.OK);

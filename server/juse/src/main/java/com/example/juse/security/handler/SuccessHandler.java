@@ -68,7 +68,6 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler implem
 
         // 최초 로그인 시 추가 회원가입하기 위해 이동.
         if (userRepository.findByEmail(socialUser.getEmail()) == null) {
-
             response.sendRedirect("http://localhost:3000/oauth2/redirect?token=" + tokenDto.getAccessToken());
 
         }
