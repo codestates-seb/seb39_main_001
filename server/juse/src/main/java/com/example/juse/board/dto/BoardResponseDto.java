@@ -4,7 +4,10 @@ import com.example.juse.application.dto.ApplicationResponseDto;
 import com.example.juse.board.entity.Board;
 import com.example.juse.question.dto.QuestionResponseDto;
 import com.example.juse.user.dto.UserResponseDto;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
