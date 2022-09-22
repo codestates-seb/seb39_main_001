@@ -56,8 +56,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional(readOnly = true)
     public Board getBoard(long boardId) {
-        
-        // todo : 지원자 목록은 false 인 경우
+
         Board entity = verifyBoardById(boardId);
         return entity;
     }
