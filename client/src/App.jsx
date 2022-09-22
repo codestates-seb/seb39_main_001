@@ -27,7 +27,7 @@ function App() {
         <Route path='/users/:userId' element={<UserInfo />} />
         <Route path='/users/edit' element={<EditUser />} />
         <Route path='/boards' element={<NewMeeting />} />
-        <Route path='/MyJuse' element={<MyJuse />} />
+        <Route path='/users/myjuse' element={<MyJuse />} />
       </Routes>
     </>
   );

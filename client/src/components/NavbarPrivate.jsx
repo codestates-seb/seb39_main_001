@@ -30,7 +30,7 @@ const NavbarPrivate = ({ removeCookie }) => {
                 <i class='fi fi-rr-user' />
                 <p>마이페이지</p>
               </DropdownLink>
-              <DropdownLink to='/users/myjuse/user-id'>
+              <DropdownLink to='/users/myjuse'>
                 <i class='fi fi-rr-bookmark' />
                 <p>나의 JUSE</p>
               </DropdownLink>
