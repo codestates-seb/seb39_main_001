@@ -3,8 +3,7 @@ package com.example.juse.question.mapper;
 import com.example.juse.question.dto.QuestionRequestDto;
 import com.example.juse.question.dto.QuestionResponseDto;
 import com.example.juse.question.entity.Question;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface QuestionMapper {
@@ -18,7 +17,12 @@ public interface QuestionMapper {
     Question toEntityFrom(QuestionRequestDto.Patch patchDto);
 
 
-    @Mapping(target = "userId", source = "user.id")
-    @Mapping(target = "boardId", source = "board.id")
     QuestionResponseDto toResponseDtoFrom(Question entity);
+
+    @BeanMapping(
+            nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+            ignoreByDefault = true
+    )
+    @Mapping(target = "content", source = "content")
+    void updateEntityFromSource(@MappingTarget Question entity, Question source);
 }

@@ -27,4 +27,9 @@ public class QuestionServiceStub implements QuestionService {
     public void delete(long questionId, long userId) {
 
     }
+
+    @Override
+    public Question verifyQuestionById(long questionId) {
+        return null;
+    }
 }

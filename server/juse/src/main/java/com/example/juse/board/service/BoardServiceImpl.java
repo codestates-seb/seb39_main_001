@@ -65,11 +65,10 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public Board update(Board patch) {
 
-        User user = userService.verifyUserById(patch.getUser().getId());
-
         Board board = verifyBoardById(patch.getId());
+        long userId = patch.getUser().getId();
 
-        if (!board.isCreatedBy(user)) {
+        if (!board.isCreatedBy(userId)) {
             throw new RuntimeException("작성자가 아닙니다");
         }
 
@@ -99,10 +98,9 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void delete(long boardId, long userId) {
 
-        User user = userService.verifyUserById(userId);
         Board board = verifyBoardById(boardId);
 
-        if (!board.isCreatedBy(user)) {
+        if (!board.isCreatedBy(userId)) {
             throw new RuntimeException("작성자여야 합니다");
         }
 

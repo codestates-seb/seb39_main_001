@@ -45,6 +45,7 @@ public class QuestionController {
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
         patchDto.setUserId(userId);
+        patchDto.setQuestionId(questionId);
         Question mappedObj = questionMapper.toEntityFrom(patchDto);
         Question updatedEntity = questionService.update(mappedObj);
         QuestionResponseDto responseDto = questionMapper.toResponseDtoFrom(updatedEntity);

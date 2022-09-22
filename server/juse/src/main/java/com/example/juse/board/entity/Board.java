@@ -1,8 +1,8 @@
 package com.example.juse.board.entity;
 
 import com.example.juse.application.entity.Application;
+import com.example.juse.audit.Auditing;
 import com.example.juse.bookmark.entity.Bookmark;
-import com.example.juse.like.entity.Like;
 import com.example.juse.question.entity.Question;
 import com.example.juse.tag.entity.BoardTag;
 import com.example.juse.user.entity.User;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "BOARDS")
 @ToString
-public class Board {
+public class Board extends Auditing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -128,8 +128,8 @@ public class Board {
     }
 
 
-    public boolean isCreatedBy(User user) {
-        return this.user == user;
+    public boolean isCreatedBy(long userId) {
+        return this.user.getId() == userId;
     }
 
 }
