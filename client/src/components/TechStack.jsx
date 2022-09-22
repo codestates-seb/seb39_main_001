@@ -33,19 +33,16 @@ const TechStack = ({ selected, setSelected, formData, setFormData }) => {
 
   //스택 선택
   const stackClickHandler = (e) => {
-    if (selected.includes(e.target.innerText)) {
-      const deletedArr = selected.filter((el) => el !== e.target.innerText);
+    if (selected.includes(e)) {
+      const deletedArr = selected.filter((el) => el !== e);
       setSelected(deletedArr);
     } else {
-      setSelected((prev) => [...prev, e.target.innerText]);
+      setSelected((prev) => [...prev, e]);
     }
     // post 요청 시 소문자로 바꿔서 tagList에 추가한다
     setFormData({
       ...formData,
-      tagList: [...selected, e.target.innerText]
-        .join(' ')
-        .toLowerCase()
-        .split(' '),
+      tagList: [...selected, e.target].join(' ').toLowerCase().split(' '),
     });
   };
 
@@ -77,17 +74,19 @@ const TechStack = ({ selected, setSelected, formData, setFormData }) => {
           ? stacks[currentTab].map((e, i) => (
               <div
                 key={i}
-                onClick={stackClickHandler}
+                onClick={() => stackClickHandler(e)}
                 className={!selected.includes(e) && selected.length > 0 ? 'not-selected' : ''}>
-                {e}
+                <Stack src={`/icons/stacks/${e}.png`} alt={e} />
+                <span>{e}</span>
               </div>
             ))
           : [...stacks.프론트엔드, ...stacks.백엔드, ...stacks.모바일, ...stacks.기타].map((e, i) => (
               <div
                 key={i}
-                onClick={stackClickHandler}
+                onClick={() => stackClickHandler(e)}
                 className={!selected.includes(e) && selected.length > 0 ? 'not-selected' : ''}>
-                {e}
+                <Stack src={`/icons/stacks/${e}.png`} alt={e} />
+                <span>{e}</span>
               </div>
             ))}
       </StackContainer>
@@ -132,15 +131,25 @@ const StackContainer = styled.div`
   flex-wrap: wrap;
   gap: 10px;
   > div {
-    padding: 15px;
-    border: 1px solid ${({ theme }) => theme.colors.grey3};
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+    border: 1px solid ${({ theme }) => theme.colors.grey2};
     border-radius: 999px;
     cursor: pointer;
   }
   > .not-selected {
-    color: ${({ theme }) => theme.colors.grey3};
-    border: 1px solid ${({ theme }) => theme.colors.grey1};
+    opacity: 0.55;
   }
+`;
+
+const Stack = styled.img`
+  border: 1px solid ${({ theme }) => theme.colors.grey2};
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  padding: 2px;
 `;
 
 const SelectedContainer = styled.div`

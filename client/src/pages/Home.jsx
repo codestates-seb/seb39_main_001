@@ -97,6 +97,7 @@ const Home = () => {
 const HomeContainer = styled.div`
   max-width: 1300px;
   margin: auto;
+  padding: 0 30px;
   padding-bottom: 100px;
 `;
 

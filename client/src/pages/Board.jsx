@@ -137,7 +137,7 @@ const Board = () => {
 
 const BoardContainer = styled.div`
   max-width: 1300px;
-  padding: 20px 0;
+  padding: 30px;
   margin: auto;
 `;
 

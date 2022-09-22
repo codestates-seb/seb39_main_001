@@ -62,6 +62,7 @@ const EditUser = () => {
 const JoinContainer = styled.div`
   max-width: 1300px;
   margin: auto;
+  padding: 0 30px;
   padding-bottom: 30px;
 `;
 

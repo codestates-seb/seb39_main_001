@@ -64,7 +64,7 @@ const UserInfo = () => {
 const UserInfoContainer = styled.div`
   max-width: 1300px;
   margin: auto;
-  padding: 50px 0;
+  padding: 50px 30px;
 `;
 
 const BasicInfo = styled.div`
