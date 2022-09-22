@@ -2,14 +2,12 @@ package com.example.juse.bookmark.entity;
 
 import com.example.juse.board.entity.Board;
 import com.example.juse.user.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

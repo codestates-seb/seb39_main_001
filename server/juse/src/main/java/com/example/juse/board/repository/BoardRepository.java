@@ -9,9 +9,4 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
-
-    Page<Board> findByFilterOptions(Pageable pageable,
-                                    @Param("type") String type,
-                                    @Param("status") String status,
-                                    @Param(""))
 }

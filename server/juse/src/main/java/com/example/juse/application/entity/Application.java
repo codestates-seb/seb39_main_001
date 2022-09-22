@@ -33,8 +33,8 @@ public class Application {
     private User user;
 
     public void checkApplicationWriter(long userId) {
-        if (this.getUser().getId() != userId) {
-            throw new RuntimeException("모집자만이 수락할 수 있습니다.");
+        if (this.getBoard().getUser().getId() != userId) {
+            throw new RuntimeException("모집자만이 수락 및 거절 할 수 있습니다.");
         }
     }
 }

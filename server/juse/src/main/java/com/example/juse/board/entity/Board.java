@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "BOARDS")
 @ToString
-@Setter
 public class Board {
 
     @Id
