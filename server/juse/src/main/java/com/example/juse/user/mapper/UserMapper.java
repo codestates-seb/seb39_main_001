@@ -15,6 +15,7 @@ public interface UserMapper {
     @Mapping(target = "skillStackTags", source = "skillStackTags")
     UserResponseDto userResponseDto(User user);
 
+    @Mapping(target = "myBoards", source = "boardList")
     UserResponseDto.MyJuse toMyJuseDtoFrom(User entity);
 
     @Mapping(target = "skillStackTags", source = "skillStackTags")
