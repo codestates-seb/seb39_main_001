@@ -46,10 +46,22 @@ public class BoardController {
 
     @GetMapping("/{board-id}")
     public ResponseEntity<SingleResponseDto<BoardResponseDto.Single>> getBoard(
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
             @PathVariable("board-id") long boardId
     ) {
         Board foundEntity = boardService.getBoard(boardId);
+
         BoardResponseDto.Single responseDto = boardMapper.toSingleResponseDto(foundEntity);
+
+        try {
+            Long userId = principalDetails.getSocialUser().getUser().getId();
+            if (userId != null && foundEntity.isCreatedBy(userId)) {
+                responseDto.setAUth(true);
+            }
+
+        } catch (NullPointerException npe) {
+            responseDto.setAUth(false);
+        }
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
