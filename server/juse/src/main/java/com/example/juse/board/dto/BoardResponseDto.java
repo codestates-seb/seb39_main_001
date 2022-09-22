@@ -21,6 +21,9 @@ public class BoardResponseDto {
     @Builder
     public static class Single {
 
+        @Setter
+        private boolean isAUth;
+
         private Long id;
         private String title;
 
