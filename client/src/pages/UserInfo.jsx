@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { user } from '../mocks/db';
 
 const UserInfo = () => {
-  const { nickname, liked, myUserList, skillStackTags, introduction, email, portfolio, isAuth = true } = user.data;
+  const { nickname, liked, myUserList, skillStackTags, introduction, email, portfolio, isAuth = false } = user.data;
 
   return (
     <UserInfoContainer>

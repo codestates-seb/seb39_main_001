@@ -114,7 +114,7 @@ const Board = () => {
         <SubTitle>문의 사항</SubTitle>
         {data.questionList.map((e, i) => (
           <QuestionContent key={i}>
-            <p>{e.content}</p>
+            <div>{e.content}</div>
             <ButtonContainer>
               <Link to=''>
                 <i className='fi fi-rr-edit'></i>
