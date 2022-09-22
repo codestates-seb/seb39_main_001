@@ -41,6 +41,23 @@ public class UserResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
+    public static class MyProfile {
+
+        private long id;
+        private String introduction;
+        private String email;
+        private String portfolio;
+        private String nickname;
+        private List<String> skillStackTags;
+        private List<UserResponseDto> myUserList;
+        private int liked;
+
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
     public static class Profile {
 
         private long id;
@@ -48,9 +65,7 @@ public class UserResponseDto {
         private String email;
         private String portfolio;
         private String nickname;
-
         private List<String> skillStackTags;
-        private List<UserResponseDto> myUserList;
         private int liked;
 
     }
