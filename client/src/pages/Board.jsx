@@ -60,7 +60,7 @@ const Board = () => {
         <FlexContainer>
           <div className='img'>프사</div>
           <div className='name'>{data.user.nickname}</div>
-          {data.user.stacks.map((e, i) => (
+          {data.user.skillStackTags.map((e, i) => (
             <Stack key={i} src={`/icons/stacks/${e}.png`} alt={`${e}`} />
           ))}
         </FlexContainer>
@@ -84,12 +84,12 @@ const Board = () => {
       <TopTemplate>
         <LeftInfo>
           <FlexContainer>
-            <Category>연락 방법</Category>
-            {data.contact}
-          </FlexContainer>
-          <FlexContainer>
             <Category>모집 마감일</Category>
             {data.dueDate}
+          </FlexContainer>
+          <FlexContainer>
+            <Category>연락 방법</Category>
+            {data.contact}
           </FlexContainer>
           <FlexContainer>
             <Category>진행 방식</Category>
@@ -113,18 +113,40 @@ const Board = () => {
       <QuestionContainer>
         <SubTitle>문의 사항</SubTitle>
         {data.questionList.map((e, i) => (
-          <QuestionContent key={i}>
-            <div>{e.content}</div>
-            <ButtonContainer>
-              <Link to=''>
-                <i className='fi fi-rr-edit'></i>
-              </Link>
-              <Link to=''>
-                <i className='fi fi-rr-trash'></i>
-              </Link>
-            </ButtonContainer>
-            <div>{e.userId}</div>
-          </QuestionContent>
+          <QuestionAnswer key={i}>
+            <QuestionContent>
+              <div>{e.content}</div>
+              <ButtonContainer>
+                <Link to=''>
+                  <i className='fi fi-rr-edit'></i>
+                </Link>
+                <Link to=''>
+                  <i className='fi fi-rr-trash'></i>
+                </Link>
+              </ButtonContainer>
+              <div>{e.user.nickname}</div>
+            </QuestionContent>
+            {e.answer ? (
+              <AnswerContainer>
+                <span className='label'>답변 :</span>
+                <span>{e.answer.content}</span>
+                <ButtonContainer>
+                  <Link to=''>
+                    <i className='fi fi-rr-edit'></i>
+                  </Link>
+                  <Link to=''>
+                    <i className='fi fi-rr-trash'></i>
+                  </Link>
+                </ButtonContainer>
+                <div>{e.answer.user.nickname}</div>
+              </AnswerContainer>
+            ) : (
+              <AnswerCreator>
+                <input type='text' placeholder='답변을 입력하세요.' />
+                <button>답변 등록</button>
+              </AnswerCreator>
+            )}
+          </QuestionAnswer>
         ))}
         <QuestionCreator>
           <textarea placeholder='문의 사항을 입력하세요.' />
@@ -213,8 +235,8 @@ const Stack = styled.img`
 
 const SubTitle = styled.h4`
   font-weight: 700;
-  font-size: 18px;
-  margin: 5px 0 15px 0;
+  font-size: 22px;
+  margin: 5px 0 20px 0;
 `;
 
 const Application = styled.div`
@@ -286,14 +308,36 @@ const QuestionContainer = styled.div`
   padding: 15px 0;
 `;
 
+const QuestionAnswer = styled.div`
+  border-bottom: 1px solid ${({ theme }) => theme.colors.grey2};
+  padding: 10px 0 20px 0;
+`;
+
 const QuestionContent = styled.div`
   display: flex;
-  padding: 10px 0 20px 0;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.grey2};
+  padding-bottom: 20px;
+`;
+
+const AnswerContainer = styled.div`
+  display: flex;
+  > .label {
+    margin-left: 30px;
+  }
+`;
+
+const AnswerCreator = styled.div`
+  display: flex;
+  gap: 10px;
+  > input {
+    margin-left: 30px;
+    padding: 5px;
+    width: 500px;
+  }
 `;
 
 const ButtonContainer = styled.div`
   margin-left: auto;
+  margin-right: 20px;
   display: flex;
   gap: 10px;
   color: ${({ theme }) => theme.colors.grey4};

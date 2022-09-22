@@ -37,7 +37,7 @@ const Card = ({ data }) => {
       </Link>
       <CardInfo>
         <AuthorInfo>
-          <div className='picture'>프사</div>
+          <div className='picture'></div>
           <div className='name'>{data.user.nickname}</div>
         </AuthorInfo>
         <Views>
