@@ -4,6 +4,7 @@ import Card from '../components/Card';
 import ScrollToTop from '../components/ScrollToTop';
 import TechStack from '../components/TechStack';
 import { boards } from '../mocks/db';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [techFilter, setTechFilter] = useState([]);
@@ -79,7 +80,9 @@ const Home = () => {
             스터디
           </li>
         </TypeSelector>
-        <CreateButton>모집 글 작성</CreateButton>
+        <Link to='/boards'>
+          <CreateButton>모집 글 작성</CreateButton>
+        </Link>
       </ListHeader>
       <BoardsContainer>
         {boards.data.map((e, i) => (

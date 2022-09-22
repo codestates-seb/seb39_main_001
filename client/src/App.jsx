@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import NavbarPublic from './components/NavbarPublic';
 import NavbarPrivate from './components/NavbarPrivate';
+import NavbarPublic from './components/NavbarPublic';
 import Home from './pages/Home';
 import Join from './pages/Join';
+import NewMeeting from './pages/NewMeeting';
 import Board from './pages/Board';
 import OAuth from './pages/OAuth';
 import UserInfo from './pages/UserInfo';
@@ -13,7 +14,6 @@ import { useCookies } from 'react-cookie';
 function App() {
   // TODO: 서버로 부터 token 받으면 클라이언트에 cookie에 담기
   const [cookies, setCookie, removeCookie] = useCookies(['user']);
-  const [isLogin, setIsLogin] = useState(false);
 
   return (
     <>
@@ -28,6 +28,7 @@ function App() {
         <Route path='/users/' element={<UserInfo />} />
         <Route path='/users/:userId' element={<UserInfo />} />
         <Route path='/users/edit' element={<EditUser />} />
+        <Route path='/boards' element={<NewMeeting />} />
       </Routes>
     </>
   );

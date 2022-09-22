@@ -30,7 +30,7 @@ export const NavbarContainer = styled.div`
 
 export const Logo = () => {
   return (
-    <LogoLink to="/">
+    <LogoLink to='/'>
       JU:SE
       <p>Junior to Senior</p>
     </LogoLink>
@@ -55,8 +55,8 @@ const LoginButton = styled.button`
   border-radius: 4px;
   cursor: pointer;
   :hover {
-    border: 1px solid ${({ theme }) => theme.colors.purple2};
-    color: ${({ theme }) => theme.colors.purple2};
+    background: ${({ theme }) => theme.colors.purple1};
+    color: #ffffff;
   }
 `;
 

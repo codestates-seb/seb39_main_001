@@ -21,7 +21,7 @@ const NavbarPrivate = ({ removeCookie }) => {
       <Logo />
       <NavButtons>
         <Notification>
-          <i class='fi fi-rr-bell' />
+          <i className='fi fi-rr-bell' />
         </Notification>
         <Profile onClick={dropdownClickHandler}>
           {dropdownOpen ? (

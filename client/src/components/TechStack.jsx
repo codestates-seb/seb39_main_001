@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-const TechStack = ({ selected, setSelected }) => {
+const TechStack = ({ selected, setSelected, formData, setFormData }) => {
   // 모든 스택 이름
   const stacks = {
     프론트엔드: ['JavaScript', 'TypeScript', 'React', 'Vue', 'Svelte', 'Next', 'GraphQl'],
@@ -39,6 +39,14 @@ const TechStack = ({ selected, setSelected }) => {
     } else {
       setSelected((prev) => [...prev, e.target.innerText]);
     }
+    // post 요청 시 소문자로 바꿔서 tagList에 추가한다
+    setFormData({
+      ...formData,
+      tagList: [...selected, e.target.innerText]
+        .join(' ')
+        .toLowerCase()
+        .split(' '),
+    });
   };
 
   //스택 초기화
