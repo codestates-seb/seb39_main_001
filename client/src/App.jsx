@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import NavbarPrivate from './components/NavbarPrivate';
 import NavbarPublic from './components/NavbarPublic';
@@ -11,6 +10,7 @@ import UserInfo from './pages/UserInfo';
 import EditUser from './pages/EditUser';
 // import EditNewMeeting from './pages/EditNewMeeting';
 import { useCookies } from 'react-cookie';
+import MyJuse from './pages/MyJuse';
 
 function App() {
 	// TODO: 서버로 부터 token 받으면 클라이언트에 cookie에 담기
@@ -32,6 +32,7 @@ function App() {
 				<Route path='/users/:userId' element={<UserInfo />} />
 				<Route path='/users/edit' element={<EditUser />} />
 				<Route path='/boards' element={<NewMeeting />} />
+        <Route path='/users/myjuse' element={<MyJuse />} />
 				{/* <Route path='/boards/edit' element={<EditNewMeeting />} /> */}
 			</Routes>
 		</>

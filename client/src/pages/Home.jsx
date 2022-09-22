@@ -41,7 +41,7 @@ const Home = () => {
 
   return (
     <HomeContainer>
-      <StyledCarousel>캐러셀 영역</StyledCarousel>
+      <StyledCarousel></StyledCarousel>
       <TechStack selected={techFilter} setSelected={setTechFilter} />
       <PeriodContainer>
         <select onChange={dropDownHandler} defaultValue='기간 설정'>
@@ -97,12 +97,17 @@ const Home = () => {
 const HomeContainer = styled.div`
   max-width: 1300px;
   margin: auto;
+  padding: 0 30px;
   padding-bottom: 100px;
 `;
 
 const StyledCarousel = styled.div`
   height: 350px;
   background-color: ${({ theme }) => theme.colors.grey2};
+  background-image: url('치킨밀크티.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 `;
 
 const PeriodContainer = styled.div``;

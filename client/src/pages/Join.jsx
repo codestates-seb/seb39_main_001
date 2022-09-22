@@ -60,6 +60,7 @@ const Join = () => {
 
 const JoinContainer = styled.div`
   max-width: 1300px;
+  padding: 0 30px;
   margin: auto;
 `;
 

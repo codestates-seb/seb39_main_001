@@ -37,7 +37,7 @@ const Card = ({ data }) => {
       </Link>
       <CardInfo>
         <AuthorInfo>
-          <div className='picture'>프사</div>
+          <div className='picture'></div>
           <div className='name'>{data.user.nickname}</div>
         </AuthorInfo>
         <Views>
@@ -83,6 +83,7 @@ const CardSummary = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.grey2};
   padding: 10px 0;
   margin-bottom: 10px;
+  min-height: 256px;
   .date {
     color: ${({ theme }) => theme.colors.grey4};
     padding-top: 5px;
