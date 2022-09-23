@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -107,7 +106,7 @@ public class BoardController {
         System.out.println("period : " + period);
         System.out.println("status : " + status);
 
-        Pageable pageable = PageRequest.of(page - 1, 5, Sort.by("createdAt").descending());
+        Pageable pageable = PageRequest.of(page - 1, 5);
 
         FilterOptions filterOptions = FilterOptions.of(type, tag, period, status);
         Page<Board> pagedBoardList = boardService.getBoards(pageable, filterOptions);

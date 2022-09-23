@@ -18,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -109,8 +108,12 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Page<Board> getBoards(Pageable pageable, FilterOptions filterOptions) {
-        System.out.println();
-        return boardRepository
+
+        return
+
+//                boardRepository.findAll(pageable);
+
+                boardRepository
                 .findWithParameters(
                         pageable,
                         filterOptions.getStatus(),

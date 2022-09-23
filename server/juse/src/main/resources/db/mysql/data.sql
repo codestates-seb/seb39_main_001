@@ -110,3 +110,13 @@ VALUES(11, 7, 4);
 INSERT INTO BOARDS_TAGS (id, board_id, tag_id)
 VALUES(12, 8, 1);
 
+INSERT INTO BOARDS_TAGS (id, board_id, tag_id)
+VALUES(13, 9, 2);
+
+INSERT INTO BOARDS_TAGS (id, board_id, tag_id)
+VALUES(14, 10, 1);
+
+INSERT INTO BOARDS_TAGS (id, board_id, tag_id)
+VALUES(15, 11, 4);
+
+
