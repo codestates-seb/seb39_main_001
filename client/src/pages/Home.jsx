@@ -5,6 +5,7 @@ import ScrollToTop from '../components/ScrollToTop';
 import TechStack from '../components/TechStack';
 import { boards } from '../mocks/db';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Home = () => {
   const [techFilter, setTechFilter] = useState([]);

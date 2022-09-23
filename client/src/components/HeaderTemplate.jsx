@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import Select from 'react-select';
-import TechStack from './TechStack';
+import TechStack2 from './TechStack2';
 // datepicker
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers';
@@ -30,10 +30,10 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
   ];
 
   // 클릭된 버튼 스타일링 (default: 모집 중 버튼)
-  const [defaultBtnActive, setDefaultBtnActive] = useState(true);
-  const [typeBtnActive, setTypeBtnActive] = useState(true);
-  const [onlineBtnActive, setOnlineBtnActive] = useState(true);
-  const [contactBtnActive, setContactBtnActive] = useState(true);
+  const [defaultBtnActive, setDefaultBtnActive] = useState('OPENING');
+  const [typeBtnActive, setTypeBtnActive] = useState('');
+  const [onlineBtnActive, setOnlineBtnActive] = useState('');
+  const [contactBtnActive, setContactBtnActive] = useState('');
 
   // 예상 기간 선택
   const [periodSelected, setPeriodSelected] = useState(period[0]);
@@ -43,7 +43,7 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
 
   // event handlers
   const meetingStatusHandler = (e) => {
-    setDefaultBtnActive(!defaultBtnActive);
+    setDefaultBtnActive(e.target.id);
     setFormData({
       ...formData,
       status: e.target.id,
@@ -51,7 +51,7 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
   };
 
   const meetingTypeHandler = (e) => {
-    setTypeBtnActive(!typeBtnActive);
+    setTypeBtnActive(e.target.id);
     setFormData({
       ...formData,
       type: e.target.id,
@@ -59,15 +59,15 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
   };
 
   const meetingOnlineHandler = (e) => {
-    setOnlineBtnActive(!onlineBtnActive);
+    setOnlineBtnActive(e.target.id);
     setFormData({
       ...formData,
       onOffline: e.target.id,
     });
   };
 
-  const contactBtnClickHandler = () => {
-    setContactBtnActive(!contactBtnActive);
+  const contactBtnClickHandler = (e) => {
+    setContactBtnActive(e.target.id);
   };
 
   const inputValueHandler = (e) => {
@@ -101,8 +101,8 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
 
   const decreaseHandler = (i) => {
     const temp = [...company];
-    // temp[i].count-- ;
-    while (temp[i].count > 0) {
+    // temp[i].count--;
+    if (temp[i].count > 0) {
       temp[i].count--;
     }
     setCompany(temp);
@@ -128,57 +128,51 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
       <SelectOneType>
         <label>모집 상태</label>
         <div
-          className={`select-btn ${defaultBtnActive ? 'active' : ''}`}
-          id="opening"
-          onClick={meetingStatusHandler}
-        >
+          className={`select-btn ${defaultBtnActive === 'OPENING' ? 'active' : ''}`}
+          id='OPENING'
+          onClick={meetingStatusHandler}>
           모집 중
         </div>
         <div
-          className={`select-btn ${defaultBtnActive ? '' : 'active'}`}
-          id="closed"
-          onClick={meetingStatusHandler}
-        >
+          className={`select-btn ${defaultBtnActive === 'CLOSED' ? 'active' : ''}`}
+          id='CLOSED'
+          onClick={meetingStatusHandler}>
           모집 완료
         </div>
       </SelectOneType>
-      <div className="group-selection">
+      <div className='group-selection'>
         <SelectButton>
           <label>유형</label>
           <div
-            id="project"
-            className={`select-btn ${typeBtnActive ? 'active' : ''}`}
-            onClick={meetingTypeHandler}
-          >
+            id='PROJECT'
+            className={`select-btn ${typeBtnActive === 'PROJECT' ? 'active' : ''}`}
+            onClick={meetingTypeHandler}>
             프로젝트
           </div>
           <div
-            id="study"
-            className={`select-btn ${typeBtnActive ? '' : 'active'}`}
-            onClick={meetingTypeHandler}
-          >
+            id='STUDY'
+            className={`select-btn ${typeBtnActive === 'STUDY' ? 'active' : ''}`}
+            onClick={meetingTypeHandler}>
             스터디
           </div>
         </SelectButton>
         <SelectButton>
           <label>진행 방법</label>
           <div
-            id="online"
-            className={`select-btn ${onlineBtnActive ? 'active' : ''}`}
-            onClick={meetingOnlineHandler}
-          >
+            id='online'
+            className={`select-btn ${onlineBtnActive === 'online' ? 'active' : ''}`}
+            onClick={meetingOnlineHandler}>
             온라인
           </div>
           <div
-            id="offline"
-            className={`select-btn ${onlineBtnActive ? '' : 'active'}`}
-            onClick={meetingOnlineHandler}
-          >
+            id='offline'
+            className={`select-btn ${onlineBtnActive === 'offline' ? 'active' : ''}`}
+            onClick={meetingOnlineHandler}>
             오프라인
           </div>
         </SelectButton>
       </div>
-      <div className="group-selection">
+      <div className='group-selection'>
         <SelectType>
           <label>모집 마감일</label>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -186,7 +180,7 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
               views={['day']}
               value={formData.dueDate}
               onChange={dueDateHandler}
-              inputFormat="YYYY-MM-DD"
+              inputFormat='YYYY-MM-DD'
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
@@ -198,20 +192,23 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
               views={['day']}
               value={formData.startingDate}
               onChange={startingDateHandler}
-              inputFormat="YYYY-MM-DD"
+              inputFormat='YYYY-MM-DD'
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
         </SelectType>
       </div>
-      <div className="group-selection">
+      <div className='group-selection'>
         <SelectType>
           <label>예상 기간</label>
           <Select
-            id="period"
+            id='period'
             options={period}
             value={period.filter((option) => {
-              return option.value === periodSelected;
+              return (
+                // 글쓰기 화면에서 선택한 value
+                option.value === periodSelected
+              );
             })}
             defaultValue={period[0]}
             onChange={periodHandler}
@@ -220,39 +217,35 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
         <SelectButton>
           <label>연락 방법</label>
           <div
-            id="chatLink"
+            id='chatLink'
             className={`select-btn ${contactBtnActive ? 'active' : ''}`}
-            onClick={contactBtnClickHandler}
-          >
+            onClick={contactBtnClickHandler}>
             오픈 채팅
           </div>
-          <div
-            id="email"
-            className={`select-btn ${contactBtnActive ? '' : 'active'}`}
-            onClick={contactBtnClickHandler}
-          >
+          <div id='email' className={`select-btn ${contactBtnActive ? 'active' : ''}`} onClick={contactBtnClickHandler}>
             이메일
           </div>
           <input
-            id="contact"
-            type="text"
-            placeholder="링크 또는 이메일을 입력해주세요"
+            id='contact'
+            type='text'
+            placeholder='링크 또는 이메일을 입력해주세요'
+            value={formData.contact}
             onChange={inputValueHandler}
           />
         </SelectButton>
       </div>
       <SelectPositionContainer>
-        <div className="position-title">
+        <div className='position-title'>
           <label>모집 포지션</label>
           <label>인원</label>
         </div>
         {company &&
           company.map((e, i) => (
             <>
-              <div className="position" key={i}>
+              <div className='position' key={i}>
                 <PositionSelectBox>
                   <Select
-                    id="position"
+                    id='position'
                     options={position}
                     value={e.value}
                     defaultValue={position[0]}
@@ -260,9 +253,9 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
                   />
                 </PositionSelectBox>
                 <PositionCountBtn>
-                  <div className="count-button-group">
+                  <div className='count-button-group'>
                     <button onClick={() => decreaseHandler(i)}>-</button>
-                    <span id="people">{e.count}</span>
+                    <span id='people'>{e.count}</span>
                     <button onClick={() => increaseHandler(i)}>+</button>
                   </div>
                 </PositionCountBtn>
@@ -270,17 +263,12 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
             </>
           ))}
       </SelectPositionContainer>
-      <AddButton className="add-btn" onClick={clickHandler}>
+      <AddButton className='add-btn' onClick={clickHandler}>
         추가
       </AddButton>
       <SelectOneType>
-        <label className="individual-selection">기술 스택</label>
-        <TechStack
-          selected={stack}
-          setSelected={setStack}
-          formData={formData}
-          setFormData={setFormData}
-        />
+        <label className='individual-selection'>기술 스택</label>
+        <TechStack2 selected={stack} setSelected={setStack} formData={formData} setFormData={setFormData} />
       </SelectOneType>
     </HeaderTemplateContainer>
   );

@@ -53,7 +53,7 @@ const EditUser = () => {
           <p>한 줄 소개</p>
           <textarea type='text' onChange={introductionHandler}></textarea>
         </JoinInput>
-        <StyledButton onClick={() => joinSubmit(user)}>정보 수정</StyledButton>
+        <StyledButton>정보 수정</StyledButton>
       </JoinContainer>
     </div>
   );
