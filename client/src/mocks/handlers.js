@@ -9,7 +9,10 @@ export const handlers = [
   rest.post('/login', (req, res, ctx) => {
     return res(ctx.status(201));
   }),
+<<<<<<< HEAD
 
   //게시물 목록 불러오기
   rest.get('/boards?'),
+=======
+>>>>>>> origin/v1
 ];

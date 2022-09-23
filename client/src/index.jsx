@@ -9,15 +9,22 @@ import GlobalStyles from './assets/styles/GlobalStyle';
 import theme from './assets/styles/Theme';
 import { worker } from './mocks/worker';
 
+<<<<<<< HEAD
 // if (process.env.NODE_ENV === 'development') {
 //   worker.start();
 // }
+=======
+if (process.env.NODE_ENV === 'development') {
+  worker.start();
+}
+>>>>>>> origin/v1
 
 const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
+<<<<<<< HEAD
     <CookiesProvider>
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
@@ -28,5 +35,15 @@ root.render(
         </QueryClientProvider>
       </BrowserRouter>
     </CookiesProvider>
+=======
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
+          <GlobalStyles />
+          <App />
+        </ThemeProvider>
+      </QueryClientProvider>
+    </BrowserRouter>
+>>>>>>> origin/v1
   </React.StrictMode>
 );

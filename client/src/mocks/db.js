@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 export const boards = {
   data: [
     {
@@ -320,3 +321,6 @@ export const myjuse = {
     ],
   },
 };
+=======
+export const users = [{}];
+>>>>>>> origin/v1
