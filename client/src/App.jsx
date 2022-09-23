@@ -8,6 +8,7 @@ import Board from './pages/Board';
 import OAuth from './pages/OAuth';
 import UserInfo from './pages/UserInfo';
 import EditUser from './pages/EditUser';
+// import EditNewMeeting from './pages/EditNewMeeting';
 import { useCookies } from 'react-cookie';
 import MyJuse from './pages/MyJuse';
 import { useEffect } from 'react';
@@ -31,6 +32,7 @@ function App() {
         <Route path='/users/edit' element={<EditUser />} />
         <Route path='/boards' element={<NewMeeting />} />
         <Route path='/users/myjuse' element={<MyJuse />} />
+        {/* <Route path='/boards/edit' element={<EditNewMeeting />} /> */}
       </Routes>
     </>
   );
