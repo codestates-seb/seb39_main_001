@@ -15,4 +15,6 @@ public interface UserService {
     User create(User mappedObj);
 
     User verifyUserById(long userId);
+
+    boolean isNicknameAvailable(String nickname);
 }
