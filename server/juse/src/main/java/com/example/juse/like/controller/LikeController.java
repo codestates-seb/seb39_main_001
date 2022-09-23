@@ -25,8 +25,8 @@ public class LikeController {
             @AuthenticationPrincipal PrincipalDetails principalDetails,
             @PathVariable("user-who-is-liked") long whoIsLiked
     ) {
-        long whoLikes = principalDetails.getSocialUser().getUser().getId();
-        Like createdEntity = likeService.create(whoLikes, whoIsLiked);
+        long whoLikes = principalDetails.getSocialUser().getUser().getId(); // 1
+        Like createdEntity = likeService.create(whoLikes, whoIsLiked); // 2
         LikeResponseDto responseDto = likeMapper.toResponseDtoFrom(createdEntity);
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.CREATED);
