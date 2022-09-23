@@ -15,7 +15,6 @@ import net.minidev.json.annotate.JsonIgnore;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
@@ -76,7 +75,7 @@ public class User extends Auditing {
 
 
     @Builder.Default
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<UserTag> userTagList = new ArrayList<>();
 
     @Builder.Default
@@ -91,7 +90,7 @@ public class User extends Auditing {
     @OneToMany(mappedBy = "user")
     private List<Application> applicationList = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "SOCIAL_USER_ID")
     @JsonIgnore
     private SocialUser socialUser;
