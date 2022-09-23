@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "USERS")
 @Setter
+@ToString
 public class User extends Auditing {
 
     @Setter
@@ -76,7 +77,7 @@ public class User extends Auditing {
 
 
     @Builder.Default
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<UserTag> userTagList = new ArrayList<>();
 
     @Builder.Default
@@ -91,7 +92,7 @@ public class User extends Auditing {
     @OneToMany(mappedBy = "user")
     private List<Application> applicationList = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "SOCIAL_USER_ID")
     @JsonIgnore
     private SocialUser socialUser;
@@ -125,4 +126,5 @@ public class User extends Auditing {
             socialUser.setUser(this);
         }
     }
+
 }

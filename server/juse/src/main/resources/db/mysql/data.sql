@@ -9,9 +9,16 @@ VALUES (3, 'kotlin', 'MOBILE');
 
 INSERT INTO TAGS (id, name, type)
 VALUES (4, 'figma', 'ETC');
---
---INSERT INTO boards(backend, bookmarks, contact, content, cur_backend, cur_designer,
--- cur_frontend, cur_etc, designer, frontend, etc, due_date,
---  liked, on_offline, people, period, starting_date,
---   status, title, type, views)
---    values(1,0, 'contact', 'content', 0,0,0,0,0,0,0, '2022-09-20', 0, 'online', 10,3, '2022-09-22', 1, 'title1','PROJECT', 1);
+
+INSERT INTO SOCIAL_USERS (id, img, email, name, role, provider, provider_id)
+VALUES(1, 'img', '0minss9577@gmail.com','최영민', 'ROLE_USER', 'provider', 'providerId');
+
+INSERT INTO SOCIAL_USERS (id, img, email, name, role, provider, provider_id)
+VALUES(2, 'img2', 'ym24319577@gmail.com','최영민', 'ROLE_USER', 'provider', 'providerId');
+
+
+INSERT INTO USERS (id, img, introduction, email, portfolio, liked, role, provider, provider_id, nickname, social_user_id)
+VALUES(1, 'img', 'user1', '0minss9577@gmail.com', 'test', 0, 'ROLE_USER', 'provider1', 'providerId', 'nickname', 1);
+
+INSERT INTO USERS (id, img, introduction, email, portfolio, liked, role, provider, provider_id, nickname, social_user_id)
+VALUES(2, 'img2', 'user2', 'ym24319577@gmail.com', 'test2', 0, 'ROLE_USER', 'provider1', 'providerId', 'nickname2', 2);
