@@ -1,6 +1,6 @@
 package com.example.juse.user.controller;
 
-import com.example.juse.response.SingleResponseDto;
+import com.example.juse.dto.SingleResponseDto;
 import com.example.juse.security.oauth.PrincipalDetails;
 import com.example.juse.social.entity.SocialUser;
 import com.example.juse.user.dto.UserRequestDto;
@@ -35,13 +35,12 @@ public class UserController {
                                    @RequestBody UserRequestDto.Post userPostDto) {
 
         User mappedObj = userMapper.toEntityFrom(userPostDto);
-
-        mappedObj.setEmail(principalDetails.getSocialUser().getEmail());
-
         SocialUser socialUser = principalDetails.getSocialUser();
+        mappedObj.setEmail(principalDetails.getSocialUser().getEmail());
         mappedObj.addSocialUser(socialUser);
 
-        UserResponseDto.Profile response = userMapper.toProfileDtoFrom(userRepository.save(mappedObj));
+        User createdUser = userService.create(mappedObj);
+        UserResponseDto.MyProfile response = userMapper.toMyProfileDtoFrom(createdUser);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.CREATED);
 
@@ -58,11 +57,11 @@ public class UserController {
         User foundUser = userService.getJuse(userId);
         UserResponseDto.MyJuse responseDto = userMapper.toMyJuseDtoFrom(foundUser);
 
-        return new ResponseEntity<>(new com.example.juse.dto.SingleResponseDto<>(responseDto), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<com.example.juse.dto.SingleResponseDto<UserResponseDto.Profile>> getProfile(
+    public ResponseEntity<com.example.juse.dto.SingleResponseDto<UserResponseDto.MyProfile>> getProfile(
             @AuthenticationPrincipal PrincipalDetails principalDetails
 
     ) {
@@ -70,25 +69,37 @@ public class UserController {
         long userId = principalDetails.getSocialUser().getUser().getId();
 
         User userProfile = userService.getProfile(userId);
+        UserResponseDto.MyProfile responseDto = userMapper.toMyProfileDtoFrom(userProfile);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
+    }
+
+    @GetMapping("/{other-user-id}")
+    public ResponseEntity<SingleResponseDto<UserResponseDto.Profile>> getOtherUserProfile(
+            @PathVariable("other-user-id") long userId
+    ) {
+        User userProfile = userService.getProfile(userId);
         UserResponseDto.Profile responseDto = userMapper.toProfileDtoFrom(userProfile);
 
-        return new ResponseEntity<>(new com.example.juse.dto.SingleResponseDto<>(responseDto), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
 
     @PatchMapping
-    public ResponseEntity<com.example.juse.dto.SingleResponseDto<UserResponseDto.Profile>> patch(
+    public ResponseEntity<com.example.juse.dto.SingleResponseDto<UserResponseDto.MyProfile>> patch(
             @AuthenticationPrincipal PrincipalDetails principalDetails,
-
             @RequestBody UserRequestDto.Patch patchDto
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
-
+        SocialUser socialUser = principalDetails.getSocialUser();
         patchDto.setId(userId);
-        User mappedObj = userMapper.toEntityFrom(patchDto);
-        User updatedEntity = userService.update(mappedObj);
-        UserResponseDto.Profile responseDto = userMapper.toProfileDtoFrom(updatedEntity);
+        patchDto.setEmail(principalDetails.getSocialUser().getEmail());
 
-        return new ResponseEntity<>(new com.example.juse.dto.SingleResponseDto<>(responseDto), HttpStatus.OK);
+        User mappedObj = userMapper.toEntityFrom(patchDto);
+        mappedObj.addSocialUser(socialUser);
+        User updatedEntity = userService.update(mappedObj);
+        UserResponseDto.MyProfile responseDto = userMapper.toMyProfileDtoFrom(updatedEntity);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -101,4 +112,12 @@ public class UserController {
         userService.deleteAccount(userId);
     }
 
+    @GetMapping("/nicknames")
+    public ResponseEntity<SingleResponseDto<Boolean>> findNicknames(
+            @RequestParam("q") String nickname
+    ) {
+        Boolean response = userService.isNicknameAvailable(nickname);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+    }
 }

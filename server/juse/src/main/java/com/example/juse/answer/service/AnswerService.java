@@ -9,4 +9,6 @@ public interface AnswerService {
     Answer update(Answer mappedObj);
 
     void delete(long answerId, long userId);
+
+    Answer verifyAnswerById(long answerId);
 }

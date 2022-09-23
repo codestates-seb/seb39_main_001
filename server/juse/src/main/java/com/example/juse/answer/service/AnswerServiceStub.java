@@ -27,4 +27,9 @@ public class AnswerServiceStub implements AnswerService {
     public void delete(long answerId, long userId) {
 
     }
+
+    @Override
+    public Answer verifyAnswerById(long answerId) {
+        return null;
+    }
 }

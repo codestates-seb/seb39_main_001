@@ -6,8 +6,7 @@ import com.example.juse.board.dto.BoardResponseDto;
 import com.example.juse.board.entity.Board;
 import com.example.juse.question.mapper.QuestionMapper;
 import com.example.juse.tag.mapper.TagMapper;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -24,10 +23,24 @@ public interface BoardMapper {
 
     @Mapping(target = "user.id", source = "userId")
     @Mapping(target = "id", source = "boardId")
+    @Mapping(target = "boardTagList", source = "tagList")
     Board toEntityFrom(BoardRequestDto.Patch patchDto);
 
     @Mapping(target = "tagList", source = "tagNames")
     BoardResponseDto.Multi toMultiResponseDto(Board entity);
 
     List<BoardResponseDto.Multi> toListDtoFromListEntities(List<Board> entities);
+
+    @BeanMapping(
+            nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+            ignoreByDefault = true
+    )
+    @Mapping(target = "title", source = "title")
+    @Mapping(target = "content", source = "content")
+    @Mapping(target = "contact", source = "contact")
+    @Mapping(target = "dueDate", source = "dueDate")
+    @Mapping(target = "startingDate", source = "startingDate")
+    @Mapping(target = "period", source = "period")
+    @Mapping(target = "onOffline", source = "onOffline")
+    void updateEntityFromSource(@MappingTarget Board entity, Board source);
 }

@@ -21,12 +21,12 @@ public class UserLoginController {
     private final UserMapper userMapper;
 
     @PostMapping("/join")
-    public ResponseEntity<SingleResponseDto<UserResponseDto.Profile>> join(
+    public ResponseEntity<SingleResponseDto<UserResponseDto.MyProfile>> join(
             @RequestBody UserRequestDto.Post postDto
     ) {
         User mappedObj = userMapper.toEntityFrom(postDto);
         User createdEntity = userService.create(mappedObj);
-        UserResponseDto.Profile responseDto = userMapper.toProfileDtoFrom(createdEntity);
+        UserResponseDto.MyProfile responseDto = userMapper.toMyProfileDtoFrom(createdEntity);
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.CREATED);
 

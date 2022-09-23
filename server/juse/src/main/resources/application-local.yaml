@@ -1,0 +1,18 @@
+spring:
+  jpa:
+    defer-datasource-initialization: true
+    properties:
+      hibernate:
+        format_sql: true  # (3) SQL pretty print
+    hibernate:
+      ddl-auto: create  # (1) 스키마 자동 생성
+    show-sql: true      # (2) SQL 쿼리 출력
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: thoms
+    password: 1111
+    url: jdbc:mysql://thoms@127.0.0.1:3306/juse_local?allowPublicKeyRetrieval=true&characterEncoding=UTF-8
+  sql:
+    init:
+      mode: always
+      data-locations: classpath*:db/mysql/data.sql

@@ -10,4 +10,6 @@ public interface QuestionService {
 
     void delete(long questionId, long userId);
 
+    Question verifyQuestionById(long questionId);
+
 }

@@ -2,6 +2,7 @@ package com.example.juse.user.entity;
 
 import com.example.juse.answer.entity.Answer;
 import com.example.juse.application.entity.Application;
+import com.example.juse.audit.Auditing;
 import com.example.juse.board.entity.Board;
 import com.example.juse.bookmark.entity.Bookmark;
 import com.example.juse.like.entity.Like;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "USERS")
 @Setter
-public class User {
+public class User extends Auditing {
 
     @Setter
     @Id
@@ -31,6 +32,9 @@ public class User {
     private Long id;
 
     private Byte[] profileImage;
+
+    private String img;
+
 
     @Column(nullable = false)
     private String introduction;
@@ -42,6 +46,12 @@ public class User {
     private String portfolio;
 
     private int liked;
+
+    private String role;
+
+    private String provider;
+
+    private String providerId;
 
 
     @Column(nullable = false, unique = true)
@@ -65,7 +75,7 @@ public class User {
 
 
     @Builder.Default
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<UserTag> userTagList = new ArrayList<>();
 
     @Builder.Default
@@ -80,7 +90,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Application> applicationList = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "SOCIAL_USER_ID")
     @JsonIgnore
     private SocialUser socialUser;

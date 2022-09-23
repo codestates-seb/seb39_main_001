@@ -1,8 +1,6 @@
 package com.example.juse.user.dto;
 
 import com.example.juse.board.dto.BoardResponseDto;
-import com.example.juse.bookmark.dto.BookmarkResponseDto;
-import com.example.juse.tag.entity.UserTag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,12 +13,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponseDto {
+
     private Long id;
     private Byte[] profileImage;
     private String introduction;
     private String email;
     private String portfolio;
     private String nickname;
+
+    private List<String> skillStackTags;
 
     @Getter
     @NoArgsConstructor
@@ -40,6 +41,23 @@ public class UserResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
+    public static class MyProfile {
+
+        private long id;
+        private String introduction;
+        private String email;
+        private String portfolio;
+        private String nickname;
+        private List<String> skillStackTags;
+        private List<UserResponseDto> myUserList;
+        private int liked;
+
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
     public static class Profile {
 
         private long id;
@@ -47,11 +65,21 @@ public class UserResponseDto {
         private String email;
         private String portfolio;
         private String nickname;
-
         private List<String> skillStackTags;
-        private List<UserResponseDto> myUserList;
         private int liked;
 
     }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class Brief {
+
+        private long id;
+        private String nickname;
+        private String img;
+    }
+
 
 }

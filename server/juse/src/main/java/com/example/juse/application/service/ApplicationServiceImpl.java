@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
-@Profile("real")
+@Profile("plain")
 @RequiredArgsConstructor
 public class ApplicationServiceImpl implements ApplicationService{
 

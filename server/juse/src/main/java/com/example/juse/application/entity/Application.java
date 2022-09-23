@@ -1,5 +1,6 @@
 package com.example.juse.application.entity;
 
+import com.example.juse.audit.Auditing;
 import com.example.juse.board.entity.Board;
 import com.example.juse.user.entity.User;
 import lombok.*;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "APPLICATIONS")
-public class Application {
+public class Application extends Auditing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,8 +34,8 @@ public class Application {
     private User user;
 
     public void checkApplicationWriter(long userId) {
-        if (this.getUser().getId() != userId) {
-            throw new RuntimeException("모집자만이 수락할 수 있습니다.");
+        if (this.getBoard().getUser().getId() != userId) {
+            throw new RuntimeException("모집자만이 수락 및 거절 할 수 있습니다.");
         }
     }
 }

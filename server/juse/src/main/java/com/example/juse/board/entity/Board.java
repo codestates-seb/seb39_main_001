@@ -1,8 +1,8 @@
 package com.example.juse.board.entity;
 
 import com.example.juse.application.entity.Application;
+import com.example.juse.audit.Auditing;
 import com.example.juse.bookmark.entity.Bookmark;
-import com.example.juse.like.entity.Like;
 import com.example.juse.question.entity.Question;
 import com.example.juse.tag.entity.BoardTag;
 import com.example.juse.user.entity.User;
@@ -15,16 +15,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "BOARDS")
 @ToString
-@Setter
-public class Board {
+public class Board extends Auditing {
 
-    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -44,7 +43,6 @@ public class Board {
     private int etc;
     private int curEtc;
     private int bookmarks;
-    private int liked;
     private int views;
 
     @Column(nullable = false)
@@ -65,8 +63,9 @@ public class Board {
     @Column(nullable = false)
     private String onOffline;
 
-    @Column(nullable = false)
     @Builder.Default
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Status status = Status.OPENING;
 
     @Column(nullable = false)
@@ -78,15 +77,15 @@ public class Board {
     private User user;
 
     @Builder.Default
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Question> questionList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Bookmark> bookmarkList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<BoardTag> boardTagList = new ArrayList<>();
 
 //    @Builder.Default
@@ -94,7 +93,7 @@ public class Board {
 //    private List<Like> likeList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     private List<Application> applicationList = new ArrayList<>();
 
     public List<String> getTagNames() {
@@ -121,6 +120,16 @@ public class Board {
 
     }
 
+    public void addUser(User user) {
+        this.user = user;
+        if (!this.user.getBoardList().contains(this)) {
+            this.user.getBoardList().add(this);
+        }
+    }
 
+
+    public boolean isCreatedBy(long userId) {
+        return this.user.getId() == userId;
+    }
 
 }

@@ -8,7 +8,6 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BoardResponseDto {
@@ -19,13 +18,20 @@ public class BoardResponseDto {
     @Builder
     public static class Single {
 
+        @Setter
+        private boolean isAUth;
+
         private Long id;
         private String title;
 
         private int backend;
+        private int curBackend;
         private int frontend;
+        private int curFrontend;
         private int designer;
+        private int curDesigner;
         private int etc;
+        private int curEtc;
         private int people;
         private String contact;
         private LocalDate dueDate;
@@ -35,7 +41,6 @@ public class BoardResponseDto {
         private String content;
         private int views;
         private int bookmarks;
-        private int liked;
 
         private List<String> tagList;
         private List<ApplicationResponseDto> applicationList;
@@ -45,6 +50,9 @@ public class BoardResponseDto {
         private Board.Status status;
 
         private UserResponseDto user;
+
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
     }
 
     @Getter
@@ -65,6 +73,8 @@ public class BoardResponseDto {
         private int bookmarks;
         private UserResponseDto user;
 
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
     }
 
 }
