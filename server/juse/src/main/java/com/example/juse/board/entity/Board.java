@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 @Builder
 @Entity
 @Table(name = "BOARDS")
+@ToString
 public class Board extends Auditing {
 
     @Id
