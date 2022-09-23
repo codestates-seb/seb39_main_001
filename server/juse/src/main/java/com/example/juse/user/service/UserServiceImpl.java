@@ -52,4 +52,10 @@ public class UserServiceImpl implements UserService {
         );
     }
 
+    @Override
+    public boolean isNicknameAvailable(String nickname) {
+
+        return userRepository.findByNickname(nickname).isEmpty();
+
+    }
 }

@@ -111,4 +111,12 @@ public class UserController {
         userService.deleteAccount(userId);
     }
 
+    @GetMapping("/nicknames")
+    public ResponseEntity<SingleResponseDto<Boolean>> findNicknames(
+            @RequestParam("q") String nickname
+    ) {
+        Boolean response = userService.isNicknameAvailable(nickname);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+    }
 }
