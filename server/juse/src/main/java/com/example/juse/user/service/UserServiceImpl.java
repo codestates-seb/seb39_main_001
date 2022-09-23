@@ -110,4 +110,10 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public boolean isNicknameAvailable(String nickname) {
+
+        return userRepository.findByNickname(nickname).isEmpty();
+
+    }
 }
