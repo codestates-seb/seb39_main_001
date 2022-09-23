@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { Routes, Route } from 'react-router-dom';
 import NavbarPrivate from './components/NavbarPrivate';
 import NavbarPublic from './components/NavbarPublic';
@@ -37,10 +36,6 @@ function App() {
       </Routes>
     </>
   );
-=======
-function App() {
-  return <div className='App'>hello</div>;
->>>>>>> origin/v1
 }
 
 export default App;
