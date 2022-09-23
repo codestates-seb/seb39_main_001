@@ -1,9 +1,6 @@
 package com.example.juse.tag.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,6 +12,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "TAGS")
+@ToString
 public class Tag {
 
     @Id
@@ -41,4 +39,8 @@ public class Tag {
     @Builder.Default
     @OneToMany(mappedBy = "tag")
     private List<BoardTag> boardTagList = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "tag")
+    private List<UserTag> userTagList = new ArrayList<>();
 }

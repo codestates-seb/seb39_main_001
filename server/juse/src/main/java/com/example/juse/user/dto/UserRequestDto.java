@@ -17,6 +17,10 @@ public class UserRequestDto {
         private String introduction;
         private String portfolio;
         private String nickname;
+        @Setter
+        private String email;
+        @Setter
+        private Long social_user_id;
 
         private List<String> skillStackTags;
 

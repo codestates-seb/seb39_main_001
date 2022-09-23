@@ -35,13 +35,12 @@ public class UserController {
                                    @RequestBody UserRequestDto.Post userPostDto) {
 
         User mappedObj = userMapper.toEntityFrom(userPostDto);
-
-        mappedObj.setEmail(principalDetails.getSocialUser().getEmail());
-
         SocialUser socialUser = principalDetails.getSocialUser();
+        mappedObj.setEmail(principalDetails.getSocialUser().getEmail());
         mappedObj.addSocialUser(socialUser);
 
-        UserResponseDto.MyProfile response = userMapper.toMyProfileDtoFrom(userRepository.save(mappedObj));
+        User createdUser = userService.create(mappedObj);
+        UserResponseDto.MyProfile response = userMapper.toMyProfileDtoFrom(createdUser);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.CREATED);
 
@@ -88,13 +87,15 @@ public class UserController {
     @PatchMapping
     public ResponseEntity<com.example.juse.dto.SingleResponseDto<UserResponseDto.MyProfile>> patch(
             @AuthenticationPrincipal PrincipalDetails principalDetails,
-
             @RequestBody UserRequestDto.Patch patchDto
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
-
+        SocialUser socialUser = principalDetails.getSocialUser();
         patchDto.setId(userId);
+        patchDto.setEmail(principalDetails.getSocialUser().getEmail());
+
         User mappedObj = userMapper.toEntityFrom(patchDto);
+        mappedObj.addSocialUser(socialUser);
         User updatedEntity = userService.update(mappedObj);
         UserResponseDto.MyProfile responseDto = userMapper.toMyProfileDtoFrom(updatedEntity);
 
@@ -111,4 +112,12 @@ public class UserController {
         userService.deleteAccount(userId);
     }
 
+    @GetMapping("/nicknames")
+    public ResponseEntity<SingleResponseDto<Boolean>> findNicknames(
+            @RequestParam("q") String nickname
+    ) {
+        Boolean response = userService.isNicknameAvailable(nickname);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+    }
 }

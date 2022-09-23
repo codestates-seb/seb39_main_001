@@ -109,15 +109,24 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public Page<Board> getBoards(Pageable pageable, FilterOptions filterOptions) {
 
+        return
 
-        return null;
+//                boardRepository.findAll(pageable);
+
+                boardRepository
+                .findWithParameters(
+                        pageable,
+                        filterOptions.getStatus(),
+                        filterOptions.getType(),
+                        filterOptions.getTag(),
+                        filterOptions.getPeriod());
     }
 
     @Override
     public Board verifyBoardById(long boardId) {
         return boardRepository
                 .findById(boardId)
-                .orElseThrow(() -> new NoSuchElementException());
+                .orElseThrow(NoSuchElementException::new);
     }
 }
 
