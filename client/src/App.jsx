@@ -10,10 +10,13 @@ import UserInfo from './pages/UserInfo';
 import EditUser from './pages/EditUser';
 import { useCookies } from 'react-cookie';
 import MyJuse from './pages/MyJuse';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 function App() {
   // TODO: 서버로 부터 token 받으면 클라이언트에 cookie에 담기
   const [cookies, setCookie, removeCookie] = useCookies(['user']);
+  // 프록시: https://cors-jwy.herokuapp.com/
 
   return (
     <>

@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const TechStack = ({ selected, setSelected }) => {
+const TechStack2 = ({ selected, setSelected, formData, setFormData }) => {
   // 모든 스택 이름
   const stacks = {
     프론트엔드: ['JavaScript', 'TypeScript', 'React', 'Vue', 'Svelte', 'Next', 'GraphQl'],
@@ -26,6 +26,11 @@ const TechStack = ({ selected, setSelected }) => {
 
   const [currentTab, setCurrentTab] = useState('프론트엔드');
 
+  // 글쓰기 수정: 이전 선택된 기술스택 불러오기 -->
+  useEffect(() => {
+    setSelected([...formData.tagList]);
+  }, []);
+
   //현재 탭 변경
   const tabHandler = (e) => {
     setCurrentTab(e.target.innerText);
@@ -33,12 +38,17 @@ const TechStack = ({ selected, setSelected }) => {
 
   //스택 선택
   const stackClickHandler = (e) => {
-    if (selected.includes(e)) {
-      const deletedArr = selected.filter((el) => el !== e);
+    if (selected.includes(e.target.innerText.toLowerCase())) {
+      const deletedArr = selected.filter((el) => el !== e.target.innerText.toLowerCase());
       setSelected(deletedArr);
     } else {
-      setSelected((prev) => [...prev, e]);
+      setSelected((prev) => [...prev, e.target.innerText.toLowerCase()]);
     }
+    // post 요청 시 소문자로 바꿔서 tagList에 추가한다
+    setFormData({
+      ...formData,
+      tagList: [...selected, e.target.innerText.toLowerCase()],
+    });
   };
 
   //스택 초기화
@@ -51,6 +61,9 @@ const TechStack = ({ selected, setSelected }) => {
     const deletedArr = selected.filter((e, i) => i !== idx);
     setSelected(deletedArr);
   };
+
+  // console.log('formData.tagList:', formData.tagList);
+  // console.log('selected:', selected);
 
   return (
     <TechStackContainer>
@@ -69,19 +82,17 @@ const TechStack = ({ selected, setSelected }) => {
           ? stacks[currentTab].map((e, i) => (
               <div
                 key={i}
-                onClick={() => stackClickHandler(e)}
-                className={!selected.includes(e) && selected.length > 0 ? 'not-selected' : ''}>
-                <Stack src={`/icons/stacks/${e}.png`} alt={e} />
-                <span>{e}</span>
+                onClick={stackClickHandler}
+                className={!selected.includes(e.toLowerCase()) && selected.length > 0 ? 'not-selected' : ''}>
+                {e}
               </div>
             ))
           : [...stacks.프론트엔드, ...stacks.백엔드, ...stacks.모바일, ...stacks.기타].map((e, i) => (
               <div
                 key={i}
-                onClick={() => stackClickHandler(e)}
-                className={!selected.includes(e) && selected.length > 0 ? 'not-selected' : ''}>
-                <Stack src={`/icons/stacks/${e}.png`} alt={e} />
-                <span>{e}</span>
+                onClick={stackClickHandler}
+                className={!selected.includes(e.toLowerCase()) && selected.length > 0 ? 'not-selected' : ''}>
+                {e}
               </div>
             ))}
       </StackContainer>
@@ -126,25 +137,15 @@ const StackContainer = styled.div`
   flex-wrap: wrap;
   gap: 10px;
   > div {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 5px 10px;
-    border: 1px solid ${({ theme }) => theme.colors.grey2};
+    padding: 15px;
+    border: 1px solid ${({ theme }) => theme.colors.grey3};
     border-radius: 999px;
     cursor: pointer;
   }
   > .not-selected {
-    opacity: 0.55;
+    color: ${({ theme }) => theme.colors.grey3};
+    border: 1px solid ${({ theme }) => theme.colors.grey1};
   }
-`;
-
-const Stack = styled.img`
-  border: 1px solid ${({ theme }) => theme.colors.grey2};
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  padding: 2px;
 `;
 
 const SelectedContainer = styled.div`
@@ -158,4 +159,4 @@ const SelectedContainer = styled.div`
   }
 `;
 
-export default TechStack;
+export default TechStack2;
