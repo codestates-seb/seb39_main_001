@@ -35,7 +35,6 @@ public class User extends Auditing {
 
     private String img;
 
-
     @Column(nullable = false)
     private String introduction;
 
@@ -52,7 +51,6 @@ public class User extends Auditing {
     private String provider;
 
     private String providerId;
-
 
     @Column(nullable = false, unique = true)
     private String nickname;
