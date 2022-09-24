@@ -33,7 +33,7 @@ public class SocialUser {
     private String providerId;
 
     @Setter
-    @OneToOne(mappedBy = "socialUser")
+    @OneToOne(mappedBy = "socialUser", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private User user;
 
