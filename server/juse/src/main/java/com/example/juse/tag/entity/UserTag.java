@@ -1,10 +1,7 @@
 package com.example.juse.tag.entity;
 
 import com.example.juse.user.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -28,4 +25,26 @@ public class UserTag {
     @JoinColumn(name = "TAG_ID")
     private Tag tag;
 
+
+    public void addUser(User user) {
+        this.user = user;
+        if (!this.user.getUserTagList().contains(this)) {
+            this.user.getUserTagList().add(this);
+        }
+    }
+
+    public void addTag(Tag tag) {
+        this.tag = tag;
+        if (!this.tag.getUserTagList().contains(this)) {
+            this.tag.getUserTagList().add(this);
+        }
+    }
+
+    public static UserTag of(User user, Tag tag) {
+        UserTag userTag = new UserTag();
+        userTag.addUser(user);
+        userTag.addTag(tag);
+
+        return userTag;
+    }
 }

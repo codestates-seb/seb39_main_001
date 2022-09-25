@@ -27,4 +27,25 @@ public class BoardTag {
     @ManyToOne
     @JoinColumn(name = "TAG_ID")
     private Tag tag;
+
+    public void addBoard(Board board) {
+        this.board = board;
+        if (!this.board.getBoardTagList().contains(this)) {
+            this.board.getBoardTagList().add(this);
+        }
+    }
+
+    public void addTag(Tag tag) {
+        this.tag = tag;
+        if (!this.tag.getBoardTagList().contains(this)) {
+            this.tag.getBoardTagList().add(this);
+        }
+    }
+
+    public static BoardTag of(Board board, Tag tag) {
+        BoardTag boardTag = new BoardTag();
+        boardTag.addBoard(board);
+        boardTag.addTag(tag);
+        return boardTag;
+    }
 }

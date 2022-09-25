@@ -1,11 +1,9 @@
 package com.example.juse.application.entity;
 
+import com.example.juse.audit.Auditing;
 import com.example.juse.board.entity.Board;
 import com.example.juse.user.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -15,7 +13,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "APPLICATIONS")
-public class Application {
+public class Application extends Auditing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +22,7 @@ public class Application {
     @Column(nullable = false)
     private String position;
 
+    @Setter
     private boolean isAccepted;
 
     @ManyToOne
@@ -33,4 +32,10 @@ public class Application {
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
+
+    public void checkApplicationWriter(long userId) {
+        if (this.getBoard().getUser().getId() != userId) {
+            throw new RuntimeException("모집자만이 수락 및 거절 할 수 있습니다.");
+        }
+    }
 }

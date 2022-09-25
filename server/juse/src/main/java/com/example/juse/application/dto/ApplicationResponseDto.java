@@ -11,5 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ApplicationResponseDto {
 
-    private String result;
+    private Long id;
+    private Long userId;
+    private Long boardId;
+    private String position;
+    private boolean isAccepted;
+
 }

@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BoardRequestDto {
 
@@ -14,6 +16,7 @@ public class BoardRequestDto {
     @Builder
     public static class Post {
 
+        private String title;
         private String content;
         private Integer backend;
         private Integer frontend;
@@ -28,6 +31,9 @@ public class BoardRequestDto {
 
         private Board.Type type;
 
+        @Builder.Default
+        private List<String> tagList = new ArrayList<>();
+
         @Setter
         private Long userId;
 
@@ -39,17 +45,14 @@ public class BoardRequestDto {
     @Builder
     public static class Patch {
 
+        private String title;
         private String content;
-        private Integer backend;
-        private Integer frontend;
-        private Integer designer;
-        private Integer etc;
-        private Integer people;
         private String contact;
-        private LocalDateTime dueDate;
-        private LocalDateTime startingDate;
+        private LocalDate dueDate;
+        private LocalDate startingDate;
         private String period;
         private String onOffline;
+        private List<String> tagList;
 
         private Board.Type type;
 
