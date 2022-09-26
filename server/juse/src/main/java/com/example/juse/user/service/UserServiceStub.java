@@ -45,4 +45,9 @@ public class UserServiceStub implements UserService {
     public User verifyUserById(long userId) {
         return null;
     }
+
+    @Override
+    public boolean isNicknameAvailable(String nickname) {
+        return false;
+    }
 }

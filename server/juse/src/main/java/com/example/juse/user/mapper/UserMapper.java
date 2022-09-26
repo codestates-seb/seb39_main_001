@@ -5,8 +5,7 @@ import com.example.juse.tag.mapper.TagMapper;
 import com.example.juse.user.dto.UserRequestDto;
 import com.example.juse.user.dto.UserResponseDto;
 import com.example.juse.user.entity.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring",
 uses = {BoardMapper.class, TagMapper.class})
@@ -30,4 +29,11 @@ public interface UserMapper {
     @Mapping(target = "userTagList", source = "skillStackTags")
     User toEntityFrom(UserRequestDto.Post post);
 
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+    ignoreByDefault = true)
+    @Mapping(target = "profileImage", source = "profileImage")
+    @Mapping(target = "introduction", source = "introduction")
+    @Mapping(target = "portfolio", source = "portfolio")
+    @Mapping(target = "nickname", source = "nickname")
+    void updateEntityFromSource(@MappingTarget User entity, User source);
 }
