@@ -91,7 +91,9 @@ const UserInfo = () => {
       </MainInfo>
       {isMe ? (
         <ButtonContainer>
-          <button>정보 수정</button>
+          <Link to='/users/edit'>
+            <button>정보 수정</button>
+          </Link>
           <button onClick={() => deleteHandler(token)}>회원 탈퇴</button>
         </ButtonContainer>
       ) : (

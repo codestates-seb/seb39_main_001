@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const apis = {
+  // 회원가입
   postJoin: async (token, data) => {
     await axios
       .post(`http://juse.iptime.org:8080/users/join`, data, {
@@ -16,6 +17,8 @@ export const apis = {
       .then((res) => res.data.data)
       .catch((err) => console.log(err));
   },
+
+  // 마이페이지
   getUsers: async (token) => {
     return await axios
       .get(`http://juse.iptime.org:8080/users`, {
@@ -36,7 +39,7 @@ export const apis = {
       .then((res) => res.data.data)
       .catch((err) => console.log(err));
   },
-  deleteUser: async (token, userId) => {
+  deleteUser: async (token) => {
     return await axios
       .delete(`http://juse.iptime.org:8080/users`, {
         headers: {
@@ -46,6 +49,19 @@ export const apis = {
       .then((res) => res.data.data)
       .catch((err) => console.log(err));
   },
+
+  // 유저 정보 수정
+  patchUser: async (token, user) => {
+    await axios
+      .patch(`http://juse.iptime.org:8080/users`, user, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  },
+
   boardPost: async (token) => {
     await axios
       .post(
@@ -262,24 +278,6 @@ export const apis = {
           Auth: token,
         },
       })
-      .then((res) => console.log(res));
-  },
-  myUpdate: async (token) => {
-    await axios
-      .patch(
-        `http://juse.iptime.org:8080/users`,
-        {
-          introduction: '용우정입니다',
-          portfolio: '포폴업뎃',
-          nickname: '용정우',
-          skillStackTags: ['react', 'java'],
-        },
-        {
-          headers: {
-            Auth: token,
-          },
-        }
-      )
       .then((res) => console.log(res));
   },
 };
