@@ -9,7 +9,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import TextField from '@mui/material/TextField';
 import dayjs from 'dayjs';
 
-const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
+const EditHeaderTemplate = ({ formData, setFormData }) => {
   // 모집 기간, 포지션 select options
   const period = [
     { value: 'short', label: '1개월 미만' },
@@ -22,31 +22,31 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
     { value: 'long', label: '장기' },
   ];
 
-  const position = [
-    { value: 'frontend', label: '프론트엔드' },
-    { value: 'backend', label: '백엔드' },
-    { value: 'designer', label: '디자이너' },
-    { value: 'etc', label: '기타' },
-  ];
-
   // 클릭된 버튼 스타일링 (default: 모집 중 버튼)
-  const [defaultBtnActive, setDefaultBtnActive] = useState('OPENING');
-  const [typeBtnActive, setTypeBtnActive] = useState('');
-  const [onlineBtnActive, setOnlineBtnActive] = useState('');
-  const [contactBtnActive, setContactBtnActive] = useState('');
+  const [defaultBtnActive, setDefaultBtnActive] = useState(formData.status);
+  const [typeBtnActive, setTypeBtnActive] = useState(formData.type);
+  const [onlineBtnActive, setOnlineBtnActive] = useState(formData.onOffline);
+  const [contactBtnActive, setContactBtnActive] = useState(formData.contact);
 
   // 예상 기간 선택
-  const [periodSelected, setPeriodSelected] = useState(period[0]);
+  const [periodSelected, setPeriodSelected] = useState(formData.period);
 
   // 선택된 기술스택
   const [stack, setStack] = useState([]);
 
+  // 이전 기술스택 불러오기
+  useEffect(() => {
+    setStack(formData.tagList);
+  }, [formData]);
+
+  // 수정페이지에서 추가한 기술스택을 formData에 추가
   useEffect(() => {
     setFormData({
       ...formData,
       tagList: [...stack],
     });
   }, [stack.length]);
+
   // event handlers
   const meetingStatusHandler = (e) => {
     setDefaultBtnActive(e.target.id);
@@ -105,30 +105,6 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
     });
   };
 
-  const decreaseHandler = (i) => {
-    const temp = [...company];
-    // temp[i].count--;
-    if (temp[i].count > 0) {
-      temp[i].count--;
-    }
-    setCompany(temp);
-  };
-  const increaseHandler = (i) => {
-    const temp = [...company];
-    temp[i].count++;
-    setCompany(temp);
-  };
-
-  const positionChangeHandler = (e, i) => {
-    const temp = [...company];
-    temp[i].position = e.value;
-    setCompany(temp);
-  };
-
-  const clickHandler = () => {
-    setCompany([...company, { position: 'frontend', count: 0 }]);
-  };
-
   return (
     <HeaderTemplateContainer>
       <SelectOneType>
@@ -151,13 +127,13 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
           <label>유형</label>
           <div
             id='PROJECT'
-            className={`select-btn ${typeBtnActive === 'PROJECT' ? 'active' : ''}`}
+            className={`select-btn ${formData.type === 'PROJECT' ? 'active' : ''}`}
             onClick={meetingTypeHandler}>
             프로젝트
           </div>
           <div
             id='STUDY'
-            className={`select-btn ${typeBtnActive === 'STUDY' ? 'active' : ''}`}
+            className={`select-btn ${formData.type === 'STUDY' ? 'active' : ''}`}
             onClick={meetingTypeHandler}>
             스터디
           </div>
@@ -166,13 +142,13 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
           <label>진행 방법</label>
           <div
             id='online'
-            className={`select-btn ${onlineBtnActive === 'online' ? 'active' : ''}`}
+            className={`select-btn ${formData.onOffline === 'online' ? 'active' : ''}`}
             onClick={meetingOnlineHandler}>
             온라인
           </div>
           <div
             id='offline'
-            className={`select-btn ${onlineBtnActive === 'offline' ? 'active' : ''}`}
+            className={`select-btn ${formData.onOffline === 'offline' ? 'active' : ''}`}
             onClick={meetingOnlineHandler}>
             오프라인
           </div>
@@ -213,7 +189,7 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
             value={period.filter((option) => {
               return (
                 // 글쓰기 화면에서 선택한 value
-                option.value === periodSelected
+                option.value === periodSelected || option.value === formData.period
               );
             })}
             defaultValue={period[0]}
@@ -224,11 +200,14 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
           <label>연락 방법</label>
           <div
             id='chatLink'
-            className={`select-btn ${contactBtnActive ? 'active' : ''}`}
+            className={`select-btn ${contactBtnActive === 'chatLink' ? 'active' : ''}`}
             onClick={contactBtnClickHandler}>
             오픈 채팅
           </div>
-          <div id='email' className={`select-btn ${contactBtnActive ? 'active' : ''}`} onClick={contactBtnClickHandler}>
+          <div
+            id='email'
+            className={`select-btn ${contactBtnActive === 'email' ? 'active' : ''}`}
+            onClick={contactBtnClickHandler}>
             이메일
           </div>
           <input
@@ -245,33 +224,12 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
           <label>모집 포지션</label>
           <label>인원</label>
         </div>
-        {company &&
-          company.map((e, i) => (
-            <>
-              <div className='position' key={i}>
-                <PositionSelectBox>
-                  <Select
-                    id='position'
-                    options={position}
-                    value={e.value}
-                    defaultValue={position[0]}
-                    onChange={(e) => positionChangeHandler(e, i)}
-                  />
-                </PositionSelectBox>
-                <PositionCountBtn>
-                  <div className='count-button-group'>
-                    <button onClick={() => decreaseHandler(i)}>-</button>
-                    <span id='people'>{e.count}</span>
-                    <button onClick={() => increaseHandler(i)}>+</button>
-                  </div>
-                </PositionCountBtn>
-              </div>
-            </>
-          ))}
+        <div className='position-edit-message'>
+          <p>
+            <i className='fi fi-rr-exclamation' /> 모집 포지션과 인원은 수정할 수 없습니다.
+          </p>
+        </div>
       </SelectPositionContainer>
-      <AddButton className='add-btn' onClick={clickHandler}>
-        추가
-      </AddButton>
       <SelectOneType>
         <label className='individual-selection'>기술 스택</label>
         <TechStack selected={stack} setSelected={setStack} formData={formData} setFormData={setFormData} />
@@ -353,26 +311,6 @@ const SelectType = styled.div`
     font-weight: 700;
     padding: 10px;
   }
-  > .count-button-group {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    width: 100px;
-    > button {
-      width: 25px;
-      height: 25px;
-      border: 1px solid ${({ theme }) => theme.colors.grey3};
-      border-radius: 90px;
-      background: #ffffff;
-      cursor: pointer;
-      :hover {
-        background: ${({ theme }) => theme.colors.purple1};
-        color: #ffffff;
-        border: none;
-      }
-    }
-  }
 `;
 
 const SelectOneType = styled.div`
@@ -410,7 +348,7 @@ const SelectOneType = styled.div`
 `;
 
 const SelectPositionContainer = styled.div`
-  width: 630px;
+  width: 625px;
   margin: 15px 0px 15px 63px;
   > .position-title {
     display: flex;
@@ -422,57 +360,23 @@ const SelectPositionContainer = styled.div`
       width: 250px;
     }
   }
-  > .position {
+  > .position-edit-message {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 0px 5px 0px;
-  }
-`;
-
-const PositionSelectBox = styled.div`
-  width: 250px;
-`;
-
-const PositionCountBtn = styled.div`
-  width: 250px;
-  > .count-button-group {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    width: 100px;
-    > button {
-      width: 25px;
-      height: 25px;
-      border: 1px solid ${({ theme }) => theme.colors.grey3};
-      border-radius: 90px;
-      background: #ffffff;
-      cursor: pointer;
-      :hover {
-        background: ${({ theme }) => theme.colors.purple1};
-        color: #ffffff;
-        border: none;
-      }
+    justify-content: center;
+    /* align-items: center; */
+    border-radius: 4px;
+    margin-top: 10px;
+    background-color: ${({ theme }) => theme.colors.grey1};
+    font-size: 12px;
+    height: 80px;
+    > p {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+      width: 220px;
     }
   }
 `;
 
-const AddButton = styled.button`
-  width: 60px;
-  height: 30px;
-  padding: 5px 10px;
-  margin: 0px 0px 30px 63px;
-  text-align: center;
-  background-color: #ffffff;
-  border: 1px solid ${({ theme }) => theme.colors.grey3};
-  border-radius: 4px;
-  :hover {
-    background: ${({ theme }) => theme.colors.purple1};
-    color: #ffffff;
-    border: none;
-  }
-`;
-
-export default HeaderTemplate;
+export default EditHeaderTemplate;
