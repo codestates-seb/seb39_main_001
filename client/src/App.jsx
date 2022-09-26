@@ -11,8 +11,7 @@ import EditUser from './pages/EditUser';
 // import EditNewMeeting from './pages/EditNewMeeting';
 import { useCookies } from 'react-cookie';
 import MyJuse from './pages/MyJuse';
-import { useEffect } from 'react';
-import axios from 'axios';
+import EditNewMeeting from './pages/EditNewMeeting';
 
 function App() {
   // TODO: 서버로 부터 token 받으면 클라이언트에 cookie에 담기
@@ -32,7 +31,7 @@ function App() {
         <Route path='/users/edit' element={<EditUser />} />
         <Route path='/boards' element={<NewMeeting />} />
         <Route path='/users/myjuse' element={<MyJuse />} />
-        {/* <Route path='/boards/edit' element={<EditNewMeeting />} /> */}
+        <Route path='/boards/edit' element={<EditNewMeeting />} />
       </Routes>
     </>
   );

@@ -1,9 +1,49 @@
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { user } from '../mocks/db';
+import { apis } from '../apis/axios';
 
 const UserInfo = () => {
-  const { nickname, liked, myUserList, skillStackTags, introduction, email, portfolio, isAuth = false } = user.data;
+  const [cookies, setCookies, removeCookie] = useCookies();
+  const token = cookies.user;
+
+  const navigate = useNavigate();
+
+  const [data, setData] = useState({
+    nickname: '',
+    like: 0,
+    myUserList: [],
+    skillStackTags: [],
+    introduction: '',
+    email: '',
+    portfolio: '',
+  });
+  const { nickname, liked, myUserList, skillStackTags, introduction, email, portfolio } = data;
+  const location = useLocation().pathname;
+  const isMe = location === '/users' ? true : false;
+
+  // 나의 마이페이지인지, 남의 마이페이지인지 구분하여 api 호출
+  useEffect(() => {
+    if (isMe) {
+      apis.getUsers(token).then((res) => setData(res));
+    } else {
+      apis.getOtherUsers(token, location.slice(-1)).then((res) => setData(res));
+    }
+  }, []);
+
+  // 회원 탈퇴
+  const deleteHandler = () => {
+    if (window.confirm('정말 탈퇴하시겠습니까?')) {
+      apis
+        .deleteUser(token)
+        .then(removeCookie('user', { path: '/' }))
+        .then(navigate('/'));
+    } else {
+      return;
+    }
+  };
 
   return (
     <UserInfoContainer>
@@ -19,13 +59,13 @@ const UserInfo = () => {
         </MiniBox>
       </BasicInfo>
       <MainInfo>
-        {isAuth ? (
+        {isMe ? (
           <div>
             <InfoLabel>내가 좋아하는 사용자</InfoLabel>
             <LikedUsers>
               {myUserList.map((e, i) => (
-                <Link to={`/users/${e.id}`}>
-                  <User key={i}>
+                <Link key={i} to={`/users/${e.id}`}>
+                  <User>
                     <div className='img'></div>
                     <span>{e.nickname}</span>
                   </User>
@@ -49,10 +89,10 @@ const UserInfo = () => {
         <InfoLabel>한 줄 소개</InfoLabel>
         <p>{introduction}</p>
       </MainInfo>
-      {isAuth ? (
+      {isMe ? (
         <ButtonContainer>
           <button>정보 수정</button>
-          <button>회원 탈퇴</button>
+          <button onClick={() => deleteHandler(token)}>회원 탈퇴</button>
         </ButtonContainer>
       ) : (
         ''
