@@ -49,13 +49,6 @@ public class User extends Auditing {
 
     private int liked;
 
-    private String role;
-
-    private String provider;
-
-    private String providerId;
-
-
     @Column(nullable = false, unique = true)
     private String nickname;
 
