@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { ReactComponent as BookmarkIcon } from '../assets/icons/Bookmark.svg';
 
 const Card = ({ data }) => {
   // 프로젝트 기간 text 변환
@@ -19,7 +20,7 @@ const Card = ({ data }) => {
       <CardHeader>
         <CardType>{data.type}</CardType>
         <Bookmark>
-          <i className='fi fi-rr-bookmark'></i>
+          <BookmarkIcon width={'24px'} height={'24px'} />
           {data.bookmarks}
         </Bookmark>
       </CardHeader>
@@ -74,9 +75,6 @@ const Bookmark = styled.div`
   display: flex;
   flex-direction: column;
   text-align: center;
-  > i {
-    font-size: 24px;
-  }
 `;
 
 const CardSummary = styled.div`
