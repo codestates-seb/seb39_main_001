@@ -20,12 +20,15 @@ const NewMeeting = () => {
 		period: '',
 		onOffline: '',
 		content: '',
-		type: '',
+		type: 'PROJECT',
 		status: 'OPENING',
 		tagList: [],
 	});
 
 	const [company, setCompany] = useState([{ position: 'frontend', count: 0 }]);
+
+	// 모집 유형이 스터디일때 인원
+	const [count, setCount] = useState(0);
 
 	const titleInputHandler = (e) => {
 		setFormData({
@@ -36,21 +39,46 @@ const NewMeeting = () => {
 
 	// Post 요청
 	const submitHandler = () => {
-		// 기술 스택 미선택시 에러
-		alert('모집 유형, 포지션, 인원은 추후 수정이 불가합니다.');
+		// 모집 유형 미선택시 에러
+		if (formData.type === '') {
+			alert('모집 유형은 필수 선택입니다.');
+			throw Error('모집 유형은 필수 선택입니다.');
+		}
 
+		// 기술 스택 미선택시 에러
 		if (formData.tagList.length === 0) {
 			alert('기술 스택은 반드시 1개 이상 추가해야 합니다.');
 			throw Error('기술 스택은 반드시 1개 이상 추가해야 합니다.');
+		}
+
+		// 제목 미입력시 에러
+		if (formData.title.length === 0) {
+			alert('제목을 입력해주세요.');
+			throw Error('제목을 입력해주세요.');
+		}
+
+		// 내용 미입력시 에러
+		if (formData.content === '<p><br></p>') {
+			alert('본문 내용을 입력해주세요.');
+			throw Error('본문 내용을 입력해주세요.');
+		}
+
+		// 최소 인원 미입력시 에러
+		if (
+			formData.frontend === 0 &&
+			formData.backend === 0 &&
+			formData.designer === 0 &&
+			formData.etc === 0
+		) {
+			alert('최소 1명 이상의 인원을 선택해주세요.');
 		}
 
 		const temp = {};
 		company.forEach((e) => {
 			Object.assign(temp, { [e.position]: e.count });
 		});
-		setFormData({ ...formData, ...temp });
 
-		console.log('formData.frontend:', formData.frontend);
+		setFormData({ ...formData, ...temp, people: count });
 
 		// Post 요청
 		// axios
@@ -59,6 +87,7 @@ const NewMeeting = () => {
 		//   .catch((err) => console.log(err));
 
 		console.log('formData.tagList:', formData.tagList);
+		console.log('formData.content:', formData.content);
 		console.log('formData:', formData);
 	};
 
@@ -70,6 +99,8 @@ const NewMeeting = () => {
 				setFormData={setFormData}
 				company={company}
 				setCompany={setCompany}
+				count={count}
+				setCount={setCount}
 			/>
 			<Title>모임을 소개해주세요!</Title>
 			<input

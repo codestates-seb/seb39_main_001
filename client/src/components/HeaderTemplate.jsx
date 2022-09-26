@@ -9,7 +9,14 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import TextField from '@mui/material/TextField';
 import dayjs from 'dayjs';
 
-const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
+const HeaderTemplate = ({
+	formData,
+	setFormData,
+	company,
+	setCompany,
+	count,
+	setCount,
+}) => {
 	// 모집 기간, 포지션 select options
 	const period = [
 		{ value: 'short', label: '1개월 미만' },
@@ -31,15 +38,17 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
 
 	// 클릭된 버튼 스타일링 (default: 모집 중 버튼)
 	const [defaultBtnActive, setDefaultBtnActive] = useState('OPENING');
-	const [typeBtnActive, setTypeBtnActive] = useState('');
+	const [typeBtnActive, setTypeBtnActive] = useState('PROJECT');
 	const [onlineBtnActive, setOnlineBtnActive] = useState('');
-	const [contactBtnActive, setContactBtnActive] = useState('');
 
 	// 예상 기간 선택
 	const [periodSelected, setPeriodSelected] = useState(period[0]);
 
 	// 선택된 기술스택
 	const [stack, setStack] = useState([]);
+
+	// 스터디 인원 수
+	// const [count, setCount] = useState(0);
 
 	// stack 이 바뀔때마다 formdata update 해주는 useEffect
 	useEffect(() => {
@@ -49,7 +58,7 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
 		});
 	}, [stack.length]);
 
-	// event handlers
+	// 이벤트 핸들러
 	const meetingStatusHandler = (e) => {
 		setDefaultBtnActive(e.target.id);
 		setFormData({
@@ -72,10 +81,6 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
 			...formData,
 			onOffline: e.target.id,
 		});
-	};
-
-	const contactBtnClickHandler = (e) => {
-		setContactBtnActive(e.target.id);
 	};
 
 	const inputValueHandler = (e) => {
@@ -130,9 +135,27 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
 		setCompany([...company, { position: 'frontend', count: 0 }]);
 	};
 
+	const peopleDecreaseHandler = () => {
+		setCount(count - 1);
+		console.log(count);
+		setFormData({
+			...formData,
+			people: count,
+		});
+	};
+
+	const peopleIncreaseHandler = () => {
+		setCount(count + 1);
+		setFormData({
+			...formData,
+			people: count,
+		});
+		console.log(count);
+	};
+
 	return (
 		<HeaderTemplateContainer>
-			<SelectOneType>
+			<SelectSingle>
 				<label>모집 상태</label>
 				<div
 					className={`select-btn ${
@@ -152,7 +175,7 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
 				>
 					모집 완료
 				</div>
-			</SelectOneType>
+			</SelectSingle>
 			<div className='group-selection'>
 				<SelectButton>
 					<label>유형</label>
@@ -255,7 +278,8 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
 					<label>모집 포지션</label>
 					<label>인원</label>
 				</div>
-				{company &&
+				{formData.type === 'PROJECT' ? (
+					company &&
 					company.map((e, i) => (
 						<>
 							<div className='position' key={i}>
@@ -271,18 +295,32 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
 								<PositionCountBtn>
 									<div className='count-button-group'>
 										<button onClick={() => decreaseHandler(i)}>-</button>
-										<span id='people'>{e.count}</span>
+										<span>{e.count}</span>
 										<button onClick={() => increaseHandler(i)}>+</button>
 									</div>
 								</PositionCountBtn>
 							</div>
 						</>
-					))}
+					))
+				) : (
+					<div className='position'>
+						<PositionSelectBox>
+							<Select isDisabled={true} />
+						</PositionSelectBox>
+						<PositionCountBtn>
+							<div className='count-button-group'>
+								<button onClick={() => peopleDecreaseHandler()}>-</button>
+								<span id='people'>{count}</span>
+								<button onClick={() => peopleIncreaseHandler()}>+</button>
+							</div>
+						</PositionCountBtn>
+					</div>
+				)}
 			</SelectPositionContainer>
 			<AddButton className='add-btn' onClick={clickHandler}>
 				추가
 			</AddButton>
-			<SelectOneType>
+			<SelectSingle>
 				<label className='individual-selection'>기술 스택</label>
 				<TechStack
 					selected={stack}
@@ -290,7 +328,7 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
 					formData={formData}
 					setFormData={setFormData}
 				/>
-			</SelectOneType>
+			</SelectSingle>
 		</HeaderTemplateContainer>
 	);
 };
@@ -389,7 +427,7 @@ const SelectType = styled.div`
 	}
 `;
 
-const SelectOneType = styled.div`
+const SelectSingle = styled.div`
 	width: 500px;
 	margin-left: 63px;
 	> label {
