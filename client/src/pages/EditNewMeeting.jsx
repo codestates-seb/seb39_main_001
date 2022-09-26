@@ -72,6 +72,13 @@ const EditNewMeeting = () => {
 	// Patch 요청
 	const submitHandler = (e) => {
 		e.preventDefault();
+
+		// 기술 스택 미선택시 에러
+		if (formData.tagList.length === 0) {
+			alert('기술 스택은 반드시 1개 이상 추가해야 합니다.');
+			throw Error('기술 스택은 반드시 1개 이상 추가해야 합니다.');
+		}
+		console.log('formData.tagList:', formData.tagList);
 		console.log('submit하는 formData:', formData);
 
 		// MSW Patch 요쳥 ----->

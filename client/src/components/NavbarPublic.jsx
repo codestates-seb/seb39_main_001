@@ -35,7 +35,7 @@ export const NavbarSubContainer = styled.div`
 	align-items: center;
 	width: 100%;
 	max-width: 1300px;
-	margin: 0px 30px 0px 30px;
+	padding: 0px 30px;
 `;
 
 export const Logo = () => {
