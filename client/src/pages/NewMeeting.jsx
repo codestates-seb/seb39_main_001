@@ -30,6 +30,30 @@ const NewMeeting = () => {
 	// 모집 유형이 스터디일때 인원
 	const [count, setCount] = useState(0);
 
+	// 모집 유형이 study로 바뀔 때 프로젝트 모집 포지션, 인원 초기화 / project로 바뀔 때 스터디 인원 초기화
+	useEffect(() => {
+		if (formData.type === 'STUDY') {
+			setCompany([{ position: 'frontend', count: 0 }]);
+			setFormData({
+				...formData,
+				frontend: 0,
+				backend: 0,
+				designer: 0,
+				etc: 0,
+				people: count,
+			});
+		}
+
+		if (formData.type === 'PROJECT') {
+			setCount(0);
+			setFormData({
+				...formData,
+				people: 0,
+			});
+		}
+	}, [formData.type]);
+
+	// 이벤트 핸들러
 	const titleInputHandler = (e) => {
 		setFormData({
 			...formData,
