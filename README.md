@@ -9,7 +9,7 @@
 
 ## 🔗 배포 링크
 
-- 클라이언트: [netlify](https://junior-to-senior-private.netlify.app/)
+- 클라이언트: [netlify](https://junior-to-senior.netlify.app/)
 
 
 ## ✅ 기능 및 배포 내역
