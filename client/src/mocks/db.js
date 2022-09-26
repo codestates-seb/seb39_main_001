@@ -154,6 +154,7 @@ export const board1 = {
           nickname: '질문자',
           img: null,
         },
+        auth: true,
         answer: {
           id: 1,
           user: {
@@ -169,9 +170,10 @@ export const board1 = {
       {
         id: 1,
         content: '답변이 안달린 질문',
+        auth: false,
         user: {
-          id: 1,
-          nickname: '질문자',
+          id: 2,
+          nickname: '다른질문자',
           img: null,
         },
         answer: null,

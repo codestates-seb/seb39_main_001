@@ -40,13 +40,12 @@ export const apis = {
       .catch((err) => console.log(err));
   },
   deleteUser: async (token, userId) => {
-    return await axios
+    await axios
       .delete(`http://juse.iptime.org:8080/users`, {
         headers: {
           Auth: token,
         },
       })
-      .then((res) => res.data.data)
       .catch((err) => console.log(err));
   },
 
@@ -63,16 +62,76 @@ export const apis = {
   },
 
   // 게시물 상세
-  getBoardDetail: async (token) => {
+  getBoardDetail: async (token, boardId) => {
     return await axios
-      .get(`http://juse.iptime.org:8080/boards/1`, {
+      .get(`http://juse.iptime.org:8080/boards/${boardId}`, {
         headers: {
           Auth: token,
         },
       })
-      .then((res) => console.log(res))
+      .then((res) => res.data.data)
       .catch((err) => console.log(err));
   },
+
+  // 질문 게시 수정 삭제
+  postQuestion: async (token, data, boardId) => {
+    await axios
+      .post(`http://juse.iptime.org:8080/questions/${boardId}`, data, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res.data.data));
+  },
+  patchQuestion: async (token, data, questionId) => {
+    await axios
+      .patch(`http://juse.iptime.org:8080/questions/${questionId}`, data, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .catch((err) => console.log(err));
+  },
+  deleteQuestion: async (token, questionId) => {
+    await axios
+      .delete(`http://juse.iptime.org:8080/questions/${questionId}`, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res));
+  },
+
+  // 답변 게시 수정 삭제
+  postAnswer: async (token, data, questionId) => {
+    await axios
+      .post(`http://juse.iptime.org:8080/answers/${questionId}`, data, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res.data.data));
+  },
+  patchAnswer: async (token, data, answerId) => {
+    await axios
+      .patch(`http://juse.iptime.org:8080/answers/${answerId}`, data, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .catch((err) => console.log(err));
+  },
+  deleteAnswer: async (token) => {
+    await axios
+      .delete(`http://juse.iptime.org:8080/answers/1`, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res));
+  },
+
+  ///////////////////////////////////
 
   boardPost: async (token) => {
     await axios
@@ -93,36 +152,6 @@ export const apis = {
           content: 'content1',
           type: 'PROJECT',
           tagList: ['java', 'react', 'figma'],
-        },
-        {
-          headers: {
-            Auth: token,
-          },
-        }
-      )
-      .then((res) => console.log(res.data.data));
-  },
-  questionPost: async (token) => {
-    await axios
-      .post(
-        `http://juse.iptime.org:8080/questions/1`,
-        {
-          content: '정신이 있습니까?',
-        },
-        {
-          headers: {
-            Auth: token,
-          },
-        }
-      )
-      .then((res) => console.log(res.data.data));
-  },
-  answerPost: async (token) => {
-    await axios
-      .post(
-        `http://juse.iptime.org:8080/answers/1`,
-        {
-          content: '없습니다',
         },
         {
           headers: {
@@ -233,54 +262,6 @@ export const apis = {
           },
         }
       )
-      .then((res) => console.log(res));
-  },
-  questionUpdate: async (token) => {
-    await axios
-      .patch(
-        `http://juse.iptime.org:8080/questions/1`,
-        {
-          content: '수정수정',
-        },
-        {
-          headers: {
-            Auth: token,
-          },
-        }
-      )
-      .then((res) => console.log(res));
-  },
-  answerUpdate: async (token) => {
-    await axios
-      .patch(
-        `http://juse.iptime.org:8080/answers/1`,
-        {
-          content: '답변 수정',
-        },
-        {
-          headers: {
-            Auth: token,
-          },
-        }
-      )
-      .then((res) => console.log(res));
-  },
-  answerDelete: async (token) => {
-    await axios
-      .delete(`http://juse.iptime.org:8080/answers/1`, {
-        headers: {
-          Auth: token,
-        },
-      })
-      .then((res) => console.log(res));
-  },
-  questionDelete: async (token) => {
-    await axios
-      .delete(`http://juse.iptime.org:8080/questions/1`, {
-        headers: {
-          Auth: token,
-        },
-      })
       .then((res) => console.log(res));
   },
   myUpdate: async (token) => {

@@ -87,7 +87,7 @@ const Home = () => {
       </ListHeader>
       <BoardsContainer>
         {boards.data.map((e, i) => (
-          <Card key={i} data={e}></Card>
+          <Card key={e.id} data={e}></Card>
         ))}
       </BoardsContainer>
       <ScrollToTop />

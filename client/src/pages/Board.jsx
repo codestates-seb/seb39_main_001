@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { board1 } from '../mocks/db';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import QuestionAnswer from '../components/QuestionAnswer';
 import Application from '../components/Application';
 import { ReactComponent as Eye } from '../assets/icons/eye.svg';
@@ -8,22 +8,27 @@ import { ReactComponent as Bookmark } from '../assets/icons/bookmark.svg';
 import { useEffect } from 'react';
 import { apis } from '../apis/axios';
 import { useCookies } from 'react-cookie';
+import { useState } from 'react';
 
 const Board = () => {
   const [cookies] = useCookies();
   const token = cookies.user;
-  const data = board1.data;
+  const [data, setData] = useState(board1.data);
 
-  // useEffect(() => {
-  //   apis.getBoardDetail(token).then((res) => console.log(res));
-  // }, []);
+  const boardId = useLocation().pathname.slice(-1);
+
+  useEffect(() => {
+    apis.getBoardDetail(token, boardId).then((data) => setData(data));
+  }, []);
 
   return (
     <BoardContainer>
       <HeaderInfo>
         <StatusType>
           <div className='type'>{data.type}</div>
-          <div className='status'>{data.status === 'OPENING' ? '모집 중' : '모집 완료'}</div>
+          <div className='status'>
+            {data.status === 'OPENING' ? '모집 중' : '모집 완료'}
+          </div>
         </StatusType>
         <FlexContainer>
           <EditDelete>
