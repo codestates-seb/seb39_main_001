@@ -46,6 +46,31 @@ export const apis = {
       .then((res) => res.data.data)
       .catch((err) => console.log(err));
   },
+
+  // 유저 정보 수정
+  patchUser: async (token, user) => {
+    await axios
+      .patch(`http://juse.iptime.org:8080/users`, user, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  },
+
+  // 게시물 상세
+  getBoardDetail: async (token) => {
+    return await axios
+      .get(`http://juse.iptime.org:8080/boards/1`, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  },
+
   boardPost: async (token) => {
     await axios
       .post(
@@ -102,15 +127,6 @@ export const apis = {
           },
         }
       )
-      .then((res) => console.log(res.data.data));
-  },
-  getBoard1: async (token) => {
-    await axios
-      .get(`http://juse.iptime.org:8080/boards/1`, {
-        headers: {
-          Auth: token,
-        },
-      })
       .then((res) => console.log(res.data.data));
   },
   postApply: async (token) => {

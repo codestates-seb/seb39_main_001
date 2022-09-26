@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as BookmarkIcon } from '../assets/icons/bookmark.svg';
+import { ReactComponent as Eye } from '../assets/icons/eye.svg';
+
 
 const Card = ({ data }) => {
 	// 프로젝트 기간 text 변환
@@ -14,47 +16,40 @@ const Card = ({ data }) => {
 		}
 	};
 
-	return (
-		<CardContainer status={data.status}>
-			{data.status === 'CLOSED' ? <Closed>모집 완료</Closed> : ''}
-			<CardHeader>
-				<CardType>{data.type}</CardType>
-				<Bookmark>
-					<BookmarkIcon width={'24px'} height={'24px'} />
-					{data.bookmarks}
-				</Bookmark>
-			</CardHeader>
-			<Link to={`/boards/${data.id}`}>
-				<CardSummary>
-					<div className='date'>{`${data.startingDate} (${periodNaming(
-						data.period
-					)})`}</div>
-					<p className='title'>{data.title}</p>
-					<div className='tags-container'>
-						{/* 스택 리스트는 5개 초과 시 첫 5개만 잘라서 보여줌 */}
-						{data.tagList.slice(0, 5).map((e, i) => (
-							<img
-								className='tag'
-								key={i}
-								src={`/icons/stacks/${e}.png`}
-								alt={`${e}`}
-							/>
-						))}
-					</div>
-				</CardSummary>
-			</Link>
-			<CardInfo>
-				<AuthorInfo>
-					<div className='picture'></div>
-					<div className='name'>{data.user.nickname}</div>
-				</AuthorInfo>
-				<Views>
-					<i className='fi fi-rr-eye'></i>
-					{data.views}
-				</Views>
-			</CardInfo>
-		</CardContainer>
-	);
+  return (
+    <CardContainer status={data.status}>
+      {data.status === 'CLOSED' ? <Closed>모집 완료</Closed> : ''}
+      <CardHeader>
+        <CardType>{data.type}</CardType>
+        <Bookmark>
+          <BookmarkIcon width={'24px'} height={'24px'} />
+          {data.bookmarks}
+        </Bookmark>
+      </CardHeader>
+      <Link to={`/boards/${data.id}`}>
+        <CardSummary>
+          <div className='date'>{`${data.startingDate} (${periodNaming(data.period)})`}</div>
+          <p className='title'>{data.title}</p>
+          <div className='tags-container'>
+            {/* 스택 리스트는 5개 초과 시 첫 5개만 잘라서 보여줌 */}
+            {data.tagList.slice(0, 5).map((e, i) => (
+              <img className='tag' key={i} src={`/icons/stacks/${e}.png`} alt={`${e}`} />
+            ))}
+          </div>
+        </CardSummary>
+      </Link>
+      <CardInfo>
+        <AuthorInfo>
+          <div className='picture'></div>
+          <div className='name'>{data.user.nickname}</div>
+        </AuthorInfo>
+        <Views>
+          <Eye />
+          {data.views}
+        </Views>
+      </CardInfo>
+    </CardContainer>
+  );
 };
 
 const CardContainer = styled.div`
