@@ -39,7 +39,7 @@ export const apis = {
       .then((res) => res.data.data)
       .catch((err) => console.log(err));
   },
-  deleteUser: async (token) => {
+  deleteUser: async (token, userId) => {
     return await axios
       .delete(`http://juse.iptime.org:8080/users`, {
         headers: {
@@ -54,6 +54,18 @@ export const apis = {
   patchUser: async (token, user) => {
     await axios
       .patch(`http://juse.iptime.org:8080/users`, user, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  },
+
+  // 게시물 상세
+  getBoardDetail: async (token) => {
+    return await axios
+      .get(`http://juse.iptime.org:8080/boards/1`, {
         headers: {
           Auth: token,
         },
@@ -118,15 +130,6 @@ export const apis = {
           },
         }
       )
-      .then((res) => console.log(res.data.data));
-  },
-  getBoard1: async (token) => {
-    await axios
-      .get(`http://juse.iptime.org:8080/boards/1`, {
-        headers: {
-          Auth: token,
-        },
-      })
       .then((res) => console.log(res.data.data));
   },
   postApply: async (token) => {
@@ -278,6 +281,24 @@ export const apis = {
           Auth: token,
         },
       })
+      .then((res) => console.log(res));
+  },
+  myUpdate: async (token) => {
+    await axios
+      .patch(
+        `http://juse.iptime.org:8080/users`,
+        {
+          introduction: '용우정입니다',
+          portfolio: '포폴업뎃',
+          nickname: '용정우',
+          skillStackTags: ['react', 'java'],
+        },
+        {
+          headers: {
+            Auth: token,
+          },
+        }
+      )
       .then((res) => console.log(res));
   },
 };

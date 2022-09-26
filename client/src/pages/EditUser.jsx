@@ -1,16 +1,13 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import TechStack from '../components/TechStack';
-import { apis } from '../apis/axios';
-import { useCookies } from 'react-cookie';
-import { useEffect } from 'react';
+import { joinSubmit } from '../apis/axios';
 
 const EditUser = () => {
   const [stack, setStack] = useState([]);
   const [nickname, setNickname] = useState('');
   const [portfolio, setPortfolio] = useState('');
   const [introduction, setIntroduction] = useState('');
-  const [cookies] = useCookies();
 
   //유저 데이터
   const user = {
@@ -19,7 +16,6 @@ const EditUser = () => {
     introduction,
     skillStackTags: stack,
   };
-  const token = cookies.user;
 
   //인풋 핸들러들
   const nicknameHandler = (e) => {
@@ -30,21 +26,6 @@ const EditUser = () => {
   };
   const introductionHandler = (e) => {
     setIntroduction(e.target.value);
-    console.log(user);
-  };
-
-  // 유저 정보 받아오기
-  useEffect(() => {
-    apis.getUsers(token).then((data) => {
-      setNickname(data.nickname);
-      setPortfolio(data.portfolio);
-      setStack(data.skillStackTags);
-      setIntroduction(data.introduction);
-    });
-  }, []);
-
-  const editSubmitHandler = (token, user) => {
-    apis.patchUser(token, user);
   };
 
   return (
@@ -62,20 +43,17 @@ const EditUser = () => {
         </ProfileUpload>
         <JoinInput>
           <p>닉네임</p>
-          <input type='text' value={nickname} onChange={nicknameHandler}></input>
+          <input type='text' onChange={nicknameHandler}></input>
+          <p>이메일</p>
+          <input type='text' value='milk@gmail.com'></input>
           <p>포트폴리오 링크 (깃헙, 노션, 블로그...)</p>
-          <input type='text' value={portfolio} onChange={portfolioHandler}></input>
+          <input type='text' onChange={portfolioHandler}></input>
           <p>기술 스택</p>
           <TechStack selected={stack} setSelected={setStack} />
           <p>한 줄 소개</p>
-          <textarea type='text' value={introduction} onChange={introductionHandler}></textarea>
+          <textarea type='text' onChange={introductionHandler}></textarea>
         </JoinInput>
-        <StyledButton
-          onClick={() => {
-            editSubmitHandler(token, user);
-          }}>
-          정보 수정
-        </StyledButton>
+        <StyledButton>정보 수정</StyledButton>
       </JoinContainer>
     </div>
   );

@@ -192,6 +192,8 @@ export const board1 = {
     },
     createdAt: '2022-09-21T16:17:01.506336',
     modifiedAt: '2022-09-21T16:17:01.506336',
+    auth: true,
+    bookmarked: true,
   },
 };
 
