@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { ReactComponent as BookmarkIcon } from '../assets/icons/Bookmark.svg';
+import { ReactComponent as BookmarkIcon } from '../assets/icons/bookmark.svg';
+import { ReactComponent as Eye } from '../assets/icons/eye.svg';
 
 const Card = ({ data }) => {
   // 프로젝트 기간 text 변환
@@ -42,7 +43,7 @@ const Card = ({ data }) => {
           <div className='name'>{data.user.nickname}</div>
         </AuthorInfo>
         <Views>
-          <i className='fi fi-rr-eye'></i>
+          <Eye />
           {data.views}
         </Views>
       </CardInfo>

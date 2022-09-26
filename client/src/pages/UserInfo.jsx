@@ -4,6 +4,8 @@ import { useCookies } from 'react-cookie';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { apis } from '../apis/axios';
+import { ReactComponent as Heart } from '../assets/icons/heart.svg';
+import { ReactComponent as HeartFill } from '../assets/icons/heart-fill.svg';
 
 const UserInfo = () => {
   const [cookies, setCookies, removeCookie] = useCookies();
@@ -50,11 +52,11 @@ const UserInfo = () => {
       <BasicInfo>
         <UserImg></UserImg>
         <RoundButton>
-          <i className='fi fi-rr-heart'></i>
+          <Heart />
         </RoundButton>
         <MiniBox>{nickname}</MiniBox>
         <MiniBox>
-          <i className='fi fi-sr-heart'></i>
+          <HeartFill fill='red' />
           {liked}
         </MiniBox>
       </BasicInfo>
@@ -149,10 +151,6 @@ const MiniBox = styled.div`
   margin-bottom: 10px;
   width: 100%;
   border: 1px solid ${({ theme }) => theme.colors.grey2};
-  > i {
-    color: #ff0000;
-    transform: translateY(1px);
-  }
 `;
 
 const MainInfo = styled.div`

@@ -1,48 +1,74 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { ReactComponent as Edit } from '../assets/icons/edit.svg';
+import { ReactComponent as Delete } from '../assets/icons/delete.svg';
+import { useState } from 'react';
 
 const QuestionAnswer = ({ data }) => {
+  const [isQEdit, setIsQEdit] = useState(false);
+  const [isAEdit, setIsAEdit] = useState(false);
+
+  const [qContent, setQContent] = useState('');
+  const [aContent, setAContent] = useState('');
+
+  // 인풋 핸들러
+  const questionChange = (e) => {
+    setQContent(e.target.value);
+  };
+  const answerChange = (e) => {
+    setAContent(e.target.value);
+  };
+
+  // 클릭 핸들러
+  const qEditMode = (e) => {
+    setIsQEdit(true);
+  };
+  const aEditMode = () => {
+    setIsAEdit(true);
+  };
+
   return (
     <QuestionContainer>
       <SubTitle>문의 사항</SubTitle>
-      {data.questionList.map((e, i) => (
-        <ContentContainer key={i}>
-          <QuestionContent>
-            <div>{e.content}</div>
-            <ButtonContainer>
-              <Link to=''>
-                <i className='fi fi-rr-edit'></i>
-              </Link>
-              <Link to=''>
-                <i className='fi fi-rr-trash'></i>
-              </Link>
-            </ButtonContainer>
-            <div>{e.user.nickname}</div>
-          </QuestionContent>
-          {e.answer ? (
-            <AnswerContainer>
-              <span className='label'>답변 :</span>
-              <span>{e.answer.content}</span>
+      {data.questionList.map((e, i) => {
+        return (
+          <ContentContainer key={i}>
+            <QuestionContent>
+              <div>{e.content}</div>
               <ButtonContainer>
-                <Link to=''>
-                  <i className='fi fi-rr-edit'></i>
-                </Link>
-                <Link to=''>
-                  <i className='fi fi-rr-trash'></i>
-                </Link>
+                <Edit onClick={() => qEditMode(e)} />
+                <Delete />
               </ButtonContainer>
-              <div>{e.answer.user.nickname}</div>
-            </AnswerContainer>
-          ) : (
-            <AnswerCreator>
-              <input type='text' placeholder='답변을 입력하세요.' />
-              <button>답변 등록</button>
-            </AnswerCreator>
-          )}
-        </ContentContainer>
-      ))}
+              <div>{e.user.nickname}</div>
+            </QuestionContent>
+            {e.answer ? (
+              isAEdit ? (
+                <Editor>
+                  <input type='text' value={e.answer.content} />
+                  <button>답변 등록</button>
+                </Editor>
+              ) : (
+                <AnswerContainer>
+                  <span className='label'>답변 :</span>
+                  <span>{e.answer.content}</span>
+                  <ButtonContainer>
+                    <Edit />
+                    <Delete />
+                  </ButtonContainer>
+                  <div>{e.answer.user.nickname}</div>
+                </AnswerContainer>
+              )
+            ) : (
+              <AnswerCreator>
+                <input type='text' value={aContent} placeholder='답변을 입력하세요.' onChange={answerChange} />
+                <button>답변 등록</button>
+              </AnswerCreator>
+            )}
+          </ContentContainer>
+        );
+      })}
       <QuestionCreator>
-        <textarea placeholder='문의 사항을 입력하세요.' />
+        <textarea value={qContent} placeholder='문의 사항을 입력하세요.' onChange={questionChange} />
         <button>문의 등록</button>
       </QuestionCreator>
     </QuestionContainer>
@@ -111,5 +137,7 @@ const QuestionCreator = styled.div`
     padding: 10px;
   }
 `;
+
+const Editor = styled.div``;
 
 export default QuestionAnswer;
