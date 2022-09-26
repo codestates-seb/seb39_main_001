@@ -95,10 +95,10 @@ public class BoardController {
 
     @GetMapping
     public ResponseEntity<MultiResponseDto<BoardResponseDto.Multi>> getBoards(
-            @RequestParam(name = "type", required = false) String type,
+            @RequestParam(name = "type", required = false) Board.Type type,
             @RequestParam(name = "tag", required = false) String tag,
             @RequestParam(name = "period", required = false) String period,
-            @RequestParam(name = "status", required = false) String status,
+            @RequestParam(name = "status", required = false) Board.Status status,
             @RequestParam(name = "page", required = true, defaultValue = "1") int page
     ) {
         System.out.println("type : " + type);
@@ -108,7 +108,7 @@ public class BoardController {
 
         Pageable pageable = PageRequest.of(page - 1, 5);
 
-        FilterOptions filterOptions = FilterOptions.of(type, tag, period, status);
+        FilterOptions filterOptions = FilterOptions.of(type, status, tag, period);
         Page<Board> pagedBoardList = boardService.getBoards(pageable, filterOptions);
 
         Pagination pagination = Pagination.of(pagedBoardList, filterOptions);

@@ -18,7 +18,6 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
             "AND (:period IS NULL OR b.period IN :period) " +
             "AND (COALESCE(:tag) IS NULL OR t.name IN :tag) " +
             "ORDER BY b.createdAt desc"
-
     )
     Page<Board> findWithParameters(
             Pageable pageable,
