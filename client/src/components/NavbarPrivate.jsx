@@ -2,6 +2,11 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { NavbarContainer, NavbarSubContainer, Logo } from './NavbarPublic';
+import { ReactComponent as NotificationIcon } from '../assets/icons/notification.svg';
+import { ReactComponent as UserIcon } from '../assets/icons/user.svg';
+import { ReactComponent as BookmarkIcon } from '../assets/icons/bookmark.svg';
+import { ReactComponent as LogoutIcon } from '../assets/icons/logout.svg';
+import theme from '../assets/styles/Theme';
 
 const NavbarPrivate = ({ removeCookie }) => {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -22,21 +27,21 @@ const NavbarPrivate = ({ removeCookie }) => {
 				<Logo />
 				<NavButtons>
 					<Notification>
-						<i className='fi fi-rr-bell' />
+						<NotificationIcon width='18px' height='18px' />
 					</Notification>
 					<Profile onClick={dropdownClickHandler}>
 						{dropdownOpen ? (
 							<DropdownNav>
 								<DropdownLink to='/users'>
-									<i class='fi fi-rr-user' />
+									<UserIcon />
 									<p>마이페이지</p>
 								</DropdownLink>
 								<DropdownLink to='/users/myjuse/user-id'>
-									<i class='fi fi-rr-bookmark' />
+									<BookmarkIcon />
 									<p>나의 JUSE</p>
 								</DropdownLink>
 								<DropdownLink to='/' onClick={handleLogout}>
-									<i class='fi fi-sr-exit' />
+									<LogoutIcon />
 									<p>로그아웃</p>
 								</DropdownLink>
 							</DropdownNav>

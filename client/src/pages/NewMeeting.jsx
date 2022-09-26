@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { useState } from 'react';
-import { createRoutesFromElements } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import HeaderTemplate from '../components/HeaderTemplate';
 import TextEditor from '../components/TextEditor';
@@ -21,7 +21,7 @@ const NewMeeting = () => {
 		onOffline: '',
 		content: '',
 		type: '',
-		status: 'opening',
+		status: 'OPENING',
 		tagList: [],
 	});
 
@@ -34,19 +34,32 @@ const NewMeeting = () => {
 		});
 	};
 
+	// Post 요청
 	const submitHandler = () => {
+		// 기술 스택 미선택시 에러
+		alert('모집 유형, 포지션, 인원은 추후 수정이 불가합니다.');
+
+		if (formData.tagList.length === 0) {
+			alert('기술 스택은 반드시 1개 이상 추가해야 합니다.');
+			throw Error('기술 스택은 반드시 1개 이상 추가해야 합니다.');
+		}
+
 		const temp = {};
 		company.forEach((e) => {
 			Object.assign(temp, { [e.position]: e.count });
 		});
 		setFormData({ ...formData, ...temp });
+
+		console.log('formData.frontend:', formData.frontend);
+
 		// Post 요청
 		// axios
-		//   .post('/boards', formData)
+		//   .post('juse.iptime.org:8080/boards', formData, { Auth: cookies.user })
 		//   .then((res) => console.log(res))
 		//   .catch((err) => console.log(err));
 
-		console.log(formData);
+		console.log('formData.tagList:', formData.tagList);
+		console.log('formData:', formData);
 	};
 
 	return (
@@ -65,7 +78,10 @@ const NewMeeting = () => {
 				onChange={titleInputHandler}
 			/>
 			<TextEditor formData={formData} setFormData={setFormData} />
-			<SubmitButton onClick={submitHandler}>등록하기</SubmitButton>
+			<div className='buttons'>
+				<CancelButton to='/'>취소</CancelButton>
+				<SubmitButton onClick={submitHandler}>등록하기</SubmitButton>
+			</div>
 		</NewMeetingPageContainer>
 	);
 };
@@ -88,6 +104,12 @@ const NewMeetingPageContainer = styled.div`
 			border: 1px solid ${({ theme }) => theme.colors.purple1};
 		}
 	}
+	> .buttons {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		width: 250px;
+	}
 `;
 
 const Title = styled.div`
@@ -98,10 +120,28 @@ const Title = styled.div`
 	color: ${({ theme }) => theme.colors.black1};
 `;
 
+const CancelButton = styled(Link)`
+	width: 100px;
+	padding: 10px 15px;
+	background: #ffffff;
+	font-size: 14px;
+	text-align: center;
+	color: ${({ theme }) => theme.colors.black1};
+	border: 1px solid ${({ theme }) => theme.colors.grey3};
+	border-radius: 4px;
+	cursor: pointer;
+	:hover {
+		color: ${({ theme }) => theme.colors.black1};
+		border: 1px solid ${({ theme }) => theme.colors.grey3};
+		background: ${({ theme }) => theme.colors.grey2};
+	}
+`;
+
 const SubmitButton = styled.button`
 	width: 100px;
 	padding: 10px 15px;
 	background: #ffffff;
+	font-size: 14px;
 	color: ${({ theme }) => theme.colors.black1};
 	border: 1px solid ${({ theme }) => theme.colors.grey3};
 	border-radius: 4px;
