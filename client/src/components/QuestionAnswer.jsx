@@ -1,49 +1,50 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { ReactComponent as Edit } from '../assets/icons/edit.svg';
+import { ReactComponent as Delete } from '../assets/icons/delete.svg';
+import Question from './Question';
+import Answer from './Answer';
+import { useState } from 'react';
+import { apis } from '../apis/axios';
+import { useCookies } from 'react-cookie';
 
 const QuestionAnswer = ({ data }) => {
+  const [cookies] = useCookies();
+  const token = cookies.user;
+  const [question, setQuestion] = useState('');
+
+  // 질문 인풋 핸들러
+  const qInputHandler = (e) => {
+    setQuestion(e.target.value);
+  };
+
+  // 질문 등록 핸들러
+  const qSubmitHandler = () => {
+    if (question) {
+      const boardId = data.id;
+      const content = { content: question };
+      apis.postQuestion(token, content, boardId);
+    } else {
+      alert('질문 내용을 입력하세요.');
+      return;
+    }
+  };
+
   return (
     <QuestionContainer>
       <SubTitle>문의 사항</SubTitle>
       {data.questionList.map((e, i) => (
         <ContentContainer key={i}>
-          <QuestionContent>
-            <div>{e.content}</div>
-            <ButtonContainer>
-              <Link to=''>
-                <i className='fi fi-rr-edit'></i>
-              </Link>
-              <Link to=''>
-                <i className='fi fi-rr-trash'></i>
-              </Link>
-            </ButtonContainer>
-            <div>{e.user.nickname}</div>
-          </QuestionContent>
-          {e.answer ? (
-            <AnswerContainer>
-              <span className='label'>답변 :</span>
-              <span>{e.answer.content}</span>
-              <ButtonContainer>
-                <Link to=''>
-                  <i className='fi fi-rr-edit'></i>
-                </Link>
-                <Link to=''>
-                  <i className='fi fi-rr-trash'></i>
-                </Link>
-              </ButtonContainer>
-              <div>{e.answer.user.nickname}</div>
-            </AnswerContainer>
-          ) : (
-            <AnswerCreator>
-              <input type='text' placeholder='답변을 입력하세요.' />
-              <button>답변 등록</button>
-            </AnswerCreator>
-          )}
+          <Question data={e} />
+          <Answer data={e.answer} auth={data.auth} questionId={e.id} />
         </ContentContainer>
       ))}
       <QuestionCreator>
-        <textarea placeholder='문의 사항을 입력하세요.' />
-        <button>문의 등록</button>
+        <textarea
+          placeholder='문의 사항을 입력하세요.'
+          value={question}
+          onChange={qInputHandler}
+        />
+        <SubmitButton onClick={qSubmitHandler}>문의 등록</SubmitButton>
       </QuestionCreator>
     </QuestionContainer>
   );
@@ -64,36 +65,6 @@ const ContentContainer = styled.div`
   padding: 10px 0 20px 0;
 `;
 
-const QuestionContent = styled.div`
-  display: flex;
-  padding-bottom: 20px;
-`;
-
-const AnswerContainer = styled.div`
-  display: flex;
-  > .label {
-    margin-left: 30px;
-  }
-`;
-
-const AnswerCreator = styled.div`
-  display: flex;
-  gap: 10px;
-  > input {
-    margin-left: 30px;
-    padding: 5px;
-    width: 500px;
-  }
-`;
-
-const ButtonContainer = styled.div`
-  margin-left: auto;
-  margin-right: 20px;
-  display: flex;
-  gap: 10px;
-  color: ${({ theme }) => theme.colors.grey4};
-`;
-
 const QuestionCreator = styled.div`
   padding: 10px 0;
   display: flex;
@@ -109,6 +80,21 @@ const QuestionCreator = styled.div`
   > button {
     margin-left: auto;
     padding: 10px;
+  }
+`;
+
+const SubmitButton = styled.button`
+  padding: 10px 15px;
+  background: #ffffff;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.black1};
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 4px;
+  cursor: pointer;
+  :hover {
+    color: #ffffff;
+    border: 1px solid ${({ theme }) => theme.colors.purple1};
+    background: ${({ theme }) => theme.colors.purple1};
   }
 `;
 

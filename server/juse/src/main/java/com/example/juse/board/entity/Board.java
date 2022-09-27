@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @Builder
 @Entity
 @Table(name = "BOARDS")
-@ToString
 public class Board extends Auditing {
 
     @Id
@@ -130,6 +129,14 @@ public class Board extends Auditing {
 
     public boolean isCreatedBy(long userId) {
         return this.user.getId() == userId;
+    }
+
+    public boolean isBookmarkedBy(long userId) {
+        return this.bookmarkList.stream().anyMatch(bookmark -> bookmark.getUser().getId() == userId);
+    }
+
+    public boolean isWriterLikedBy(long userId) {
+        return this.user.isLikedBy(userId);
     }
 
 }

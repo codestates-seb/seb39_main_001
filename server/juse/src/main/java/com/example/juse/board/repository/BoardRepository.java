@@ -15,7 +15,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
             "JOIN bt.tag t " +
             "WHERE (:status IS NULL OR b.status = :status) " +
             "AND (:type IS NULL OR b.type = :type) " +
-            "AND (:period IS NULL OR b.period IN :period) " +
+            "AND (COALESCE(:period) IS NULL OR b.period IN :period) " +
             "AND (COALESCE(:tag) IS NULL OR t.name IN :tag) " +
             "ORDER BY b.createdAt desc"
     )

@@ -1,6 +1,8 @@
 package com.example.juse.user.controller;
 
 import com.example.juse.dto.SingleResponseDto;
+import com.example.juse.exception.BusinessLogicException;
+import com.example.juse.exception.ExceptionCode;
 import com.example.juse.security.oauth.PrincipalDetails;
 import com.example.juse.social.entity.SocialUser;
 import com.example.juse.user.dto.UserRequestDto;
@@ -14,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 
 @RestController
@@ -31,10 +35,12 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public ResponseEntity userJoin(@AuthenticationPrincipal PrincipalDetails principalDetails,
-                                   @RequestBody UserRequestDto.Post userPostDto) {
-
+    public ResponseEntity userJoin(
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @RequestBody UserRequestDto.Post userPostDto
+    ) {
         User mappedObj = userMapper.toEntityFrom(userPostDto);
+        Objects.requireNonNullElseGet(principalDetails, () -> new BusinessLogicException(ExceptionCode.SOCIAL_USER_NOT_FOUD));
         SocialUser socialUser = principalDetails.getSocialUser();
         mappedObj.setEmail(principalDetails.getSocialUser().getEmail());
         mappedObj.addSocialUser(socialUser);

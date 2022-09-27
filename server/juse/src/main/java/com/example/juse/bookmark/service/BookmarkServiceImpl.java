@@ -25,19 +25,29 @@ public class BookmarkServiceImpl implements BookmarkService {
     @Override
     public Bookmark create(long boardId, long userId) {
         User user = userRepository.findById(userId).orElseThrow();
+        System.out.println("############user.getId() = " + user.getId());
         Board board = boardRepository.findById(boardId).orElseThrow();
 
-        Bookmark bookmark = Bookmark.builder()
-                .user(user)
-                .board(board)
-                .build();
+        Bookmark findBookmark = findUserIdBookmark(userId);
+        System.out.println("############findBookmark.getId() = " + findBookmark.getId());
+        System.out.println("userId = " + userId);
+        if (findBookmark.getId() != null && userId == findBookmark.getUser().getId()) {
+            delete(boardId, userId);
+            return null;
 
-        // Board 테이블에 bookmark 카운트 추가
-        int bookCount = board.getBookmarks();
-        board.setBookmarks(++bookCount);
-        boardRepository.save(board);
+        }
+        else {
+            Bookmark bookmark = Bookmark.builder()
+                    .user(user)
+                    .board(board)
+                    .build();
 
-        return bookmarkRepository.save(bookmark);
+            // Board 테이블에 bookmark 카운트 추가
+            int bookCount = board.getBookmarks();
+            board.setBookmarks(++bookCount);
+            boardRepository.save(board);
+            return bookmarkRepository.save(bookmark);
+        }
     }
 
     @Override
@@ -54,4 +64,11 @@ public class BookmarkServiceImpl implements BookmarkService {
         bookmarkRepository.deleteById(bookmark.getId());
     }
 
+    public Bookmark findUserIdBookmark(long userId) {
+        Optional<Bookmark> optionalBookmark = bookmarkRepository.findByUserId(userId);
+
+        Bookmark bookmark = optionalBookmark.orElseGet(() -> new Bookmark());
+
+        return bookmark;
+    }
 }
