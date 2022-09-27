@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { apis } from '../apis/axios';
 import HeaderTemplate from '../components/HeaderTemplate';
 import TextEditor from '../components/TextEditor';
 import { useCookies } from 'react-cookie';
