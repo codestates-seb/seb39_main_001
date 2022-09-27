@@ -131,6 +131,18 @@ export const apis = {
       .then((res) => console.log(res));
   },
 
+  // 마이주씨
+  getMyjuse: async (token) => {
+    return await axios
+      .get(`http://juse.iptime.org:8080/users/myjuse`, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => res.data.data)
+      .catch((err) => console.log(err));
+  },
+
   ///////////////////////////////////
 
   postBoard: async (token) => {
@@ -199,15 +211,6 @@ export const apis = {
           },
         }
       )
-      .then((res) => console.log(res.data.data));
-  },
-  myjuse: async (token) => {
-    await axios
-      .get(`http://juse.iptime.org:8080/users/myjuse`, {
-        headers: {
-          Auth: token,
-        },
-      })
       .then((res) => console.log(res.data.data));
   },
   like: async (token) => {
