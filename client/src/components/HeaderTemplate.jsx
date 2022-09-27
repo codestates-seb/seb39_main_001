@@ -274,26 +274,24 @@ const HeaderTemplate = ({
         {formData.type === 'PROJECT' ? (
           company &&
           company.map((e, i) => (
-            <>
-              <div className='position' key={i}>
-                <PositionSelectBox>
-                  <Select
-                    id='position'
-                    options={position}
-                    value={e.value}
-                    defaultValue={position[0]}
-                    onChange={(e) => positionChangeHandler(e, i)}
-                  />
-                </PositionSelectBox>
-                <PositionCountBtn>
-                  <div className='count-button-group'>
-                    <button onClick={() => decreaseHandler(i)}>-</button>
-                    <span>{e.count}</span>
-                    <button onClick={() => increaseHandler(i)}>+</button>
-                  </div>
-                </PositionCountBtn>
-              </div>
-            </>
+            <div className='position' key={i}>
+              <PositionSelectBox>
+                <Select
+                  id='position'
+                  options={position}
+                  value={e.value}
+                  defaultValue={position[0]}
+                  onChange={(e) => positionChangeHandler(e, i)}
+                />
+              </PositionSelectBox>
+              <PositionCountBtn>
+                <div className='count-button-group'>
+                  <button onClick={() => decreaseHandler(i)}>-</button>
+                  <span>{e.count}</span>
+                  <button onClick={() => increaseHandler(i)}>+</button>
+                </div>
+              </PositionCountBtn>
+            </div>
           ))
         ) : (
           <div className='position'>

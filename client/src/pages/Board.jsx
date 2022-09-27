@@ -36,7 +36,9 @@ const Board = () => {
         </StatusType>
         <FlexContainer>
           <EditDelete>
-            <Link to=''>수정</Link>
+            <Link to='/boards/edit' state={{ boardId }}>
+              수정
+            </Link>
             <Link to=''>삭제</Link>
           </EditDelete>
           <ViewBookmark>
