@@ -19,9 +19,14 @@ const QuestionAnswer = ({ data }) => {
 
   // 질문 등록 핸들러
   const qSubmitHandler = () => {
-    const boardId = data.id;
-    const content = { content: question };
-    apis.postQuestion(token, content, boardId);
+    if (question) {
+      const boardId = data.id;
+      const content = { content: question };
+      apis.postQuestion(token, content, boardId);
+    } else {
+      alert('질문 내용을 입력하세요.');
+      return;
+    }
   };
 
   return (
@@ -39,7 +44,7 @@ const QuestionAnswer = ({ data }) => {
           value={question}
           onChange={qInputHandler}
         />
-        <button onClick={qSubmitHandler}>문의 등록</button>
+        <SubmitButton onClick={qSubmitHandler}>문의 등록</SubmitButton>
       </QuestionCreator>
     </QuestionContainer>
   );
@@ -78,6 +83,19 @@ const QuestionCreator = styled.div`
   }
 `;
 
-const Editor = styled.div``;
+const SubmitButton = styled.button`
+  padding: 10px 15px;
+  background: #ffffff;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.black1};
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 4px;
+  cursor: pointer;
+  :hover {
+    color: #ffffff;
+    border: 1px solid ${({ theme }) => theme.colors.purple1};
+    background: ${({ theme }) => theme.colors.purple1};
+  }
+`;
 
 export default QuestionAnswer;

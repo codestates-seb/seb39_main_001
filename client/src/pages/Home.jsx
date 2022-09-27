@@ -151,7 +151,18 @@ const TypeSelector = styled.ul`
 `;
 
 const CreateButton = styled.button`
-  padding: 5px 15px;
+  padding: 10px 15px;
+  background: #ffffff;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.black1};
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 4px;
+  cursor: pointer;
+  :hover {
+    color: #ffffff;
+    border: 1px solid ${({ theme }) => theme.colors.purple1};
+    background: ${({ theme }) => theme.colors.purple1};
+  }
 `;
 
 const BoardsContainer = styled.div`

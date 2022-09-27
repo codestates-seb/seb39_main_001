@@ -131,9 +131,21 @@ export const apis = {
       .then((res) => console.log(res));
   },
 
+  // 마이주씨
+  getMyjuse: async (token) => {
+    return await axios
+      .get(`http://juse.iptime.org:8080/users/myjuse`, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => res.data.data)
+      .catch((err) => console.log(err));
+  },
+
   ///////////////////////////////////
 
-  boardPost: async (token) => {
+  postBoard: async (token) => {
     await axios
       .post(
         `http://juse.iptime.org:8080/boards`,
@@ -151,7 +163,7 @@ export const apis = {
           onOffline: 'online',
           content: 'content1',
           type: 'PROJECT',
-          tagList: ['java', 'react', 'figma'],
+          tagList: ['react'],
         },
         {
           headers: {
@@ -159,7 +171,8 @@ export const apis = {
           },
         }
       )
-      .then((res) => console.log(res.data.data));
+      .then((res) => console.log(res.data.data))
+      .catch((err) => console.log(err));
   },
   postApply: async (token) => {
     await axios
@@ -198,15 +211,6 @@ export const apis = {
           },
         }
       )
-      .then((res) => console.log(res.data.data));
-  },
-  myjuse: async (token) => {
-    await axios
-      .get(`http://juse.iptime.org:8080/users/myjuse`, {
-        headers: {
-          Auth: token,
-        },
-      })
       .then((res) => console.log(res.data.data));
   },
   like: async (token) => {

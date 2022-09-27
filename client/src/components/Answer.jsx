@@ -75,7 +75,7 @@ const Answer = ({ data, auth, questionId }) => {
             onChange={aInputHandler}
             value={answer}
           />
-          <button onClick={aSubmitHandler}>답변 등록</button>
+          <SubmitButton onClick={aSubmitHandler}>답변 등록</SubmitButton>
         </AnswerCreator>
       ) : (
         ''
@@ -83,7 +83,7 @@ const Answer = ({ data, auth, questionId }) => {
       {isEdit ? (
         <AnswerEditor>
           <textarea value={editContent} onChange={editChangeHandler}></textarea>
-          <button onClick={editClickHandler}>답변 수정</button>
+          <SubmitButton onClick={editClickHandler}>답변 수정</SubmitButton>
         </AnswerEditor>
       ) : (
         ''
@@ -140,6 +140,21 @@ const AnswerCreator = styled.div`
     margin-left: 30px;
     padding: 5px;
     width: 500px;
+  }
+`;
+
+const SubmitButton = styled.button`
+  padding: 5px 10px;
+  background: #ffffff;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.black1};
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 4px;
+  cursor: pointer;
+  :hover {
+    color: #ffffff;
+    border: 1px solid ${({ theme }) => theme.colors.purple1};
+    background: ${({ theme }) => theme.colors.purple1};
   }
 `;
 
