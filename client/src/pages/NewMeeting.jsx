@@ -107,7 +107,7 @@ const NewMeeting = () => {
     axios
       .post('http://juse.iptime.org:8080/boards', formData, {
         headers: {
-          Auth: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGVhdHMwMUBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjY0MjQ0OTU3LCJleHAiOjE2NjQyNDg1NTd9.MfpH5jG5oxFmdNJ0hk0eXDBslGW-errLytT9RcPdxIo',
+          Auth: cookies.user,
         },
       })
       .then((res) => console.log(res))

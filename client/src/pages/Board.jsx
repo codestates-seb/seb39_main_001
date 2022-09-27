@@ -18,7 +18,11 @@ const Board = () => {
   const boardId = useLocation().pathname.slice(-1);
 
   useEffect(() => {
-    apis.getBoardDetail(token, boardId).then((data) => setData(data));
+    apis.getBoardDetail(token, boardId).then((data) => {
+      if (data) {
+        setData(data);
+      } else return;
+    });
   }, []);
 
   return (
