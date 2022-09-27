@@ -133,7 +133,7 @@ export const apis = {
 
   ///////////////////////////////////
 
-  boardPost: async (token) => {
+  postBoard: async (token) => {
     await axios
       .post(
         `http://juse.iptime.org:8080/boards`,
@@ -151,7 +151,7 @@ export const apis = {
           onOffline: 'online',
           content: 'content1',
           type: 'PROJECT',
-          tagList: ['java', 'react', 'figma'],
+          tagList: ['react'],
         },
         {
           headers: {
@@ -159,7 +159,8 @@ export const apis = {
           },
         }
       )
-      .then((res) => console.log(res.data.data));
+      .then((res) => console.log(res.data.data))
+      .catch((err) => console.log(err));
   },
   postApply: async (token) => {
     await axios
