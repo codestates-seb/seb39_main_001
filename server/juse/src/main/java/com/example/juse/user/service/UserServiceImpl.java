@@ -1,5 +1,7 @@
 package com.example.juse.user.service;
 
+import com.example.juse.exception.BusinessLogicException;
+import com.example.juse.exception.ExceptionCode;
 import com.example.juse.tag.entity.Tag;
 import com.example.juse.tag.entity.UserTag;
 import com.example.juse.tag.service.TagService;
@@ -12,8 +14,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Profile("plain")
@@ -24,14 +24,11 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final TagService tagService;
     private final UserTagService userTagService;
-
     private final UserMapper userMapper;
 
     @Override
     public User getJuse(long userId) {
-        User user = userRepository.findById(userId).orElseThrow();
-
-        return user;
+        return verifyUserById(userId);
     }
 
     @Override
@@ -48,10 +45,9 @@ public class UserServiceImpl implements UserService {
         long userId = mappedObj.getSocialUser().getId();
 
         if (user.getSocialUser().getId() != userId) {
-            throw new RuntimeException("자신만 수정할 수 있습니다");
+            throw new BusinessLogicException(ExceptionCode.USER_NOT_MATCHED);
         }
 
-       
         userMapper.updateEntityFromSource(user, mappedObj);
 
         List<UserTag> list = mappedObj.getUserTagList().stream()
@@ -87,15 +83,17 @@ public class UserServiceImpl implements UserService {
     public User create(User mappedObj) {
 
         System.out.println("mappedObj.toString() = " + mappedObj.toString());
-        mappedObj.getUserTagList().forEach(
-                userTag -> {
-                    String tagName = userTag.getTag().getName();
-                    Tag tag = tagService.findByName(tagName);
-                    userTag.addUser(mappedObj);
-                    userTag.addTag(tag);
-                }
-        );
 
+        if (!mappedObj.getUserTagList().isEmpty()) {
+            mappedObj.getUserTagList().forEach(
+                    userTag -> {
+                        String tagName = userTag.getTag().getName();
+                        Tag tag = tagService.findByName(tagName);
+                        userTag.addUser(mappedObj);
+                        userTag.addTag(tag);
+                    }
+            );
+        }
 
         return userRepository.save(mappedObj);
     }
@@ -104,16 +102,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User verifyUserById(long userId) {
         return userRepository.findById(userId).orElseThrow(
-                NoSuchElementException::new
+                () -> {
+                    throw new BusinessLogicException(ExceptionCode.USER_NOT_FOUND);
+                }
         );
-    }
 
-    public User findUser(long userId) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-
-        User user = optionalUser.orElseThrow(NoSuchElementException::new);
-
-        return user;
     }
 
     @Override
