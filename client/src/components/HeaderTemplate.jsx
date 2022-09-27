@@ -47,9 +47,6 @@ const HeaderTemplate = ({
 	// 선택된 기술스택
 	const [stack, setStack] = useState([]);
 
-	// 스터디 인원 수
-	// const [count, setCount] = useState(0);
-
 	// stack 이 바뀔때마다 formdata update 해주는 useEffect
 	useEffect(() => {
 		setFormData({
@@ -112,17 +109,21 @@ const HeaderTemplate = ({
 		});
 	};
 
+	// 모집 유형 프로젝트일 때 인원
 	const decreaseHandler = (i) => {
 		const temp = [...company];
 		if (temp[i].count > 0) {
 			temp[i].count--;
 		}
 		setCompany(temp);
+		setFormData((prev) => ({ ...prev, [temp[i].position]: temp[i].count }));
 	};
+
 	const increaseHandler = (i) => {
 		const temp = [...company];
 		temp[i].count++;
 		setCompany(temp);
+		setFormData((prev) => ({ ...prev, [temp[i].position]: temp[i].count }));
 	};
 
 	const positionChangeHandler = (e, i) => {
@@ -135,22 +136,17 @@ const HeaderTemplate = ({
 		setCompany([...company, { position: 'frontend', count: 0 }]);
 	};
 
+	// 모집 유형 스터디일 때 인원
 	const peopleDecreaseHandler = () => {
-		setCount(count - 1);
-		console.log(count);
-		setFormData({
-			...formData,
-			people: count,
-		});
+		const temp = count - 1;
+		setCount(temp);
+		setFormData((prev) => ({ ...prev, people: temp }));
 	};
 
 	const peopleIncreaseHandler = () => {
-		setCount(count + 1);
-		setFormData({
-			...formData,
-			people: count,
-		});
-		console.log(count);
+		const temp = count + 1;
+		setCount(temp);
+		setFormData((prev) => ({ ...prev, people: temp }));
 	};
 
 	return (
@@ -309,9 +305,9 @@ const HeaderTemplate = ({
 						</PositionSelectBox>
 						<PositionCountBtn>
 							<div className='count-button-group'>
-								<button onClick={() => peopleDecreaseHandler()}>-</button>
+								<button onClick={peopleDecreaseHandler}>-</button>
 								<span id='people'>{count}</span>
-								<button onClick={() => peopleIncreaseHandler()}>+</button>
+								<button onClick={peopleIncreaseHandler}>+</button>
 							</div>
 						</PositionCountBtn>
 					</div>
