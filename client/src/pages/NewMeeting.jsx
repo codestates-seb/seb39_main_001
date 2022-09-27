@@ -1,16 +1,16 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useCookies } from 'react-cookie';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { apis } from '../apis/axios';
 import HeaderTemplate from '../components/HeaderTemplate';
 import TextEditor from '../components/TextEditor';
 import { useCookies } from 'react-cookie';
+import { apis } from '../apis/axios';
 
-// cookie를 props로 받아온다
 const NewMeeting = () => {
   const [cookies] = useCookies();
+  const token = cookies.user;
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
     backend: 0,
@@ -104,14 +104,7 @@ const NewMeeting = () => {
     }
 
     // Post 요청
-    axios
-      .post('http://juse.iptime.org:8080/boards', formData, {
-        headers: {
-          Auth: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGVhdHMwMUBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjY0MjQ0OTU3LCJleHAiOjE2NjQyNDg1NTd9.MfpH5jG5oxFmdNJ0hk0eXDBslGW-errLytT9RcPdxIo',
-        },
-      })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+    apis.postBoard(token, formData).then(navigate('/'));
 
     console.log('formData:', formData);
   };

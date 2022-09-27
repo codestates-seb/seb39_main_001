@@ -18,7 +18,11 @@ const Board = () => {
   const boardId = useLocation().pathname.slice(-1);
 
   useEffect(() => {
-    apis.getBoardDetail(token, boardId).then((data) => setData(data));
+    apis.getBoardDetail(token, boardId).then((data) => {
+      if (data) {
+        setData(data);
+      } else return;
+    });
   }, []);
 
   return (
@@ -32,7 +36,9 @@ const Board = () => {
         </StatusType>
         <FlexContainer>
           <EditDelete>
-            <Link to=''>수정</Link>
+            <Link to='/boards/edit' state={{ boardId }}>
+              수정
+            </Link>
             <Link to=''>삭제</Link>
           </EditDelete>
           <ViewBookmark>
