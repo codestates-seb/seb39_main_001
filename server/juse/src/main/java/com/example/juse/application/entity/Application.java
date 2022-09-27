@@ -13,6 +13,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "APPLICATIONS")
+@ToString
 public class Application extends Auditing {
 
     @Id

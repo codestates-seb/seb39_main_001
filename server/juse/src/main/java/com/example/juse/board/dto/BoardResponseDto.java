@@ -19,7 +19,12 @@ public class BoardResponseDto {
     public static class Single {
 
         @Setter
-        private boolean isAUth;
+        private boolean isAuth;
+        @Setter
+        private boolean isBookmarked;
+
+        @Setter
+        private boolean isWriterLiked;
 
         private Long id;
         private String title;
@@ -62,6 +67,13 @@ public class BoardResponseDto {
     public static class Multi {
 
         private long id;
+
+        @Setter
+        private boolean isBookmarked;
+
+        @Setter
+        private boolean isWriterLiked;
+
         private Board.Type type;
         private Board.Status status;
         private LocalDate startingDate;
