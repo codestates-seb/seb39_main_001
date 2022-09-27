@@ -139,13 +139,17 @@ const JoinInput = styled.div`
 `;
 
 const StyledButton = styled.button`
-  background-color: #fff;
-  border: 1px solid ${({ theme }) => theme.colors.grey3};
-  border-radius: 3px;
   padding: 5px 10px;
+  background: #ffffff;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.black1};
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 4px;
   cursor: pointer;
   :hover {
-    border: 1px solid ${({ theme }) => theme.colors.grey4};
+    color: #ffffff;
+    border: 1px solid ${({ theme }) => theme.colors.purple1};
+    background: ${({ theme }) => theme.colors.purple1};
   }
 `;
 

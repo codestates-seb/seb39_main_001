@@ -78,7 +78,9 @@ const Join = () => {
           <p>닉네임</p>
           <input type='text' onChange={nicknameHandler}></input>
           <Validation className={isValid ? 'valid' : 'not-valid'}>
-            {isValid ? '사용가능한 닉네임입니다.' : '중복된 닉네임이 존재합니다.'}
+            {isValid
+              ? '사용가능한 닉네임입니다.'
+              : '중복된 닉네임이 존재합니다.'}
           </Validation>
           <p>포트폴리오 링크 (깃헙, 노션, 블로그...)</p>
           <input type='text' onChange={portfolioHandler}></input>
@@ -96,6 +98,7 @@ const Join = () => {
 const JoinContainer = styled.div`
   max-width: 1300px;
   padding: 0 30px;
+  padding-bottom: 50px;
   margin: auto;
 `;
 
@@ -150,13 +153,17 @@ const Validation = styled.p`
 `;
 
 const StyledButton = styled.button`
-  background-color: #fff;
-  border: 1px solid ${({ theme }) => theme.colors.grey3};
-  border-radius: 3px;
   padding: 5px 10px;
+  background: #ffffff;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.black1};
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 4px;
   cursor: pointer;
   :hover {
-    border: 1px solid ${({ theme }) => theme.colors.grey4};
+    color: #ffffff;
+    border: 1px solid ${({ theme }) => theme.colors.purple1};
+    background: ${({ theme }) => theme.colors.purple1};
   }
 `;
 
