@@ -1,6 +1,5 @@
 package com.example.juse.user.service;
 
-import com.example.juse.tag.entity.BoardTag;
 import com.example.juse.tag.entity.Tag;
 import com.example.juse.tag.entity.UserTag;
 import com.example.juse.tag.service.TagService;
@@ -52,8 +51,8 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("자신만 수정할 수 있습니다");
         }
 
+       
         userMapper.updateEntityFromSource(user, mappedObj);
-        System.out.println("####user.toString() =" + user.toString());
 
         List<UserTag> list = mappedObj.getUserTagList().stream()
                 .map(

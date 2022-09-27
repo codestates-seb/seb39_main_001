@@ -131,4 +131,12 @@ public class Board extends Auditing {
         return this.user.getId() == userId;
     }
 
+    public boolean isBookmarkedBy(long userId) {
+        return this.bookmarkList.stream().anyMatch(bookmark -> bookmark.getUser().getId() == userId);
+    }
+
+    public boolean isWriterLikedBy(long userId) {
+        return this.user.isLikedBy(userId);
+    }
+
 }
