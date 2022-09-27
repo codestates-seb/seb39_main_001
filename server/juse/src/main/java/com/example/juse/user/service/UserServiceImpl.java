@@ -1,11 +1,11 @@
 package com.example.juse.user.service;
 
-import com.example.juse.tag.entity.BoardTag;
 import com.example.juse.tag.entity.Tag;
 import com.example.juse.tag.entity.UserTag;
 import com.example.juse.tag.service.TagService;
 import com.example.juse.tag.service.UserTagService;
 import com.example.juse.user.entity.User;
+import com.example.juse.user.mapper.UserMapper;
 import com.example.juse.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
@@ -25,6 +25,8 @@ public class UserServiceImpl implements UserService {
     private final TagService tagService;
     private final UserTagService userTagService;
 
+    private final UserMapper userMapper;
+
     @Override
     public User getJuse(long userId) {
         User user = userRepository.findById(userId).orElseThrow();
@@ -42,11 +44,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User update(User mappedObj) {
         User user = verifyUserById(mappedObj.getId());
+        System.out.println("####user.toString() =" + user.toString());
         long userId = mappedObj.getSocialUser().getId();
 
         if (user.getSocialUser().getId() != userId) {
             throw new RuntimeException("자신만 수정할 수 있습니다");
         }
+
+       
+        userMapper.updateEntityFromSource(user, mappedObj);
 
         List<UserTag> list = mappedObj.getUserTagList().stream()
                 .map(

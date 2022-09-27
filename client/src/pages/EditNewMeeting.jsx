@@ -1,16 +1,16 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import HeaderTemplate from '../components/HeaderTemplate';
+import EditHeaderTemplate from '../components/EditHeaderTemplate';
 import TextEditor from '../components/TextEditor';
-import { useCookies } from 'react-cookie';
 import { apis } from '../apis/axios';
+import { useCookies } from 'react-cookie';
 
-const NewMeeting = () => {
+const EditNewMeeting = () => {
   const [cookies] = useCookies();
   const token = cookies.user;
   const navigate = useNavigate();
+  const boardId = useLocation().state.boardId;
   const [formData, setFormData] = useState({
     title: '',
     backend: 0,
@@ -24,40 +24,21 @@ const NewMeeting = () => {
     period: '',
     onOffline: '',
     content: '',
-    type: 'PROJECT',
+    type: '',
     status: 'OPENING',
     tagList: [],
   });
 
-  const [company, setCompany] = useState([{ position: 'frontend', count: 0 }]);
-
-  // 모집 유형이 스터디일 때 인원
-  const [count, setCount] = useState(0);
-
-  // 모집 유형이 study로 바뀔 때 프로젝트 모집 포지션, 인원 초기화 / project로 바뀔 때 스터디 인원 초기화
+  // 데이터 받아오기
   useEffect(() => {
-    if (formData.type === 'STUDY') {
-      setCompany([{ position: 'frontend', count: 0 }]);
-      setFormData({
-        ...formData,
-        frontend: 0,
-        backend: 0,
-        designer: 0,
-        etc: 0,
-        people: count,
-      });
-    }
+    apis
+      .getBoardDetail(token, boardId)
+      .then((data) => {
+        setFormData(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
-    if (formData.type === 'PROJECT') {
-      setCount(0);
-      setFormData({
-        ...formData,
-        people: 0,
-      });
-    }
-  }, [formData.type]);
-
-  // 이벤트 핸들러
   const titleInputHandler = (e) => {
     setFormData({
       ...formData,
@@ -65,15 +46,9 @@ const NewMeeting = () => {
     });
   };
 
-  // Post 요청
+  // Patch 요청
   const submitHandler = (e) => {
     e.preventDefault();
-
-    // 모집 유형 미선택시 에러
-    if (formData.type === '') {
-      alert('모집 유형은 필수 선택입니다.');
-      throw Error('모집 유형은 필수 선택입니다.');
-    }
 
     // 기술 스택 미선택시 에러
     if (formData.tagList.length === 0) {
@@ -93,45 +68,32 @@ const NewMeeting = () => {
       throw Error('본문 내용을 입력해주세요.');
     }
 
-    // 최소 인원 미입력시 에러
-    if (
-      formData.frontend === 0 &&
-      formData.backend === 0 &&
-      formData.designer === 0 &&
-      formData.etc === 0
-    ) {
-      alert('최소 1명 이상의 인원을 선택해주세요.');
-    }
+    apis
+      .patchBoard(token, formData, boardId)
+      .then(navigate(`/boards/${boardId}`));
 
-    // Post 요청
-    apis.postBoard(token, formData).then(navigate('/'));
-
-    console.log('formData:', formData);
+    console.log('수정한 formData:', formData);
   };
 
   return (
-    <NewMeetingPageContainer>
-      <Title>어떤 모임인가요?</Title>
-      <HeaderTemplate
-        formData={formData}
-        setFormData={setFormData}
-        company={company}
-        setCompany={setCompany}
-        count={count}
-        setCount={setCount}
-      />
-      <Title>모임을 소개해주세요!</Title>
-      <input
-        type='text'
-        placeholder='제목을 입력해주세요'
-        onChange={titleInputHandler}
-      />
-      <TextEditor formData={formData} setFormData={setFormData} />
-      <div className='buttons'>
-        <CancelButton to='/'>취소</CancelButton>
-        <SubmitButton onClick={submitHandler}>등록하기</SubmitButton>
-      </div>
-    </NewMeetingPageContainer>
+    <>
+      <NewMeetingPageContainer>
+        <Title>어떤 모임인가요?</Title>
+        <EditHeaderTemplate formData={formData} setFormData={setFormData} />
+        <Title>모임을 소개해주세요!</Title>
+        <input
+          type='text'
+          placeholder='제목을 입력해주세요'
+          onChange={titleInputHandler}
+          value={formData.title}
+        />
+        <TextEditor formData={formData} setFormData={setFormData} />
+        <div className='buttons'>
+          <CancelButton to='../'>취소</CancelButton>
+          <SubmitButton onClick={submitHandler}>등록하기</SubmitButton>
+        </div>
+      </NewMeetingPageContainer>
+    </>
   );
 };
 
@@ -202,4 +164,4 @@ const SubmitButton = styled.button`
   }
 `;
 
-export default NewMeeting;
+export default EditNewMeeting;

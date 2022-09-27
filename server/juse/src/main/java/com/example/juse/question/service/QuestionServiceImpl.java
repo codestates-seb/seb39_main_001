@@ -29,7 +29,7 @@ public class QuestionServiceImpl implements QuestionService{
         long userId = post.getUser().getId();
 
         Board board = boardService.verifyBoardById(boardId);
-        User user = board.getUser();
+        User user = userService.verifyUserById(userId);
 
         post.addBoard(board);
         post.addUser(user);

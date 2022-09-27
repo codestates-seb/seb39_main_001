@@ -10,11 +10,10 @@ const OAuth = () => {
 
   useEffect(() => {
     if (isUser === '1') {
-      setCookie('user', token);
+      setCookie('user', token, { path: '/' });
       navigate('/');
     } else {
-      setCookie('user', token);
-      navigate('/join');
+      navigate('/join', { state: { token } });
     }
   });
 
