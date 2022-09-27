@@ -113,6 +113,9 @@ public class User extends Auditing {
         return this.whoLikesList.stream().map(Like::getWhoIsLiked).collect(Collectors.toList());
     }
 
+    public boolean isLikedBy(long userId) {
+        return this.getWhoIsLikeList().stream().anyMatch(like -> like.getWhoLikes().getId() == userId);
+    }
 
     // USER 테이블의 SOCIAL_USER_ID 컬럼에 Social User Id를 추가한다.
 

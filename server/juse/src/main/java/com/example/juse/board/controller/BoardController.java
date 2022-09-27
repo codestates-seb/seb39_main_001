@@ -20,6 +20,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RequestMapping("/boards")
@@ -55,11 +56,19 @@ public class BoardController {
         try {
             Long userId = principalDetails.getSocialUser().getUser().getId();
             if (userId != null && foundEntity.isCreatedBy(userId)) {
-                responseDto.setAUth(true);
+                responseDto.setAuth(true);
+            }
+
+            if (foundEntity.isBookmarkedBy(userId)) {
+                responseDto.setBookmarked(true);
+            }
+
+            if (foundEntity.isWriterLikedBy(userId)) {
+                responseDto.setWriterLiked(true);
             }
 
         } catch (NullPointerException npe) {
-            responseDto.setAUth(false);
+            responseDto.setAuth(false);
         }
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
@@ -95,10 +104,11 @@ public class BoardController {
 
     @GetMapping
     public ResponseEntity<MultiResponseDto<BoardResponseDto.Multi>> getBoards(
-            @RequestParam(name = "type", required = false) String type,
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @RequestParam(name = "type", required = false) Board.Type type,
             @RequestParam(name = "tag", required = false) String tag,
             @RequestParam(name = "period", required = false) String period,
-            @RequestParam(name = "status", required = false) String status,
+            @RequestParam(name = "status", required = false) Board.Status status,
             @RequestParam(name = "page", required = true, defaultValue = "1") int page
     ) {
         System.out.println("type : " + type);
@@ -108,12 +118,35 @@ public class BoardController {
 
         Pageable pageable = PageRequest.of(page - 1, 5);
 
-        FilterOptions filterOptions = FilterOptions.of(type, tag, period, status);
+        FilterOptions filterOptions = FilterOptions.of(type, status, tag, period);
         Page<Board> pagedBoardList = boardService.getBoards(pageable, filterOptions);
 
         Pagination pagination = Pagination.of(pagedBoardList, filterOptions);
 
-        List<BoardResponseDto.Multi> data = boardMapper.toListDtoFromListEntities(pagedBoardList.getContent());
+        List<BoardResponseDto.Multi> data = null;
+
+        try {
+            long userId = principalDetails.getSocialUser().getUser().getId();
+
+            data = pagedBoardList.getContent().stream().map(board -> {
+                BoardResponseDto.Multi multi = boardMapper.toMultiResponseDto(board);
+
+                if (board.isBookmarkedBy(userId)) {
+                    multi.setBookmarked(true);
+                }
+
+                if (board.isWriterLikedBy(userId)) {
+                    multi.setWriterLiked(true);
+                }
+                return multi;
+
+            }).collect(Collectors.toList());
+
+        } catch (NullPointerException npe) {
+
+            data = boardMapper.toListDtoFromListEntities(pagedBoardList.getContent());
+
+        }
 
         return new ResponseEntity<>(new MultiResponseDto<>(data, pagination), HttpStatus.OK);
 
