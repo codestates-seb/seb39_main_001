@@ -21,6 +21,15 @@ public class ApplicationServiceImpl implements ApplicationService{
 
     @Override
     public Application create(Application mappedObj) {
+        long userId = mappedObj.getUser().getId();
+
+        Application findApply = findUserIdApplication(userId);
+        System.out.println("findApply.toString() = " + findApply.toString());
+
+        if (findApply.getId() != null && userId == findApply.getUser().getId()) {
+            throw new RuntimeException("지원은 한번만 가능합니다.");
+        }
+
         return applicationRepository.save(mappedObj);
     }
 
@@ -99,5 +108,13 @@ public class ApplicationServiceImpl implements ApplicationService{
 
         return application;
 
+    }
+
+    public Application findUserIdApplication(long userId) {
+        Optional<Application> optionalApplication = applicationRepository.findById(userId);
+
+        Application application = optionalApplication.orElseGet(() -> new Application());
+
+        return application;
     }
 }

@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "USERS")
 @Setter
-@ToString
 public class User extends Auditing {
 
     @Setter
