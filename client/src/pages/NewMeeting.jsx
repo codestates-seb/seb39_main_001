@@ -4,9 +4,11 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import HeaderTemplate from '../components/HeaderTemplate';
 import TextEditor from '../components/TextEditor';
+import { useCookies } from 'react-cookie';
 
 // cookie를 props로 받아온다
 const NewMeeting = () => {
+	const [cookies] = useCookies();
 	const [formData, setFormData] = useState({
 		title: '',
 		backend: 0,
@@ -27,7 +29,7 @@ const NewMeeting = () => {
 
 	const [company, setCompany] = useState([{ position: 'frontend', count: 0 }]);
 
-	// 모집 유형이 스터디일때 인원
+	// 모집 유형이 스터디일 때 인원
 	const [count, setCount] = useState(0);
 
 	// 모집 유형이 study로 바뀔 때 프로젝트 모집 포지션, 인원 초기화 / project로 바뀔 때 스터디 인원 초기화
@@ -62,7 +64,9 @@ const NewMeeting = () => {
 	};
 
 	// Post 요청
-	const submitHandler = () => {
+	const submitHandler = (e) => {
+		e.preventDefault();
+
 		// 모집 유형 미선택시 에러
 		if (formData.type === '') {
 			alert('모집 유형은 필수 선택입니다.');
@@ -97,21 +101,16 @@ const NewMeeting = () => {
 			alert('최소 1명 이상의 인원을 선택해주세요.');
 		}
 
-		const temp = {};
-		company.forEach((e) => {
-			Object.assign(temp, { [e.position]: e.count });
-		});
-
-		setFormData({ ...formData, ...temp, people: count });
-
 		// Post 요청
-		// axios
-		//   .post('juse.iptime.org:8080/boards', formData, { Auth: cookies.user })
-		//   .then((res) => console.log(res))
-		//   .catch((err) => console.log(err));
+		axios
+			.post('http://juse.iptime.org:8080/boards', formData, {
+				headers: {
+					Auth: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGVhdHMwMUBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjY0MjQ0OTU3LCJleHAiOjE2NjQyNDg1NTd9.MfpH5jG5oxFmdNJ0hk0eXDBslGW-errLytT9RcPdxIo',
+				},
+			})
+			.then((res) => console.log(res))
+			.catch((err) => console.log(err));
 
-		console.log('formData.tagList:', formData.tagList);
-		console.log('formData.content:', formData.content);
 		console.log('formData:', formData);
 	};
 
