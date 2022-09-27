@@ -15,6 +15,7 @@ import net.minidev.json.annotate.JsonIgnore;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
@@ -46,13 +47,6 @@ public class User extends Auditing {
     private String portfolio;
 
     private int liked;
-
-    private String role;
-
-    private String provider;
-
-    private String providerId;
-
 
     @Column(nullable = false, unique = true)
     private String nickname;
@@ -115,6 +109,9 @@ public class User extends Auditing {
         return this.whoLikesList.stream().map(Like::getWhoIsLiked).collect(Collectors.toList());
     }
 
+    public boolean isLikedBy(long userId) {
+        return this.getWhoIsLikeList().stream().anyMatch(like -> like.getWhoLikes().getId() == userId);
+    }
 
     // USER 테이블의 SOCIAL_USER_ID 컬럼에 Social User Id를 추가한다.
 
@@ -124,4 +121,5 @@ public class User extends Auditing {
             socialUser.setUser(this);
         }
     }
+
 }
