@@ -3,9 +3,20 @@ import { board1 } from '../mocks/db';
 import { Link } from 'react-router-dom';
 import QuestionAnswer from '../components/QuestionAnswer';
 import Application from '../components/Application';
+import { ReactComponent as Eye } from '../assets/icons/eye.svg';
+import { ReactComponent as Bookmark } from '../assets/icons/bookmark.svg';
+import { useEffect } from 'react';
+import { apis } from '../apis/axios';
+import { useCookies } from 'react-cookie';
 
 const Board = () => {
+  const [cookies] = useCookies();
+  const token = cookies.user;
   const data = board1.data;
+
+  // useEffect(() => {
+  //   apis.getBoardDetail(token).then((res) => console.log(res));
+  // }, []);
 
   return (
     <BoardContainer>
@@ -20,9 +31,9 @@ const Board = () => {
             <Link to=''>삭제</Link>
           </EditDelete>
           <ViewBookmark>
-            <i className='fi fi-rr-eye'></i>
+            <Eye />
             {data.views}
-            <i className='fi fi-rr-bookmark'></i>
+            <Bookmark />
             {data.bookmarks}
           </ViewBookmark>
         </FlexContainer>

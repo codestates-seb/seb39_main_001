@@ -1,24 +1,76 @@
 import axios from 'axios';
 
 export const apis = {
-  join: async (token) => {
+  postJoin: async (token, data) => {
     await axios
-      .post(
-        `http://juse.iptime.org:8080/users/join`,
-        {
-          introduction: '용우정입니다',
-          portfolio: 'holdmetight',
-          nickname: '용우정',
-          skillStackTags: ['react', 'java'],
+      .post(`http://juse.iptime.org:8080/users/join`, data, {
+        headers: {
+          Auth: token,
         },
-        {
-          headers: {
-            Auth: token,
-          },
-        }
-      )
-      .then((res) => console.log(res.data.data));
+      })
+      .catch((err) => console.log(err));
   },
+  getNickname: async (nickname) => {
+    return await axios
+      .get(`http://juse.iptime.org:8080/users/nicknames?q=${nickname}`)
+      .then((res) => res.data.data)
+      .catch((err) => console.log(err));
+  },
+  getUsers: async (token) => {
+    return await axios
+      .get(`http://juse.iptime.org:8080/users`, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => res.data.data)
+      .catch((err) => console.log(err));
+  },
+  getOtherUsers: async (token, userId) => {
+    return await axios
+      .get(`http://juse.iptime.org:8080/users/${userId}`, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => res.data.data)
+      .catch((err) => console.log(err));
+  },
+  deleteUser: async (token, userId) => {
+    return await axios
+      .delete(`http://juse.iptime.org:8080/users`, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => res.data.data)
+      .catch((err) => console.log(err));
+  },
+
+  // 유저 정보 수정
+  patchUser: async (token, user) => {
+    await axios
+      .patch(`http://juse.iptime.org:8080/users`, user, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  },
+
+  // 게시물 상세
+  getBoardDetail: async (token) => {
+    return await axios
+      .get(`http://juse.iptime.org:8080/boards/1`, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  },
+
   boardPost: async (token) => {
     await axios
       .post(
@@ -77,15 +129,6 @@ export const apis = {
       )
       .then((res) => console.log(res.data.data));
   },
-  getBoard1: async (token) => {
-    await axios
-      .get(`http://juse.iptime.org:8080/boards/1`, {
-        headers: {
-          Auth: token,
-        },
-      })
-      .then((res) => console.log(res.data.data));
-  },
   postApply: async (token) => {
     await axios
       .post(
@@ -134,15 +177,6 @@ export const apis = {
       })
       .then((res) => console.log(res.data.data));
   },
-  mypage: async (token) => {
-    await axios
-      .get(`http://juse.iptime.org:8080/users/`, {
-        headers: {
-          Auth: token,
-        },
-      })
-      .then((res) => console.log(res.data.data));
-  },
   like: async (token) => {
     await axios
       .post(
@@ -165,15 +199,7 @@ export const apis = {
       })
       .then((res) => console.log(res.data.data));
   },
-  other: async (token) => {
-    await axios
-      .get(`http://juse.iptime.org:8080/users/1`, {
-        headers: {
-          Auth: token,
-        },
-      })
-      .then((res) => console.log(res.data.data));
-  },
+
   bookDelete: async (token) => {
     await axios
       .delete(`http://juse.iptime.org:8080/bookmarks/1`, {
