@@ -10,6 +10,7 @@ import { apis } from '../apis/axios';
 import { useCookies } from 'react-cookie';
 import { useState } from 'react';
 
+
 const Board = () => {
   const [cookies] = useCookies();
   const token = cookies.user;
@@ -20,6 +21,10 @@ const Board = () => {
   useEffect(() => {
     apis.getBoardDetail(token, boardId).then((data) => setData(data));
   }, []);
+
+  // useEffect(() => {
+  //   apis.getBoardDetail(token).then((res) => console.log(res));
+  // }, []);
 
   return (
     <BoardContainer>
