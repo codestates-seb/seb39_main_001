@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { apis } from '../apis/axios';
 import HeaderTemplate from '../components/HeaderTemplate';
 import TextEditor from '../components/TextEditor';
-import { useCookies } from 'react-cookie';
 
 // cookie를 props로 받아온다
 const NewMeeting = () => {
