@@ -1,10 +1,7 @@
 package com.example.juse.user.dto;
 
 import com.example.juse.board.dto.BoardResponseDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -67,6 +64,9 @@ public class UserResponseDto {
         private String nickname;
         private List<String> skillStackTags;
         private int liked;
+
+        @Setter
+        private boolean isLikedByMe;
 
     }
 

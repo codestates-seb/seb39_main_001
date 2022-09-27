@@ -3,10 +3,10 @@ package com.example.juse.exception;
 import lombok.Getter;
 
 @Getter
-public class BusinessLogicException extends RuntimeException {
+public class CustomRuntimeException extends RuntimeException {
     private final ExceptionCode exceptionCode;
 
-    public BusinessLogicException(ExceptionCode exceptionCode) {
+    public CustomRuntimeException(ExceptionCode exceptionCode) {
         super(exceptionCode.getDesc());
         this.exceptionCode = exceptionCode;
     }

@@ -1,6 +1,6 @@
 package com.example.juse.user.service;
 
-import com.example.juse.exception.BusinessLogicException;
+import com.example.juse.exception.CustomRuntimeException;
 import com.example.juse.exception.ExceptionCode;
 import com.example.juse.tag.entity.Tag;
 import com.example.juse.tag.entity.UserTag;
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
         long userId = mappedObj.getSocialUser().getId();
 
         if (user.getSocialUser().getId() != userId) {
-            throw new BusinessLogicException(ExceptionCode.USER_NOT_MATCHED);
+            throw new CustomRuntimeException(ExceptionCode.USER_NOT_MATCHED);
         }
 
         userMapper.updateEntityFromSource(user, mappedObj);
@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
     public User verifyUserById(long userId) {
         return userRepository.findById(userId).orElseThrow(
                 () -> {
-                    throw new BusinessLogicException(ExceptionCode.USER_NOT_FOUND);
+                    throw new CustomRuntimeException(ExceptionCode.USER_NOT_FOUND);
                 }
         );
 

@@ -2,6 +2,8 @@ package com.example.juse.application.entity;
 
 import com.example.juse.audit.Auditing;
 import com.example.juse.board.entity.Board;
+import com.example.juse.exception.CustomRuntimeException;
+import com.example.juse.exception.ExceptionCode;
 import com.example.juse.user.entity.User;
 import lombok.*;
 
@@ -36,7 +38,7 @@ public class Application extends Auditing {
 
     public void checkApplicationWriter(long userId) {
         if (this.getBoard().getUser().getId() != userId) {
-            throw new RuntimeException("모집자만이 수락 및 거절 할 수 있습니다.");
+            throw new CustomRuntimeException(ExceptionCode.APPLICATION_INVALID_REQUEST);
         }
     }
 }
