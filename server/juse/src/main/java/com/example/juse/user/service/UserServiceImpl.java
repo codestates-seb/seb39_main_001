@@ -44,14 +44,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User update(User mappedObj) {
         User user = verifyUserById(mappedObj.getId());
+        System.out.println("####user.toString() =" + user.toString());
         long userId = mappedObj.getSocialUser().getId();
 
         if (user.getSocialUser().getId() != userId) {
             throw new RuntimeException("자신만 수정할 수 있습니다");
         }
 
-        System.out.println(mappedObj.getPortfolio());
-        System.out.println(user.getPortfolio());
+       
         userMapper.updateEntityFromSource(user, mappedObj);
 
         List<UserTag> list = mappedObj.getUserTagList().stream()

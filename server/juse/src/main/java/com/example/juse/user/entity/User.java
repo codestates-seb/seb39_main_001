@@ -15,6 +15,7 @@ import net.minidev.json.annotate.JsonIgnore;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
@@ -35,6 +36,7 @@ public class User extends Auditing {
 
     private String img;
 
+
     @Column(nullable = false)
     private String introduction;
 
@@ -45,12 +47,6 @@ public class User extends Auditing {
     private String portfolio;
 
     private int liked;
-
-    private String role;
-
-    private String provider;
-
-    private String providerId;
 
     @Column(nullable = false, unique = true)
     private String nickname;
@@ -125,4 +121,5 @@ public class User extends Auditing {
             socialUser.setUser(this);
         }
     }
+
 }

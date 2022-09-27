@@ -9,4 +9,7 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
     // boardId 와 userId 를 통해 Bookmark 객체를 찾아온다.
     Optional<Bookmark> findByBoardIdAndUserId(long boardId, long userId);
+
+    // userId 를 통해 bookmark 객체 찾아온다.
+    Optional<Bookmark> findByUserId(long userId);
 }
