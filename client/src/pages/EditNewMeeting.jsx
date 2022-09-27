@@ -1,18 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import EditHeaderTemplate from '../components/EditHeaderTemplate';
 import TextEditor from '../components/TextEditor';
-import { boards } from '../mocks/db';
-import { board1 } from '../mocks/db';
+import { apis } from '../apis/axios';
 
-// cookie를 props로 받아온다
 const EditNewMeeting = () => {
-	// Patch 요청 시 필요
-	// const { boardId } = useParams();
-	// const navigate = useNavigate();
-
+	const navigate = useNavigate();
 	const [formData, setFormData] = useState({
 		title: '',
 		backend: 0,
@@ -32,14 +27,16 @@ const EditNewMeeting = () => {
 	});
 
 	useEffect(() => {
-		// mock data
 		const dataFetch = async () => {
-			await fetch('/board1')
-				.then((res) => res.json())
+			await axios
+				// .get(`http://juse.iptime.org:8080/boards/${boardId}`)
+				.get(`http://juse.iptime.org:8080/boards/4`, {
+					headers: {
+						Auth: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGVhdHMwMUBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjY0MjU0MTk3LCJleHAiOjE2NzMyNTQxOTd9.KoJKZMYTY_qcpdBUjqAtgwe46VzKLp0CCIQDZ6NOnOk',
+					},
+				})
 				.then((res) => {
-					const data = res.data; // board1.data
-					console.log('board1.data:', data);
-					console.log(data.type);
+					const data = res.data.data;
 					setFormData({
 						title: data.title,
 						backend: data.backend,
@@ -57,7 +54,8 @@ const EditNewMeeting = () => {
 						status: data.status,
 						tagList: data.tagList,
 					});
-				});
+				})
+				.catch((err) => console.log(err));
 		};
 		dataFetch();
 	}, []);
@@ -78,47 +76,33 @@ const EditNewMeeting = () => {
 			alert('기술 스택은 반드시 1개 이상 추가해야 합니다.');
 			throw Error('기술 스택은 반드시 1개 이상 추가해야 합니다.');
 		}
-		console.log('formData.tagList:', formData.tagList);
-		console.log('submit하는 formData:', formData);
 
-		// MSW Patch 요쳥 ----->
-		// fetch('/board1', {
-		// 	method: 'PATCH',
-		// 	headers: {
-		// 		'Content-Type': 'application/json',
-		//     // 쿠키도 같이 헤더에 보낸다.
-		// 	},
-		// 	body: formData,
-		// }).then((res) => {
-		// 	fetch('/board1')
-		// 		.then((res) => res.json())
-		// 		.then((data) => {
-		// 			setFormData(data);
-		// 		});
-		// });
+		// 제목 미입력시 에러
+		if (formData.title.length === 0) {
+			alert('제목을 입력해주세요.');
+			throw Error('제목을 입력해주세요.');
+		}
 
-		// Patch 요청 (서버 연결 후) ----->
-		// axios
-		//   .patch(`/boards/${boardId}`)
-		//   .then((res) => console.log(res))
-		//   .catch((err) => console.log(err))
+		// 내용 미입력시 에러
+		if (formData.content === '<p><br></p>') {
+			alert('본문 내용을 입력해주세요.');
+			throw Error('본문 내용을 입력해주세요.');
+		}
 
-		//   navigate(`/boards/${boardId}`);
-		// console.log(formData);
+		axios
+			.patch('http://juse.iptime.org:8080/boards/4', formData, {
+				headers: {
+					Auth: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGVhdHMwMUBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjY0MjU0MTk3LCJleHAiOjE2NzMyNTQxOTd9.KoJKZMYTY_qcpdBUjqAtgwe46VzKLp0CCIQDZ6NOnOk',
+				},
+			})
+			.then((res) => console.log(res))
+			.then(() => {
+				navigate('/');
+			})
+			.catch((err) => console.log(err));
+
+		console.log('수정한 formData:', formData);
 	};
-
-	// useEffect(() => {
-	// 	const previousDataFetch = () => {
-	// 		axios
-	// 			.get(`/boards/${boardId}`)
-	// 			.then((res) => {
-	// 				const data = res.formData;
-	// 				setFormData(...formData);
-	// 			})
-	// 			.catch((err) => console.log(err));
-	// 	};
-	// 	previousDataFetch();
-	// }, []);
 
 	return (
 		<>

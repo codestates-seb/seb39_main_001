@@ -1,14 +1,14 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import HeaderTemplate from '../components/HeaderTemplate';
 import TextEditor from '../components/TextEditor';
 import { useCookies } from 'react-cookie';
 
-// cookie를 props로 받아온다
 const NewMeeting = () => {
 	const [cookies] = useCookies();
+	const navigate = useNavigate();
 	const [formData, setFormData] = useState({
 		title: '',
 		backend: 0,
@@ -105,10 +105,13 @@ const NewMeeting = () => {
 		axios
 			.post('http://juse.iptime.org:8080/boards', formData, {
 				headers: {
-					Auth: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGVhdHMwMUBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjY0MjQ0OTU3LCJleHAiOjE2NjQyNDg1NTd9.MfpH5jG5oxFmdNJ0hk0eXDBslGW-errLytT9RcPdxIo',
+					Auth: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGVhdHMwMUBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjY0MjU0MTk3LCJleHAiOjE2NzMyNTQxOTd9.KoJKZMYTY_qcpdBUjqAtgwe46VzKLp0CCIQDZ6NOnOk',
 				},
 			})
 			.then((res) => console.log(res))
+			.then(() => {
+				navigate('/');
+			})
 			.catch((err) => console.log(err));
 
 		console.log('formData:', formData);
