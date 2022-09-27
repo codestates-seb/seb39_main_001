@@ -192,6 +192,23 @@ const CancelButton = styled(Link)`
 	}
 `;
 
+const CancelButton = styled(Link)`
+  width: 100px;
+  padding: 10px 15px;
+  background: #ffffff;
+  font-size: 14px;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.black1};
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 4px;
+  cursor: pointer;
+  :hover {
+    color: ${({ theme }) => theme.colors.black1};
+    border: 1px solid ${({ theme }) => theme.colors.grey3};
+    background: ${({ theme }) => theme.colors.grey2};
+  }
+`;
+
 const SubmitButton = styled.button`
 	width: 100px;
 	padding: 10px 15px;
