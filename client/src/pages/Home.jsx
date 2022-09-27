@@ -5,7 +5,6 @@ import ScrollToTop from '../components/ScrollToTop';
 import TechStack from '../components/TechStack';
 import { boards } from '../mocks/db';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 
 const Home = () => {
   const [techFilter, setTechFilter] = useState([]);
@@ -71,13 +70,19 @@ const Home = () => {
       </PeriodContainer>
       <ListHeader>
         <TypeSelector>
-          <li onClick={tabHandler} className={currentTab === '전체' ? 'is-active' : ''}>
+          <li
+            onClick={tabHandler}
+            className={currentTab === '전체' ? 'is-active' : ''}>
             전체
           </li>
-          <li onClick={tabHandler} className={currentTab === '프로젝트' ? 'is-active' : ''}>
+          <li
+            onClick={tabHandler}
+            className={currentTab === '프로젝트' ? 'is-active' : ''}>
             프로젝트
           </li>
-          <li onClick={tabHandler} className={currentTab === '스터디' ? 'is-active' : ''}>
+          <li
+            onClick={tabHandler}
+            className={currentTab === '스터디' ? 'is-active' : ''}>
             스터디
           </li>
         </TypeSelector>
