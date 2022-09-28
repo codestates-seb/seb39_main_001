@@ -9,6 +9,7 @@ import theme from '../assets/styles/Theme';
 const Application = ({ data }) => {
   const [cookies] = useCookies();
   const token = cookies.user;
+  const myId = +cookies.userId;
   const navigate = useNavigate();
 
   // 포지션 별 지원 현황 정리
@@ -77,7 +78,8 @@ const Application = ({ data }) => {
       if (window.confirm(`${el.position}에 지원하시겠습니까?`)) {
         apis
           .postApply(token, data.id, el.value)
-          .then(alert(`${el.position}에 지원을 완료했습니다.`));
+          .then(() => alert(`${el.position}에 지원을 완료했습니다.`))
+          .catch(() => alert('하나의 모집 글에는 한 번의 지원만 가능합니다.'));
       }
     } else {
       alert('로그인이 필요한 작업입니다.');
@@ -107,6 +109,9 @@ const Application = ({ data }) => {
                   {!data.auth ? (
                     el.count === el.accepted.length ? (
                       <ApplyButton className='closed'>마감</ApplyButton>
+                    ) : data.applicationList.filter((e) => e.userId === myId)[0]
+                        .position === el.value ? (
+                      <ApplyButton className='closed'>지원 완료</ApplyButton>
                     ) : (
                       <ApplyButton
                         onClick={() => {
@@ -121,7 +126,7 @@ const Application = ({ data }) => {
                 </Position>
                 {data.auth ? (
                   <PendingContainer>
-                    <span>지원 목록</span>
+                    <span>지원자</span>
                     {el.pending.length ? (
                       el.pending.map((apply) => (
                         <PendingBubble isAccepted={false}>
@@ -143,9 +148,7 @@ const Application = ({ data }) => {
                         </PendingBubble>
                       ))
                     ) : (
-                      <p className='null-message'>
-                        아직 지원자가 없습니다... ;_;
-                      </p>
+                      <p className='null-message'>지원자가 없습니다... ;_;</p>
                     )}
                   </PendingContainer>
                 ) : (
@@ -179,9 +182,7 @@ const Application = ({ data }) => {
                     </PendingBubble>
                   ))
                 ) : (
-                  <p className='null-message'>
-                    아직 모집된 팀원이 없습니다... ;_;
-                  </p>
+                  <p className='null-message'>모집된 팀원이 없습니다... ;_;</p>
                 )}
               </AcceptedContainer>
             ) : (
