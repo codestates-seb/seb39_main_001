@@ -95,6 +95,32 @@ const Application = ({ data }) => {
     apis.deleteDeny(token, applicationId);
   };
 
+  // 지원 하기, 지원 완료 버튼 교체
+  const buttonSwitch = (el) => {
+    const history = data.applicationList.filter((e) => e.userId === myId);
+    if (history.length) {
+      return el.value === history[0].position ? (
+        <ApplyButton className='closed'>지원 완료</ApplyButton>
+      ) : (
+        <ApplyButton
+          onClick={() => {
+            clickApply(el);
+          }}>
+          지원
+        </ApplyButton>
+      );
+    } else {
+      return (
+        <ApplyButton
+          onClick={() => {
+            clickApply(el);
+          }}>
+          지원
+        </ApplyButton>
+      );
+    }
+  };
+
   return (
     <ApplicationContainer>
       <StatusContainer>
@@ -109,16 +135,8 @@ const Application = ({ data }) => {
                   {!data.auth ? (
                     el.count === el.accepted.length ? (
                       <ApplyButton className='closed'>마감</ApplyButton>
-                    ) : data.applicationList.filter((e) => e.userId === myId)[0]
-                        .position === el.value ? (
-                      <ApplyButton className='closed'>지원 완료</ApplyButton>
                     ) : (
-                      <ApplyButton
-                        onClick={() => {
-                          clickApply(el);
-                        }}>
-                        지원
-                      </ApplyButton>
+                      buttonSwitch(el)
                     )
                   ) : (
                     ''
