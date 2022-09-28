@@ -167,6 +167,32 @@ export const apis = {
       .catch((err) => console.log(err));
   },
 
+  // 북마크 등록
+  postBookmark: async (token, boardId) => {
+    await axios
+      .post(
+        `http://juse.iptime.org:8080/bookmarks/${boardId}`,
+        {},
+        {
+          headers: {
+            Auth: token,
+          },
+        }
+      )
+      .then((res) => console.log(res.data.data));
+  },
+
+  // 북마크 삭제
+  deleteBookmark: async (token, boardId) => {
+    await axios
+      .delete(`http://juse.iptime.org:8080/bookmarks/${boardId}`, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res));
+  },
+  
   /////////////////////////////////////////////////////////
 
   postApply: async (token) => {
@@ -186,19 +212,6 @@ export const apis = {
     await axios
       .patch(
         `http://juse.iptime.org:8080/applications/2`,
-        {},
-        {
-          headers: {
-            Auth: token,
-          },
-        }
-      )
-      .then((res) => console.log(res.data.data));
-  },
-  bookmark: async (token) => {
-    await axios
-      .post(
-        `http://juse.iptime.org:8080/bookmarks/1`,
         {},
         {
           headers: {
@@ -229,16 +242,6 @@ export const apis = {
         },
       })
       .then((res) => console.log(res.data.data));
-  },
-
-  bookDelete: async (token) => {
-    await axios
-      .delete(`http://juse.iptime.org:8080/bookmarks/1`, {
-        headers: {
-          Auth: token,
-        },
-      })
-      .then((res) => console.log(res));
   },
   myUpdate: async (token) => {
     await axios
