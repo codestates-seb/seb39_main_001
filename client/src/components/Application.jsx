@@ -128,8 +128,8 @@ const Application = ({ data }) => {
         <PositionsContainer>
           {positions.map((el, i) =>
             el.count ? (
-              <div>
-                <Position key={i}>
+              <div key={i}>
+                <Position>
                   <div className='position-name'>{el.position}</div>
                   <div className='count'>{`${el.accepted.length} / ${el.count}`}</div>
                   {!data.auth ? (
@@ -146,8 +146,8 @@ const Application = ({ data }) => {
                   <PendingContainer>
                     <span>지원자</span>
                     {el.pending.length ? (
-                      el.pending.map((apply) => (
-                        <PendingBubble isAccepted={false}>
+                      el.pending.map((apply, i) => (
+                        <PendingBubble key={i} isAccepted={false}>
                           <Link to={`/users/${apply.userId}`}>
                             {apply.nickname}
                           </Link>
