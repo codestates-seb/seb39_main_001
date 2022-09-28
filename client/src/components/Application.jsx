@@ -73,9 +73,16 @@ const Application = ({ data }) => {
 
   // 지원하기
   const clickApply = (el) => {
-    apis
-      .postApply(token, data.id, el.value)
-      .then(alert(`${el.position}에 지원을 완료했습니다.`));
+    if (token) {
+      if (window.confirm(`${el.position}에 지원하시겠습니까?`)) {
+        apis
+          .postApply(token, data.id, el.value)
+          .then(alert(`${el.position}에 지원을 완료했습니다.`));
+      }
+    } else {
+      alert('로그인이 필요한 작업입니다.');
+    }
+    return;
   };
 
   // 지원 관리
