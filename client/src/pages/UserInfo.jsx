@@ -48,7 +48,10 @@ const UserInfo = () => {
     if (window.confirm('정말 탈퇴하시겠습니까?')) {
       apis
         .deleteUser(token)
-        .then(removeCookie('user', { path: '/' }))
+        .then(() => {
+          removeCookie('user', { path: '/' });
+          removeCookie('userId', { path: '/' });
+        })
         .then(navigate('/'));
     } else {
       return;
