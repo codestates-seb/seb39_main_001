@@ -4,16 +4,17 @@ import { Link, useLocation } from 'react-router-dom';
 import QuestionAnswer from '../components/QuestionAnswer';
 import Application from '../components/Application';
 import { ReactComponent as Eye } from '../assets/icons/eye.svg';
-import { ReactComponent as Bookmark } from '../assets/icons/bookmark.svg';
-import { useEffect } from 'react';
+import { ReactComponent as BookmarkIcon } from '../assets/icons/bookmark.svg';
+import { ReactComponent as BookmarkCheckedIcon } from '../assets/icons/bookmark-check-fill.svg';
+import { useState, useEffect } from 'react';
 import { apis } from '../apis/axios';
 import { useCookies } from 'react-cookie';
-import { useState } from 'react';
 
 const Board = () => {
   const [cookies] = useCookies();
   const token = cookies.user;
   const [data, setData] = useState(board1.data);
+  // const [bookmark, setBookmark] = useState(false);
 
   const boardId = useLocation().pathname.slice(-1);
 
@@ -25,6 +26,25 @@ const Board = () => {
     });
   }, []);
 
+  const addBookmarkHandler = () => {
+    // 로그인 여부 확인
+    if (!token) {
+      alert('로그인이 필요한 기능입니다.');
+    } else {
+      // setBookmark(!bookmark);
+      console.log('북마크 추가됨');
+      // 북마크 post 요청
+      apis.postBookmark(token, data.id).then((res) => console.log(res));
+    }
+  };
+
+  const deleteBookmarkHandler = () => {
+    // setBookmark(!bookmark);
+    console.log('북마크 삭제됨');
+    // 북마크 delete 요청
+    apis.deleteBookmark(token, data.id).then((res) => console.log(res));
+  };
+
   return (
     <BoardContainer>
       <HeaderInfo>
@@ -35,20 +55,31 @@ const Board = () => {
           </div>
         </StatusType>
         <FlexContainer>
-          {data.auth ? (
-            <EditDelete>
-              <Link to='/boards/edit' state={{ boardId }}>
-                수정
-              </Link>
-              <Link to=''>삭제</Link>
-            </EditDelete>
-          ) : (
-            ''
-          )}
+          <EditDelete>
+            <Link to='/boards/edit' state={{ boardId }}>
+              수정
+            </Link>
+            <Link to=''>삭제</Link>
+          </EditDelete>
           <ViewBookmark>
             <Eye />
             {data.views}
-            <Bookmark />
+            {/* <BookmarkIcon /> */}
+            {data.bookmarked ? (
+              <BookmarkCheckedIcon
+                width={'24px'}
+                height={'24px'}
+                className='bookmark-checked-icon'
+                onClick={deleteBookmarkHandler}
+              />
+            ) : (
+              <BookmarkIcon
+                width={'24px'}
+                height={'24px'}
+                className='bookmark-icon'
+                onClick={addBookmarkHandler}
+              />
+            )}
             {data.bookmarks}
           </ViewBookmark>
         </FlexContainer>
@@ -140,6 +171,12 @@ const ViewBookmark = styled.div`
   align-items: center;
   gap: 10px;
   font-size: 24px;
+  > .bookmark-icon {
+    cursor: pointer;
+  }
+  > .bookmark-checked-icon {
+    cursor: pointer;
+  }
 `;
 
 const Title = styled.h2`

@@ -207,15 +207,14 @@ export const apis = {
         },
       })
       .then((res) => console.log(res.data.data))
-      .catch((err) => console.log(err));
+      .then((err) => console.log(err));
   },
 
-  /////////////////////////////////////////////////////////////
-
-  bookmark: async (token) => {
+  // 북마크 등록
+  postBookmark: async (token, boardId) => {
     await axios
       .post(
-        `http://juse.iptime.org:8080/bookmarks/1`,
+        `http://juse.iptime.org:8080/bookmarks/${boardId}`,
         {},
         {
           headers: {
@@ -225,10 +224,23 @@ export const apis = {
       )
       .then((res) => console.log(res.data.data));
   },
-  like: async (token) => {
+
+  // 북마크 삭제
+  deleteBookmark: async (token, boardId) => {
+    await axios
+      .delete(`http://juse.iptime.org:8080/bookmarks/${boardId}`, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res));
+  },
+
+  // 다른 유저 좋아요
+  postLike: async (token, id) => {
     await axios
       .post(
-        `http://juse.iptime.org:8080/likes/1`,
+        `http://juse.iptime.org:8080/likes/${id}`,
         {},
         {
           headers: {
@@ -238,41 +250,15 @@ export const apis = {
       )
       .then((res) => console.log(res.data.data));
   },
-  dislike: async (token) => {
+
+  // 다른 유저 좋아요 삭제
+  deleteLike: async (token, id) => {
     await axios
-      .delete(`http://juse.iptime.org:8080/likes/1`, {
+      .delete(`http://juse.iptime.org:8080/likes/${id}`, {
         headers: {
           Auth: token,
         },
       })
       .then((res) => console.log(res.data.data));
-  },
-
-  bookDelete: async (token) => {
-    await axios
-      .delete(`http://juse.iptime.org:8080/bookmarks/1`, {
-        headers: {
-          Auth: token,
-        },
-      })
-      .then((res) => console.log(res));
-  },
-  myUpdate: async (token) => {
-    await axios
-      .patch(
-        `http://juse.iptime.org:8080/users`,
-        {
-          introduction: '용우정입니다',
-          portfolio: '포폴업뎃',
-          nickname: '용정우',
-          skillStackTags: ['react', 'java'],
-        },
-        {
-          headers: {
-            Auth: token,
-          },
-        }
-      )
-      .then((res) => console.log(res));
   },
 };

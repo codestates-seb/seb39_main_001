@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -10,10 +9,12 @@ import { ReactComponent as HeartFill } from '../assets/icons/heart-fill.svg';
 const UserInfo = () => {
   const [cookies, setCookies, removeCookie] = useCookies();
   const token = cookies.user;
+  const [isLike, setIsLike] = useState(false);
 
   const navigate = useNavigate();
 
   const [data, setData] = useState({
+    id: '',
     nickname: '',
     like: 0,
     myUserList: [],
@@ -32,6 +33,8 @@ const UserInfo = () => {
     portfolio,
   } = data;
   const location = useLocation().pathname;
+  // 현재 마이페이지 유저의 id
+  const userId = location.slice(-1);
   const isMe = location === '/users' ? true : false;
 
   // 나의 마이페이지인지, 남의 마이페이지인지 구분하여 api 호출
@@ -58,16 +61,37 @@ const UserInfo = () => {
     }
   };
 
+  const addLikeHandler = () => {
+    setIsLike(!isLike);
+    console.log('좋아요');
+    // 좋아요 post 요청
+    apis.postLike(token, userId);
+  };
+
+  const deleteLikeHandler = () => {
+    setIsLike(!isLike);
+    console.log('좋아요 취소');
+    // 좋아요 delete 요청
+    apis.deleteLike(token, userId);
+  };
+
+  console.log(userId);
+
   return (
     <UserInfoContainer>
       <BasicInfo>
         <UserImg></UserImg>
         <RoundButton>
-          <Heart />
+          {/* <Heart /> */}
+          {isLike ? (
+            <HeartFill fill='tomato' onClick={deleteLikeHandler} />
+          ) : (
+            <Heart onClick={addLikeHandler} />
+          )}
         </RoundButton>
         <MiniBox>{nickname}</MiniBox>
         <MiniBox>
-          <HeartFill fill='red' />
+          <HeartFill fill='tomato' />
           {liked}
         </MiniBox>
       </BasicInfo>
