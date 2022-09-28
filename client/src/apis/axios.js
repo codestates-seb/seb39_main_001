@@ -192,7 +192,32 @@ export const apis = {
       })
       .then((res) => console.log(res));
   },
-  
+  // 다른 유저 좋아요
+  postLike: async (token, id) => {
+    await axios
+      .post(
+        `http://juse.iptime.org:8080/likes/${id}`,
+        {},
+        {
+          headers: {
+            Auth: token,
+          },
+        }
+      )
+      .then((res) => console.log(res.data.data));
+  },
+
+  // 다른 유저 좋아요 삭제
+    deleteLike: async (token, id) => {
+    await axios
+      .delete(`http://juse.iptime.org:8080/likes/${id}`, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res.data.data));
+  },
+
   /////////////////////////////////////////////////////////
 
   postApply: async (token) => {
@@ -219,28 +244,6 @@ export const apis = {
           },
         }
       )
-      .then((res) => console.log(res.data.data));
-  },
-  like: async (token) => {
-    await axios
-      .post(
-        `http://juse.iptime.org:8080/likes/1`,
-        {},
-        {
-          headers: {
-            Auth: token,
-          },
-        }
-      )
-      .then((res) => console.log(res.data.data));
-  },
-  dislike: async (token) => {
-    await axios
-      .delete(`http://juse.iptime.org:8080/likes/1`, {
-        headers: {
-          Auth: token,
-        },
-      })
       .then((res) => console.log(res.data.data));
   },
   myUpdate: async (token) => {

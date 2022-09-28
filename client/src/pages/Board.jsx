@@ -171,6 +171,12 @@ const ViewBookmark = styled.div`
 	align-items: center;
 	gap: 10px;
 	font-size: 24px;
+	> .bookmark-icon {
+		cursor: pointer;
+	}
+	> .bookmark-checked-icon {
+		cursor: pointer;
+	}
 `;
 
 const Title = styled.h2`
