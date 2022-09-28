@@ -1,10 +1,17 @@
+import { useState } from 'react';
+import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as BookmarkIcon } from '../assets/icons/bookmark.svg';
+import { ReactComponent as BookmarkCheckedIcon } from '../assets/icons/bookmark-check-fill.svg';
 import { ReactComponent as Eye } from '../assets/icons/eye.svg';
-
+import { apis } from '../apis/axios';
 
 const Card = ({ data }) => {
+	const [cookies] = useCookies();
+	const token = cookies.user;
+	// const [bookmark, setBookmark] = useState(false);
+
 	// 프로젝트 기간 text 변환
 	const periodNaming = (e) => {
 		if (e === 'short') {
@@ -16,40 +23,81 @@ const Card = ({ data }) => {
 		}
 	};
 
-  return (
-    <CardContainer status={data.status}>
-      {data.status === 'CLOSED' ? <Closed>모집 완료</Closed> : ''}
-      <CardHeader>
-        <CardType>{data.type}</CardType>
-        <Bookmark>
-          <BookmarkIcon width={'24px'} height={'24px'} />
-          {data.bookmarks}
-        </Bookmark>
-      </CardHeader>
-      <Link to={`/boards/${data.id}`}>
-        <CardSummary>
-          <div className='date'>{`${data.startingDate} (${periodNaming(data.period)})`}</div>
-          <p className='title'>{data.title}</p>
-          <div className='tags-container'>
-            {/* 스택 리스트는 5개 초과 시 첫 5개만 잘라서 보여줌 */}
-            {data.tagList.slice(0, 5).map((e, i) => (
-              <img className='tag' key={i} src={`/icons/stacks/${e}.png`} alt={`${e}`} />
-            ))}
-          </div>
-        </CardSummary>
-      </Link>
-      <CardInfo>
-        <AuthorInfo>
-          <div className='picture'></div>
-          <div className='name'>{data.user.nickname}</div>
-        </AuthorInfo>
-        <Views>
-          <Eye />
-          {data.views}
-        </Views>
-      </CardInfo>
-    </CardContainer>
-  );
+	// 여기서만 로그인 여부 확인 (북마크 흰색일 때. 검은색은 이미 로그인해서 북마크 저장된 것이므로)
+	const addBookmarkHandler = () => {
+		// 로그인 여부 확인
+		if (!token) {
+			alert('로그인이 필요한 기능입니다.');
+		} else {
+			// setBookmark(!bookmark);
+			console.log('북마크 추가됨');
+			// 북마크 post 요청
+			apis.postBookmark(token, data.id).then((res) => console.log(res));
+		}
+	};
+
+	const deleteBookmarkHandler = () => {
+		// setBookmark(!bookmark);
+		console.log('북마크 삭제됨');
+		// 북마크 delete 요청
+		apis.deleteBookmark(token, data.id).then((res) => console.log(res));
+	};
+
+	return (
+		<CardContainer status={data.status}>
+			{data.status === 'CLOSED' ? <Closed>모집 완료</Closed> : ''}
+			<CardHeader>
+				<CardType>{data.type}</CardType>
+				<Bookmark>
+					{data.bookmarked ? (
+						<BookmarkCheckedIcon
+							width={'24px'}
+							height={'24px'}
+							className='bookmark-checked-icon'
+							onClick={deleteBookmarkHandler}
+						/>
+					) : (
+						<BookmarkIcon
+							width={'24px'}
+							height={'24px'}
+							className='bookmark-icon'
+							onClick={addBookmarkHandler}
+						/>
+					)}
+					{data.bookmarks}
+				</Bookmark>
+			</CardHeader>
+			<Link to={`/boards/${data.id}`}>
+				<CardSummary>
+					<div className='date'>{`${data.startingDate} (${periodNaming(
+						data.period
+					)})`}</div>
+					<p className='title'>{data.title}</p>
+					<div className='tags-container'>
+						{/* 스택 리스트는 5개 초과 시 첫 5개만 잘라서 보여줌 */}
+						{data.tagList.slice(0, 5).map((e, i) => (
+							<img
+								className='tag'
+								key={i}
+								src={`/icons/stacks/${e}.png`}
+								alt={`${e}`}
+							/>
+						))}
+					</div>
+				</CardSummary>
+			</Link>
+			<CardInfo>
+				<AuthorInfo>
+					<div className='picture'></div>
+					<div className='name'>{data.user.nickname}</div>
+				</AuthorInfo>
+				<Views>
+					<Eye />
+					{data.views}
+				</Views>
+			</CardInfo>
+		</CardContainer>
+	);
 };
 
 const CardContainer = styled.div`
@@ -77,6 +125,12 @@ const Bookmark = styled.div`
 	display: flex;
 	flex-direction: column;
 	text-align: center;
+	> .bookmark-icon {
+		cursor: pointer;
+	}
+	> .bookmark-checked-icon {
+		cursor: pointer;
+	}
 `;
 
 const CardSummary = styled.div`

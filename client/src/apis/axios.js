@@ -167,6 +167,57 @@ export const apis = {
       .catch((err) => console.log(err));
   },
 
+  // 북마크 등록
+  postBookmark: async (token, boardId) => {
+    await axios
+      .post(
+        `http://juse.iptime.org:8080/bookmarks/${boardId}`,
+        {},
+        {
+          headers: {
+            Auth: token,
+          },
+        }
+      )
+      .then((res) => console.log(res.data.data));
+  },
+
+  // 북마크 삭제
+  deleteBookmark: async (token, boardId) => {
+    await axios
+      .delete(`http://juse.iptime.org:8080/bookmarks/${boardId}`, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res));
+  },
+  // 다른 유저 좋아요
+  postLike: async (token, id) => {
+    await axios
+      .post(
+        `http://juse.iptime.org:8080/likes/${id}`,
+        {},
+        {
+          headers: {
+            Auth: token,
+          },
+        }
+      )
+      .then((res) => console.log(res.data.data));
+  },
+
+  // 다른 유저 좋아요 삭제
+    deleteLike: async (token, id) => {
+    await axios
+      .delete(`http://juse.iptime.org:8080/likes/${id}`, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res.data.data));
+  },
+
   /////////////////////////////////////////////////////////
 
   postApply: async (token) => {
@@ -194,51 +245,6 @@ export const apis = {
         }
       )
       .then((res) => console.log(res.data.data));
-  },
-  bookmark: async (token) => {
-    await axios
-      .post(
-        `http://juse.iptime.org:8080/bookmarks/1`,
-        {},
-        {
-          headers: {
-            Auth: token,
-          },
-        }
-      )
-      .then((res) => console.log(res.data.data));
-  },
-  like: async (token) => {
-    await axios
-      .post(
-        `http://juse.iptime.org:8080/likes/1`,
-        {},
-        {
-          headers: {
-            Auth: token,
-          },
-        }
-      )
-      .then((res) => console.log(res.data.data));
-  },
-  dislike: async (token) => {
-    await axios
-      .delete(`http://juse.iptime.org:8080/likes/1`, {
-        headers: {
-          Auth: token,
-        },
-      })
-      .then((res) => console.log(res.data.data));
-  },
-
-  bookDelete: async (token) => {
-    await axios
-      .delete(`http://juse.iptime.org:8080/bookmarks/1`, {
-        headers: {
-          Auth: token,
-        },
-      })
-      .then((res) => console.log(res));
   },
   myUpdate: async (token) => {
     await axios
