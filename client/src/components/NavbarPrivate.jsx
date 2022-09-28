@@ -18,6 +18,7 @@ const NavbarPrivate = ({ removeCookie }) => {
 
   const handleLogout = () => {
     removeCookie('user', { path: '/' });
+    removeCookie('userId', { path: '/' });
     navigate('/');
   };
 

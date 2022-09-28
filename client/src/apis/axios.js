@@ -39,12 +39,15 @@ export const apis = {
       .then((res) => res.data.data)
       .catch((err) => console.log(err));
   },
-  deleteUser: async (token, userId) => {
+  deleteUser: async (token) => {
     await axios
       .delete(`http://juse.iptime.org:8080/users`, {
         headers: {
           Auth: token,
         },
+      })
+      .then(() => {
+        alert('정상적으로 탈퇴되었습니다.');
       })
       .catch((err) => console.log(err));
   },
@@ -167,6 +170,46 @@ export const apis = {
       .catch((err) => console.log(err));
   },
 
+  // 지원기능
+  postApply: async (token, boardId, position) => {
+    await axios
+      .post(
+        `http://juse.iptime.org:8080/applications/${boardId}?position=${position}`,
+        {},
+        {
+          headers: {
+            Auth: token,
+          },
+        }
+      )
+      .then((res) => console.log(res.data.data))
+      .then((err) => console.log(err));
+  },
+  patchAccept: async (token, applicationId) => {
+    await axios
+      .patch(
+        `http://juse.iptime.org:8080/applications/${applicationId}`,
+        {},
+        {
+          headers: {
+            Auth: token,
+          },
+        }
+      )
+      .then((res) => console.log(res.data.data))
+      .catch((err) => console.log(err));
+  },
+  deleteDeny: async (token, applicationId) => {
+    await axios
+      .delete(`http://juse.iptime.org:8080/applications/${applicationId}`, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res.data.data))
+      .then((err) => console.log(err));
+  },
+
   // 북마크 등록
   postBookmark: async (token, boardId) => {
     await axios
@@ -192,6 +235,7 @@ export const apis = {
       })
       .then((res) => console.log(res));
   },
+
   // 다른 유저 좋아요
   postLike: async (token, id) => {
     await axios
@@ -208,7 +252,7 @@ export const apis = {
   },
 
   // 다른 유저 좋아요 삭제
-    deleteLike: async (token, id) => {
+  deleteLike: async (token, id) => {
     await axios
       .delete(`http://juse.iptime.org:8080/likes/${id}`, {
         headers: {
@@ -216,52 +260,5 @@ export const apis = {
         },
       })
       .then((res) => console.log(res.data.data));
-  },
-
-  /////////////////////////////////////////////////////////
-
-  postApply: async (token) => {
-    await axios
-      .post(
-        `http://juse.iptime.org:8080/applications/1?position=backend`,
-        {},
-        {
-          headers: {
-            Auth: token,
-          },
-        }
-      )
-      .then((res) => console.log(res.data.data));
-  },
-  accept: async (token) => {
-    await axios
-      .patch(
-        `http://juse.iptime.org:8080/applications/2`,
-        {},
-        {
-          headers: {
-            Auth: token,
-          },
-        }
-      )
-      .then((res) => console.log(res.data.data));
-  },
-  myUpdate: async (token) => {
-    await axios
-      .patch(
-        `http://juse.iptime.org:8080/users`,
-        {
-          introduction: '용우정입니다',
-          portfolio: '포폴업뎃',
-          nickname: '용정우',
-          skillStackTags: ['react', 'java'],
-        },
-        {
-          headers: {
-            Auth: token,
-          },
-        }
-      )
-      .then((res) => console.log(res));
   },
 };
