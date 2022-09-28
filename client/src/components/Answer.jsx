@@ -52,7 +52,7 @@ const Answer = ({ data, auth, questionId }) => {
     <>
       {data ? (
         <AnswerContainer>
-          <span className='label'>답변 :</span>
+          {/* <span className='label'>답변 :</span> */}
           <span>{data.content}</span>
           {auth ? (
             <ButtonContainer>
