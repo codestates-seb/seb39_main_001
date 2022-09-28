@@ -167,12 +167,11 @@ export const apis = {
       .catch((err) => console.log(err));
   },
 
-  /////////////////////////////////////////////////////////
-
-  postApply: async (token) => {
+  // 지원기능
+  postApply: async (token, boardId, position) => {
     await axios
       .post(
-        `http://juse.iptime.org:8080/applications/1?position=backend`,
+        `http://juse.iptime.org:8080/applications/${boardId}?position=${position}`,
         {},
         {
           headers: {
@@ -180,12 +179,13 @@ export const apis = {
           },
         }
       )
-      .then((res) => console.log(res.data.data));
+      .then((res) => console.log(res.data.data))
+      .then((err) => console.log(err));
   },
-  accept: async (token) => {
+  patchAccept: async (token, applicationId) => {
     await axios
       .patch(
-        `http://juse.iptime.org:8080/applications/2`,
+        `http://juse.iptime.org:8080/applications/${applicationId}`,
         {},
         {
           headers: {
@@ -193,8 +193,22 @@ export const apis = {
           },
         }
       )
-      .then((res) => console.log(res.data.data));
+      .then((res) => console.log(res.data.data))
+      .catch((err) => console.log(err));
   },
+  deleteDeny: async (token, applicationId) => {
+    await axios
+      .delete(`http://juse.iptime.org:8080/applications/${applicationId}`, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res.data.data))
+      .catch((err) => console.log(err));
+  },
+
+  /////////////////////////////////////////////////////////////
+
   bookmark: async (token) => {
     await axios
       .post(

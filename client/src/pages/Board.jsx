@@ -35,12 +35,16 @@ const Board = () => {
           </div>
         </StatusType>
         <FlexContainer>
-          <EditDelete>
-            <Link to='/boards/edit' state={{ boardId }}>
-              수정
-            </Link>
-            <Link to=''>삭제</Link>
-          </EditDelete>
+          {data.auth ? (
+            <EditDelete>
+              <Link to='/boards/edit' state={{ boardId }}>
+                수정
+              </Link>
+              <Link to=''>삭제</Link>
+            </EditDelete>
+          ) : (
+            ''
+          )}
           <ViewBookmark>
             <Eye />
             {data.views}
