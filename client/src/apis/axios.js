@@ -39,12 +39,15 @@ export const apis = {
       .then((res) => res.data.data)
       .catch((err) => console.log(err));
   },
-  deleteUser: async (token, userId) => {
+  deleteUser: async (token) => {
     await axios
       .delete(`http://juse.iptime.org:8080/users`, {
         headers: {
           Auth: token,
         },
+      })
+      .then(() => {
+        alert('정상적으로 탈퇴되었습니다.');
       })
       .catch((err) => console.log(err));
   },
