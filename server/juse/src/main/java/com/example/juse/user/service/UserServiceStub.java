@@ -6,6 +6,7 @@ import com.example.juse.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @Profile({"test"})
@@ -26,7 +27,7 @@ public class UserServiceStub implements UserService {
     }
 
     @Override
-    public User update(User mappedObj) {
+    public User update(User mappedObj, MultipartFile img) {
         return mappedObj;
     }
 
@@ -49,5 +50,10 @@ public class UserServiceStub implements UserService {
     @Override
     public boolean isNicknameAvailable(String nickname) {
         return false;
+    }
+
+    @Override
+    public User createUser(User user, MultipartFile profileImg) {
+        return null;
     }
 }

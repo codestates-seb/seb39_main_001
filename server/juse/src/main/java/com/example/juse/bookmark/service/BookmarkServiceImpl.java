@@ -28,10 +28,10 @@ public class BookmarkServiceImpl implements BookmarkService {
         System.out.println("############user.getId() = " + user.getId());
         Board board = boardRepository.findById(boardId).orElseThrow();
 
-        Bookmark findBookmark = findUserIdBookmark(userId);
+        Bookmark findBookmark = findBoardAndUserIdBookmark(boardId, userId);
         System.out.println("############findBookmark.getId() = " + findBookmark.getId());
         System.out.println("userId = " + userId);
-        if (findBookmark.getId() != null && userId == findBookmark.getUser().getId()) {
+        if (findBookmark.getId() != null && userId == findBookmark.getUser().getId() && boardId == findBookmark.getBoard().getId()) {
             delete(boardId, userId);
             return null;
 
@@ -64,8 +64,8 @@ public class BookmarkServiceImpl implements BookmarkService {
         bookmarkRepository.deleteById(bookmark.getId());
     }
 
-    public Bookmark findUserIdBookmark(long userId) {
-        Optional<Bookmark> optionalBookmark = bookmarkRepository.findByUserId(userId);
+    public Bookmark findBoardAndUserIdBookmark(long boardId, long userId) {
+        Optional<Bookmark> optionalBookmark = bookmarkRepository.findByBoardIdAndUserId(boardId, userId);
 
         Bookmark bookmark = optionalBookmark.orElseGet(() -> new Bookmark());
 

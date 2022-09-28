@@ -17,16 +17,22 @@ import java.util.Optional;
 public class ApplicationServiceImpl implements ApplicationService{
 
     private final ApplicationRepository applicationRepository;
-    private final BoardRepository boardRepository;
 
     @Override
     public Application create(Application mappedObj) {
+        return null;
+    }
+
+    private final BoardRepository boardRepository;
+
+    @Override
+    public Application create(Application mappedObj, long boardId) {
         long userId = mappedObj.getUser().getId();
 
-        Application findApply = findUserIdApplication(userId);
+        Application findApply = findUserIdAndBoardIdApplication(userId, boardId);
         System.out.println("findApply.toString() = " + findApply.toString());
 
-        if (findApply.getId() != null && userId == findApply.getUser().getId()) {
+        if (findApply.getId() != null && userId == findApply.getUser().getId() && boardId == findApply.getBoard().getId()) {
             throw new RuntimeException("지원은 한번만 가능합니다.");
         }
 
@@ -110,8 +116,8 @@ public class ApplicationServiceImpl implements ApplicationService{
 
     }
 
-    public Application findUserIdApplication(long userId) {
-        Optional<Application> optionalApplication = applicationRepository.findById(userId);
+    public Application findUserIdAndBoardIdApplication(long userId, long boardId) {
+        Optional<Application> optionalApplication = applicationRepository.findByUserIdAndBoardId(userId, boardId);
 
         Application application = optionalApplication.orElseGet(() -> new Application());
 

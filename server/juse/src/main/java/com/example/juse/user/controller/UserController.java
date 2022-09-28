@@ -11,9 +11,11 @@ import com.example.juse.user.repository.UserRepository;
 import com.example.juse.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -30,16 +32,18 @@ public class UserController {
         return new ResponseEntity<>("noUser", HttpStatus.OK);
     }
 
-    @PostMapping("/join")
+    @PostMapping(value = "/join", consumes = {
+            MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity userJoin(@AuthenticationPrincipal PrincipalDetails principalDetails,
-                                   @RequestBody UserRequestDto.Post userPostDto) {
+                                   @RequestPart UserRequestDto.Post userPostDto,
+                                   @RequestPart MultipartFile profileImg) {
 
         User mappedObj = userMapper.toEntityFrom(userPostDto);
         SocialUser socialUser = principalDetails.getSocialUser();
         mappedObj.setEmail(principalDetails.getSocialUser().getEmail());
         mappedObj.addSocialUser(socialUser);
 
-        User createdUser = userService.create(mappedObj);
+        User createdUser = userService.createUser(mappedObj, profileImg);
         UserResponseDto.MyProfile response = userMapper.toMyProfileDtoFrom(createdUser);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.CREATED);
@@ -63,7 +67,6 @@ public class UserController {
     @GetMapping
     public ResponseEntity<com.example.juse.dto.SingleResponseDto<UserResponseDto.MyProfile>> getProfile(
             @AuthenticationPrincipal PrincipalDetails principalDetails
-
     ) {
 
         long userId = principalDetails.getSocialUser().getUser().getId();
@@ -84,10 +87,11 @@ public class UserController {
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
 
-    @PatchMapping
+    @PatchMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<com.example.juse.dto.SingleResponseDto<UserResponseDto.MyProfile>> patch(
             @AuthenticationPrincipal PrincipalDetails principalDetails,
-            @RequestBody UserRequestDto.Patch patchDto
+            @RequestPart UserRequestDto.Patch patchDto,
+            @RequestPart MultipartFile profileImg
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
         SocialUser socialUser = principalDetails.getSocialUser();
@@ -96,7 +100,7 @@ public class UserController {
 
         User mappedObj = userMapper.toEntityFrom(patchDto);
         mappedObj.addSocialUser(socialUser);
-        User updatedEntity = userService.update(mappedObj);
+        User updatedEntity = userService.update(mappedObj, profileImg);
         UserResponseDto.MyProfile responseDto = userMapper.toMyProfileDtoFrom(updatedEntity);
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
@@ -120,4 +124,5 @@ public class UserController {
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
+
 }
