@@ -2,8 +2,10 @@ package com.example.juse.answer.dto;
 
 import lombok.*;
 
-public class AnswerRequestDto {
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
+public class AnswerRequestDto {
 
     @Getter
     @NoArgsConstructor
@@ -11,12 +13,15 @@ public class AnswerRequestDto {
     @Builder
     public static class Post {
 
+        @NotNull
         private String content;
 
         @Setter
+        @Positive
         private Long questionId;
 
         @Setter
+        @Positive
         private Long userId;
 
     }
@@ -30,9 +35,11 @@ public class AnswerRequestDto {
         private String content;
 
         @Setter
+        @Positive
         private Long answerId;
 
         @Setter
+        @Positive
         private Long userId;
 
     }

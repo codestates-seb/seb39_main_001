@@ -1,6 +1,6 @@
 package com.example.juse.user.service;
 
-import com.example.juse.exception.BusinessLogicException;
+import com.example.juse.exception.CustomRuntimeException;
 import com.example.juse.exception.ExceptionCode;
 import com.example.juse.tag.entity.Tag;
 import com.example.juse.tag.entity.UserTag;
@@ -12,6 +12,8 @@ import com.example.juse.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +28,8 @@ public class UserServiceImpl implements UserService {
     private final UserTagService userTagService;
     private final UserMapper userMapper;
 
+    private final StorageService storageService;
+
     @Override
     public User getJuse(long userId) {
         return verifyUserById(userId);
@@ -39,13 +43,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User update(User mappedObj) {
+    public User update(User mappedObj, MultipartFile profileImg) {
         User user = verifyUserById(mappedObj.getId());
-        System.out.println("####user.toString() =" + user.toString());
+
+        if(profileImg != null) {
+            // profile 이미지를 uri 형식으로 전송
+            String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("images/")
+                    .path(profileImg.getOriginalFilename())
+                    .toUriString();
+
+            user.setImg(uri);
+            storageService.store(profileImg);
+        }
+
         long userId = mappedObj.getSocialUser().getId();
 
         if (user.getSocialUser().getId() != userId) {
-            throw new BusinessLogicException(ExceptionCode.USER_NOT_MATCHED);
+            throw new CustomRuntimeException(ExceptionCode.USER_NOT_MATCHED);
         }
 
         userMapper.updateEntityFromSource(user, mappedObj);
@@ -98,15 +113,40 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(mappedObj);
     }
 
+    @Override
+    public User createUser(User user, MultipartFile profileImg) {
+
+        if(profileImg != null) {
+            String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("images/")
+                    .path(profileImg.getOriginalFilename())
+                    .toUriString();
+
+            user.setImg(uri);
+            storageService.store(profileImg);
+        }
+
+        if (!user.getUserTagList().isEmpty()) {
+            user.getUserTagList().forEach(
+                    userTag -> {
+                        String tagName = userTag.getTag().getName();
+                        Tag tag = tagService.findByName(tagName);
+                        userTag.addUser(user);
+                        userTag.addTag(tag);
+                    }
+            );
+        }
+
+        return userRepository.save(user);
+    }
 
     @Override
     public User verifyUserById(long userId) {
         return userRepository.findById(userId).orElseThrow(
                 () -> {
-                    throw new BusinessLogicException(ExceptionCode.USER_NOT_FOUND);
+                    throw new CustomRuntimeException(ExceptionCode.USER_NOT_FOUND);
                 }
         );
-
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.example.juse.tag.service;
 
+import com.example.juse.exception.CustomRuntimeException;
+import com.example.juse.exception.ExceptionCode;
 import com.example.juse.tag.entity.Tag;
 import com.example.juse.tag.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +20,9 @@ public class TagServiceImpl implements TagService {
     @Override
     public Tag findByName(String name) {
         return tagRepository.findByName(name)
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(
+                        () -> new CustomRuntimeException(ExceptionCode.TAG_NOT_FOUND)
+                );
     }
 
 }

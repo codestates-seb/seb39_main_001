@@ -66,13 +66,17 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler implem
 
         System.out.println("socialUser.getEmail() = " + socialUser.getEmail());
 
+        System.out.println("############### = " + request.getRequestURL());
+
         // 최초 로그인 시 추가 회원가입하기 위해 이동.
         if (userRepository.findByEmail(socialUser.getEmail()) == null) {
             response.sendRedirect("http://localhost:3000/oauth2/redirect?isUser=0&token=" + tokenDto.getAccessToken());
+//            response.sendRedirect("https://junior-to-senior.netlify.app/oauth2/redirect?isUser=0&token=" + tokenDto.getAccessToken());
 
         }
         else {
             response.sendRedirect("http://localhost:3000/oauth2/redirect?isUser=1&token=" + tokenDto.getAccessToken());
+//            response.sendRedirect("https://junior-to-senior.netlify.app/oauth2/redirect?isUser=1&token=" + tokenDto.getAccessToken());
         }
     }
 }

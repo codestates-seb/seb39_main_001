@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Profile("plain")
 @RequiredArgsConstructor
 @Service
@@ -25,18 +27,26 @@ public class LikeServiceImpl implements LikeService {
         User whoLike = userRepository.findById(whoLikes).orElseThrow();
         User whoIsLike = userRepository.findById(whoIsLiked).orElseThrow();
 
-        Like like = Like.builder()
-                .whoLikes(whoLike)
-                .whoIsLiked(whoIsLike)
-                .build();
+        Like findLike = findWhoLikesIdAndWhoIsLikedLike(whoLikes, whoIsLiked);
 
-        //
-        int liked = whoIsLike.getLiked();
-        whoIsLike.setLiked(++liked);
+        if (findLike.getId() != null && whoLikes == findLike.getWhoLikes().getId() && whoIsLiked == findLike.getWhoIsLiked().getId()) {
+            delete(whoLikes, whoIsLiked);
+            return null;
+        }
+        else {
 
-        // todo : if 좋아요가 만약 눌러있을 시 좋아요 취소를 구현하자.
+            Like like = Like.builder()
+                    .whoLikes(whoLike)
+                    .whoIsLiked(whoIsLike)
+                    .build();
 
-        return likeRepository.save(like);
+            //
+            int liked = whoIsLike.getLiked();
+            whoIsLike.setLiked(++liked);
+
+
+            return likeRepository.save(like);
+        }
     }
 
     @Override
@@ -51,5 +61,14 @@ public class LikeServiceImpl implements LikeService {
 
         likeRepository.delete(like);
     }
+
+    public Like findWhoLikesIdAndWhoIsLikedLike(long whoLikes, long whoIsLiked) {
+        Optional<Like> optionalLike = likeRepository.findByWhoLikesIdAndWhoIsLikedId(whoLikes, whoIsLiked);
+
+        Like like = optionalLike.orElseGet(() -> new Like());
+
+        return like;
+    }
+
 
 }
