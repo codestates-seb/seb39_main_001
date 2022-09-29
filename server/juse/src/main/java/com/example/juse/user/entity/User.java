@@ -32,8 +32,6 @@ public class User extends Auditing {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Byte[] profileImage;
-
     private String img;
 
 

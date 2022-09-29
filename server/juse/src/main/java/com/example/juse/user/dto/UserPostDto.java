@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 @Getter
 public class UserPostDto {
-    private Byte[] profileImage;
+
     private String nickname;
     private String portfolio;
     private String introduction;

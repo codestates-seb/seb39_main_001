@@ -28,12 +28,12 @@ public interface UserMapper {
 
     @Mapping(target = "userTagList", source = "skillStackTags")
     User toEntityFrom(UserRequestDto.Post post);
-   
+
     @BeanMapping(
             ignoreByDefault = true,
             nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
     )
-    @Mapping(target = "profileImage", source = "profileImage")
+    @Mapping(target = "img", source = "img")
     @Mapping(target = "introduction", source = "introduction")
     @Mapping(target = "portfolio", source = "portfolio")
     @Mapping(target = "nickname", source = "nickname")

@@ -15,25 +15,26 @@ const TextEditorWrapper = styled.div`
 
 const TextEditor = ({ formData, setFormData }) => {
 	const editorRef = useRef();
+
+	useEffect(() => {
+		editorRef.current?.getInstance().setMarkdown(formData.content);
+	}, [formData.content]);
+
 	const onChange = () => {
-		const data = editorRef.current?.getInstance().getHTML();
+		const data = editorRef.current?.getInstance().getMarkdown();
 		setFormData({
 			...formData,
 			content: data,
 		});
 	};
 
-	useEffect(() => {
-		editorRef.current?.getInstance().setHTML(formData.content);
-	}, [formData.content]);
-
 	return (
 		<TextEditorWrapper>
 			<Editor
-				initialValue={formData.content || ' '}
+				initialValue={formData.content}
 				previewStyle='tab'
 				height='400px'
-				initialEditType='wysiwyg'
+				initialEditType='markdown'
 				useCommandShortcut={false}
 				hideModeSwitch={true}
 				ref={editorRef}

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserLoginController {
 
+    //todo : 안쓰는 컨트롤러. 삭제
     private final UserService userService;
     private final UserMapper userMapper;
 

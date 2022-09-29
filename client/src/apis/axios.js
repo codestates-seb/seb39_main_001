@@ -131,36 +131,44 @@ export const apis = {
       .then((res) => console.log(res));
   },
 
-  ///////////////////////////////////
-
-  boardPost: async (token) => {
-    await axios
-      .post(
-        `http://juse.iptime.org:8080/boards`,
-        {
-          title: '첫 번째 게시글',
-          backend: 5,
-          frontend: 2,
-          designer: 1,
-          etc: 2,
-          people: 10,
-          contact: 'contact',
-          dueDate: '2022-09-14',
-          startingDate: '2022-10-05',
-          period: '3',
-          onOffline: 'online',
-          content: 'content1',
-          type: 'PROJECT',
-          tagList: ['java', 'react', 'figma'],
+  // 마이주씨
+  getMyjuse: async (token) => {
+    return await axios
+      .get(`http://juse.iptime.org:8080/users/myjuse`, {
+        headers: {
+          Auth: token,
         },
-        {
-          headers: {
-            Auth: token,
-          },
-        }
-      )
-      .then((res) => console.log(res.data.data));
+      })
+      .then((res) => res.data.data)
+      .catch((err) => console.log(err));
   },
+
+  // 게시물 작성
+  postBoard: async (token, data) => {
+    await axios
+      .post(`http://juse.iptime.org:8080/boards`, data, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res.data.data))
+      .catch((err) => console.log(err));
+  },
+
+  // 게시물 수정
+  patchBoard: async (token, data, boardId) => {
+    await axios
+      .patch(`http://juse.iptime.org:8080/boards/${boardId}`, data, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  },
+
+  /////////////////////////////////////////////////////////
+
   postApply: async (token) => {
     await axios
       .post(
@@ -200,15 +208,6 @@ export const apis = {
       )
       .then((res) => console.log(res.data.data));
   },
-  myjuse: async (token) => {
-    await axios
-      .get(`http://juse.iptime.org:8080/users/myjuse`, {
-        headers: {
-          Auth: token,
-        },
-      })
-      .then((res) => console.log(res.data.data));
-  },
   like: async (token) => {
     await axios
       .post(
@@ -239,29 +238,6 @@ export const apis = {
           Auth: token,
         },
       })
-      .then((res) => console.log(res));
-  },
-  update: async (token) => {
-    await axios
-      .patch(
-        `http://juse.iptime.org:8080/boards/1`,
-        {
-          contact: 'updated contact',
-          dueDate: '2022-09-14',
-          startingDate: '2022-10-05',
-          period: '3',
-          onOffline: 'online',
-          content: '수정된 게시글',
-          title: '또 수정',
-          type: 'PROJECT',
-          tagList: ['figma'],
-        },
-        {
-          headers: {
-            Auth: token,
-          },
-        }
-      )
       .then((res) => console.log(res));
   },
   myUpdate: async (token) => {

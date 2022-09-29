@@ -23,7 +23,8 @@ export const boards = {
       type: 'STUDY',
       status: 'OPENING',
       startingDate: '2022-10-05',
-      title: '스터디 같이 하실 분 구합니다. 두 줄을 넘어가는 제목 세 줄을 넘어가는 제목 세 줄을 넘어가는 제모오오오옥',
+      title:
+        '스터디 같이 하실 분 구합니다. 두 줄을 넘어가는 제목 세 줄을 넘어가는 제목 세 줄을 넘어가는 제모오오오옥',
       tagList: ['typescript', 'javascript'],
       views: 4,
       period: 'short',
@@ -140,7 +141,7 @@ export const board1 = {
     startingDate: '2022-10-05',
     period: '3',
     onOffline: 'online',
-    content: 'content1',
+    content: '<h1>HELLO WORLD</h1>',
     views: 0,
     bookmarks: 0,
     tagList: ['java', 'react'],

@@ -42,3 +42,5 @@ application-e.yaml
 application-mysql.yaml
 application-db.yaml
 resources/ssl/
+
+application-local.yaml

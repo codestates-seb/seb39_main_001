@@ -1,3 +1,8 @@
+server:
+  ssl:
+    key-store: classpath:ssl/juse.p12
+    key-store-type: PKCS12
+    key-store-password: jusemanager0
 spring:
   security:
     oauth2:
