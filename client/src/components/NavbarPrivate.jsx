@@ -6,7 +6,8 @@ import { ReactComponent as NotificationIcon } from '../assets/icons/notification
 import { ReactComponent as UserIcon } from '../assets/icons/user.svg';
 import { ReactComponent as BookmarkIcon } from '../assets/icons/bookmark.svg';
 import { ReactComponent as LogoutIcon } from '../assets/icons/logout.svg';
-import theme from '../assets/styles/Theme';
+import { useCookies } from 'react-cookie';
+import { apis } from '../apis/axios';
 
 const NavbarPrivate = ({ removeCookie }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -22,13 +23,43 @@ const NavbarPrivate = ({ removeCookie }) => {
     navigate('/');
   };
 
+  // 글 한번에 여러번 쓰기 이스터에그
+  const [cookies] = useCookies();
+  const handleIteration = (iter) => {
+    for (let i = 0; i < iter; i++) {
+      const data = {
+        title: `${i}번째 글`,
+        backend: 2,
+        frontend: 2,
+        designer: 0,
+        etc: 0,
+        people: 0,
+        contact: 'chicken@milk.tea',
+        dueDate: '2022-09-14',
+        startingDate: '2022-10-05',
+        period: '3',
+        onOffline: 'online',
+        content: `자동으로 작성된 ${i}번째 글입니다.`,
+        type: 'PROJECT',
+        tagList: ['java', 'react'],
+      };
+      apis.postBoard(cookies.user, data);
+    }
+  };
+
   return (
     <NavbarContainer>
       <NavbarSubContainer>
         <Logo />
         <NavButtons>
           <Notification>
-            <NotificationIcon width='18px' height='18px' />
+            <NotificationIcon
+              width='18px'
+              height='18px'
+              onClick={() => {
+                handleIteration(10);
+              }}
+            />
           </Notification>
           <Profile onClick={dropdownClickHandler}>
             {dropdownOpen ? (
