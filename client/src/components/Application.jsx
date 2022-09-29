@@ -8,25 +8,33 @@ const Application = ({ data }) => {
       position: '프론트엔드',
       count: data.frontend,
       accepted: data.curFrontend,
-      pending: data.applicationList.filter((e) => e.position === 'frontend' && e.accepted === false),
+      pending: data.applicationList.filter(
+        (e) => e.position === 'frontend' && e.accepted === false
+      ),
     },
     {
       position: '백엔드',
       count: data.backend,
       accepted: data.curBackend,
-      pending: data.applicationList.filter((e) => e.position === 'backend' && e.accepted === false),
+      pending: data.applicationList.filter(
+        (e) => e.position === 'backend' && e.accepted === false
+      ),
     },
     {
       position: '디자이너',
       count: data.designer,
       accepted: data.curDesigner,
-      pending: data.applicationList.filter((e) => e.position === 'designer' && e.accepted === false),
+      pending: data.applicationList.filter(
+        (e) => e.position === 'designer' && e.accepted === false
+      ),
     },
     {
       position: '기타',
       count: data.etc,
       accepted: data.curEtc,
-      pending: data.applicationList.filter((e) => e.position === 'etc' && e.accepted === false),
+      pending: data.applicationList.filter(
+        (e) => e.position === 'etc' && e.accepted === false
+      ),
     },
   ];
 
@@ -39,7 +47,11 @@ const Application = ({ data }) => {
             <Position key={i}>
               <div className='position-name'>{e.position}</div>
               <div className='count'>{`${e.accepted} / ${e.count}`}</div>
-              {e.count === e.accepted.length ? <button disabled>마감</button> : <button>지원</button>}
+              {e.count === e.accepted.length ? (
+                <ApplyButton disabled>마감</ApplyButton>
+              ) : (
+                <ApplyButton>지원</ApplyButton>
+              )}
             </Position>
           ) : (
             ''
@@ -69,12 +81,28 @@ const PositionsContainer = styled.div`
 
 const Position = styled.div`
   display: flex;
+  align-items: center;
   font-size: 18px;
   > .position-name {
     width: 150px;
   }
   > .count {
     width: 60px;
+  }
+`;
+
+const ApplyButton = styled.button`
+  padding: 5px 10px;
+  background: #ffffff;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.black1};
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 4px;
+  cursor: pointer;
+  :hover {
+    color: #ffffff;
+    border: 1px solid ${({ theme }) => theme.colors.purple1};
+    background: ${({ theme }) => theme.colors.purple1};
   }
 `;
 

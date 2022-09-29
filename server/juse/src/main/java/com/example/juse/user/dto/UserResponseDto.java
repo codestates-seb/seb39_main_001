@@ -70,6 +70,9 @@ public class UserResponseDto {
         @Setter
         private String img;
 
+        @Setter
+        private boolean isLikedByMe;
+
     }
 
     @Getter

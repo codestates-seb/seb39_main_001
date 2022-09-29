@@ -2,6 +2,8 @@ package com.example.juse.user.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserRequestDto {
@@ -17,12 +19,16 @@ public class UserRequestDto {
         private String introduction;
         private String portfolio;
         private String nickname;
+        private String img;
+
         @Setter
         private String email;
-        @Setter
-        private Long social_user_id;
 
-        private List<String> skillStackTags;
+        @Setter
+        private Long socialUserId;
+
+        @Builder.Default
+        private List<String> skillStackTags = new ArrayList<>();
 
     }
 
@@ -32,11 +38,18 @@ public class UserRequestDto {
     @Builder
     public static class Post {
 
+        @NotBlank
         private String introduction;
         private String portfolio;
+
+        @NotBlank
         private String nickname;
 
-        private List<String> skillStackTags;
+        @Builder.Default
+        private List<String> skillStackTags = new ArrayList<>();
+
+        @Builder.Default
+        private String img = "default.jpg";
 
     }
 

@@ -1,6 +1,7 @@
 package com.example.juse.user.controller;
 
 import com.example.juse.dto.SingleResponseDto;
+import com.example.juse.exception.validator.NotEmptyToken;
 import com.example.juse.security.oauth.PrincipalDetails;
 import com.example.juse.social.entity.SocialUser;
 import com.example.juse.user.dto.UserRequestDto;
@@ -14,11 +15,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+
 
 @RestController
+@Validated
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
@@ -34,8 +40,8 @@ public class UserController {
 
     @PostMapping(value = "/join", consumes = {
             MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity userJoin(@AuthenticationPrincipal PrincipalDetails principalDetails,
-                                   @RequestPart UserRequestDto.Post userPostDto,
+    public ResponseEntity userJoin(@AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
+                                   @RequestPart @Valid UserRequestDto.Post userPostDto,
                                    @RequestPart(required = false) MultipartFile profileImg) {
 
         User mappedObj = userMapper.toEntityFrom(userPostDto);
@@ -52,7 +58,7 @@ public class UserController {
 
     @GetMapping("/myjuse")
     public ResponseEntity<com.example.juse.dto.SingleResponseDto<UserResponseDto.MyJuse>> getMyjuse(
-            @AuthenticationPrincipal PrincipalDetails principalDetails) {
+            @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails) {
 
         long userId = principalDetails.getSocialUser().getUser().getId();
 
@@ -66,7 +72,8 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<com.example.juse.dto.SingleResponseDto<UserResponseDto.MyProfile>> getProfile(
-            @AuthenticationPrincipal PrincipalDetails principalDetails
+            @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails
+
     ) {
 
         long userId = principalDetails.getSocialUser().getUser().getId();
@@ -79,18 +86,24 @@ public class UserController {
 
     @GetMapping("/{other-user-id}")
     public ResponseEntity<SingleResponseDto<UserResponseDto.Profile>> getOtherUserProfile(
-            @PathVariable("other-user-id") long userId
+            @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
+            @PathVariable("other-user-id") @Positive long userId
     ) {
+        long myId = principalDetails.getSocialUser().getId();
         User userProfile = userService.getProfile(userId);
         UserResponseDto.Profile responseDto = userMapper.toProfileDtoFrom(userProfile);
+
+        if (userProfile.isLikedBy(myId)) {
+            responseDto.setLikedByMe(true);
+        }
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
 
     @PatchMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<com.example.juse.dto.SingleResponseDto<UserResponseDto.MyProfile>> patch(
-            @AuthenticationPrincipal PrincipalDetails principalDetails,
-            @RequestPart UserRequestDto.Patch patchDto,
+            @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
+            @RequestPart @Valid UserRequestDto.Patch patchDto,
             @RequestPart(required = false) MultipartFile profileImg
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
@@ -109,7 +122,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping
     public void deleteAccount(
-            @AuthenticationPrincipal PrincipalDetails principalDetails
+            @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
 
@@ -124,5 +137,4 @@ public class UserController {
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
-
 }
