@@ -9,6 +9,8 @@ import { ReactComponent as HeartFill } from '../assets/icons/heart-fill.svg';
 const UserInfo = () => {
 	const [cookies, setCookies, removeCookie] = useCookies();
 	const token = cookies.user;
+	// const myId = +cookies.userId;
+	const myId = 1;
 	const [isLike, setIsLike] = useState(false);
 
 	const navigate = useNavigate();
@@ -23,6 +25,7 @@ const UserInfo = () => {
 		email: '',
 		portfolio: '',
 	});
+
 	const {
 		nickname,
 		liked,
@@ -33,8 +36,6 @@ const UserInfo = () => {
 		portfolio,
 	} = data;
 	const location = useLocation().pathname;
-	// 현재 마이페이지 유저의 id
-	const userId = location.slice(-1);
 	const isMe = location === '/users' ? true : false;
 
 	// 나의 마이페이지인지, 남의 마이페이지인지 구분하여 api 호출
@@ -47,17 +48,27 @@ const UserInfo = () => {
 	}, []);
 
 	const addLikeHandler = () => {
-		setIsLike(!isLike);
-		console.log('좋아요');
-		// 좋아요 post 요청
-		apis.postLike(token, userId);
+		// 내가 좋아요를 누르는 사람이 나 자신이 아닌지 확인
+		if (!isMe && myId !== data.id) {
+			setIsLike((prev) => !prev);
+			console.log('좋아요');
+			// 좋아요 post 요청
+			apis.postLike(token, data.id);
+		} else {
+			alert('자기 자신을 좋아요 할 수 없습니다!');
+		}
 	};
 
 	const deleteLikeHandler = () => {
-		setIsLike(!isLike);
-		console.log('좋아요 취소');
-		// 좋아요 delete 요청
-		apis.deleteLike(token, userId);
+		// 내가 좋아요 해제를 누르는 사람이 나 자신이 아닌지 확인
+		if (!isMe && myId !== data.id) {
+			setIsLike((prev) => !prev);
+			console.log('좋아요 취소');
+			// 좋아요 delete 요청
+			apis.deleteLike(token, data.id);
+		} else {
+			alert('자기 자신을 싫어요 할 수 없습니다!');
+		}
 	};
 
 	// 회원 탈퇴
@@ -72,14 +83,16 @@ const UserInfo = () => {
 		}
 	};
 
-	console.log(userId);
+	console.log('myId:', myId);
+	console.log('data.id:', data.id);
+	console.log('location:', location);
+	console.log('isMe:', isMe);
 
 	return (
 		<UserInfoContainer>
 			<BasicInfo>
 				<UserImg></UserImg>
 				<RoundButton>
-					{/* <Heart /> */}
 					{isLike ? (
 						<HeartFill fill='tomato' onClick={deleteLikeHandler} />
 					) : (

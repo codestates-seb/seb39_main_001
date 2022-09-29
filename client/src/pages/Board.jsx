@@ -14,17 +14,16 @@ const Board = () => {
 	const [cookies] = useCookies();
 	const token = cookies.user;
 	const [data, setData] = useState(board1.data);
-	// const [bookmark, setBookmark] = useState(false);
 
 	const boardId = useLocation().pathname.slice(-1);
 
 	useEffect(() => {
 		apis.getBoardDetail(token, boardId).then((data) => {
 			if (data) {
-				setData(data);
+				setData(data); // 데이터를 가져와서 캐싱해둔것
 			} else return;
 		});
-	}, []);
+	}, [token, boardId]);
 
 	const addBookmarkHandler = () => {
 		// 로그인 여부 확인
@@ -64,7 +63,6 @@ const Board = () => {
 					<ViewBookmark>
 						<Eye />
 						{data.views}
-						{/* <BookmarkIcon /> */}
 						{data.bookmarked ? (
 							<BookmarkCheckedIcon
 								width={'24px'}
