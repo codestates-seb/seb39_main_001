@@ -282,7 +282,6 @@ export const apis = {
       }
     );
     const { data, pagination } = res.data;
-    console.log(res.data);
     const isLast =
       pagination.page === pagination.totalPages || pagination.totalPages === 0;
     return { data, isLast, nextPage: page + 1 };

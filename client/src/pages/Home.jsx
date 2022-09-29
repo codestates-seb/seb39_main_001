@@ -121,6 +121,7 @@ const Home = () => {
             className={currentTab === 'study' ? 'is-active' : ''}>
             스터디
           </li>
+          <div>hi</div>
         </TypeSelector>
         <Link to='/boards'>
           <CreateButton>모집 글 작성</CreateButton>
@@ -185,7 +186,7 @@ const TypeSelector = styled.ul`
   > li {
     color: ${({ theme }) => theme.colors.grey3};
     padding: 10px 0;
-    padding-right: 20px;
+    margin-right: 20px;
     cursor: pointer;
   }
   > .is-active {
