@@ -24,6 +24,11 @@ public class ApplicationServiceStub implements ApplicationService {
     }
 
     @Override
+    public Application create(Application mappedObj, long BoardId) {
+        return null;
+    }
+
+    @Override
     public Application update(Application mappedObj) {
         return null;
     }

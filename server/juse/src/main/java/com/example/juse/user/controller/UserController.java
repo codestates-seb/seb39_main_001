@@ -12,10 +12,12 @@ import com.example.juse.user.repository.UserRepository;
 import com.example.juse.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -36,17 +38,18 @@ public class UserController {
         return new ResponseEntity<>("noUser", HttpStatus.OK);
     }
 
-    @PostMapping("/join")
-    public ResponseEntity userJoin(
-            @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
-            @RequestBody @Valid UserRequestDto.Post userPostDto
-    ) {
+    @PostMapping(value = "/join", consumes = {
+            MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity userJoin(@AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
+                                   @RequestPart @Valid UserRequestDto.Post userPostDto,
+                                   @RequestPart(required = false) MultipartFile profileImg) {
+
         User mappedObj = userMapper.toEntityFrom(userPostDto);
         SocialUser socialUser = principalDetails.getSocialUser();
         mappedObj.setEmail(principalDetails.getSocialUser().getEmail());
         mappedObj.addSocialUser(socialUser);
 
-        User createdUser = userService.create(mappedObj);
+        User createdUser = userService.createUser(mappedObj, profileImg);
         UserResponseDto.MyProfile response = userMapper.toMyProfileDtoFrom(createdUser);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.CREATED);
@@ -97,10 +100,11 @@ public class UserController {
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
 
-    @PatchMapping
+    @PatchMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<com.example.juse.dto.SingleResponseDto<UserResponseDto.MyProfile>> patch(
             @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
-            @RequestBody @Valid UserRequestDto.Patch patchDto
+            @RequestPart @Valid UserRequestDto.Patch patchDto,
+            @RequestPart(required = false) MultipartFile profileImg
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
         SocialUser socialUser = principalDetails.getSocialUser();
@@ -109,7 +113,7 @@ public class UserController {
 
         User mappedObj = userMapper.toEntityFrom(patchDto);
         mappedObj.addSocialUser(socialUser);
-        User updatedEntity = userService.update(mappedObj);
+        User updatedEntity = userService.update(mappedObj, profileImg);
         UserResponseDto.MyProfile responseDto = userMapper.toMyProfileDtoFrom(updatedEntity);
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);

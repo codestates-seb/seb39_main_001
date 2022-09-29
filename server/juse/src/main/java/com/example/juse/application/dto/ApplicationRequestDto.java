@@ -17,6 +17,7 @@ public class ApplicationRequestDto {
         private Long boardId;
         private Long userId;
         private String position;
+        private String nickname;
 
     }
 

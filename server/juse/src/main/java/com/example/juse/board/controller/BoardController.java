@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -91,6 +92,7 @@ public class BoardController {
             @PathVariable("board-id") @Positive long boardId,
             @RequestBody @Valid BoardRequestDto.Patch patchDto
     ) {
+
         Long userId = principalDetails.getSocialUser().getUser().getId();
         patchDto.setUserId(userId);
         patchDto.setBoardId(boardId);

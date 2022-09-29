@@ -36,16 +36,18 @@ public class ApplicationController {
             @RequestParam(required = true, name = "position") @NotBlank String position
     ) {
         Long userId = principalDetails.getSocialUser().getUser().getId();
+        String nickname = principalDetails.getSocialUser().getUser().getNickname();
 
         ApplicationRequestDto.Post post =
                 ApplicationRequestDto.Post.builder()
                         .boardId(boardId)
                         .userId(userId)
+                        .nickname(nickname)
                         .position(position)
                         .build();
 
         Application mappedObj = applicationMapper.toEntityFrom(post);
-        Application createdEntity = applicationService.create(mappedObj);
+        Application createdEntity = applicationService.create(mappedObj, boardId);
         ApplicationResponseDto responseDto = applicationMapper.toResponseDtoFrom(createdEntity);
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.CREATED);
     }
