@@ -50,19 +50,19 @@ public class User extends Auditing {
     private String nickname;
 
     @Builder.Default
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Board> boardList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Bookmark> bookmarkList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "whoLikes")
+    @OneToMany(mappedBy = "whoLikes", cascade = CascadeType.REMOVE)
     private List<Like> whoLikesList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "whoIsLiked")
+    @OneToMany(mappedBy = "whoIsLiked", cascade = CascadeType.REMOVE)
     private List<Like> whoIsLikeList = new ArrayList<>();
 
 
@@ -71,15 +71,15 @@ public class User extends Auditing {
     private List<UserTag> userTagList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Question> questionList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Answer> answerList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Application> applicationList = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.REMOVE)

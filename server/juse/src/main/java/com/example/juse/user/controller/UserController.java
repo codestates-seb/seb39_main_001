@@ -36,7 +36,7 @@ public class UserController {
             MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity userJoin(@AuthenticationPrincipal PrincipalDetails principalDetails,
                                    @RequestPart UserRequestDto.Post userPostDto,
-                                   @RequestPart MultipartFile profileImg) {
+                                   @RequestPart(required = false) MultipartFile profileImg) {
 
         User mappedObj = userMapper.toEntityFrom(userPostDto);
         SocialUser socialUser = principalDetails.getSocialUser();
@@ -91,7 +91,7 @@ public class UserController {
     public ResponseEntity<com.example.juse.dto.SingleResponseDto<UserResponseDto.MyProfile>> patch(
             @AuthenticationPrincipal PrincipalDetails principalDetails,
             @RequestPart UserRequestDto.Patch patchDto,
-            @RequestPart MultipartFile profileImg
+            @RequestPart(required = false) MultipartFile profileImg
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
         SocialUser socialUser = principalDetails.getSocialUser();

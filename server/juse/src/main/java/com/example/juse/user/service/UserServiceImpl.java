@@ -50,13 +50,16 @@ public class UserServiceImpl implements UserService {
     public User update(User mappedObj, MultipartFile profileImg) {
         User user = verifyUserById(mappedObj.getId());
 
-        // profile 이미지를 uri 형식으로 전송
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("images/")
-                .path(profileImg.getOriginalFilename())
-                .toUriString();
+        if(profileImg != null) {
+            // profile 이미지를 uri 형식으로 전송
+            String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("images/")
+                    .path(profileImg.getOriginalFilename())
+                    .toUriString();
 
-        user.setImg(uri);
+            user.setImg(uri);
+            storageService.store(profileImg);
+        }
 
         long userId = mappedObj.getSocialUser().getId();
 
@@ -83,8 +86,6 @@ public class UserServiceImpl implements UserService {
                         .collect(Collectors.toList());
 
         user.getUserTagList().removeAll(difference);
-
-        storageService.store(profileImg);
 
         return userRepository.save(user);
     }
@@ -118,12 +119,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(User user, MultipartFile profileImg) {
 
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("images/")
-                .path(profileImg.getOriginalFilename())
-                .toUriString();
+        if(profileImg != null) {
+            String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("images/")
+                    .path(profileImg.getOriginalFilename())
+                    .toUriString();
 
-        user.setImg(uri);
+            user.setImg(uri);
+            storageService.store(profileImg);
+        }
 
         user.getUserTagList().forEach(
                 userTag -> {
@@ -133,8 +137,6 @@ public class UserServiceImpl implements UserService {
                     userTag.addTag(tag);
                 }
         );
-
-        storageService.store(profileImg);
 
         return userRepository.save(user);
     }
