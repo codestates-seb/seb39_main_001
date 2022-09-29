@@ -1,11 +1,11 @@
 package com.example.juse.board.dto;
 
 import com.example.juse.board.entity.Board;
-import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -71,6 +71,9 @@ public class BoardRequestDto {
 
         @NotNull
         private Board.Type type;
+
+        @NotNull
+        private Board.Status status;
 
         @Setter
         @Positive

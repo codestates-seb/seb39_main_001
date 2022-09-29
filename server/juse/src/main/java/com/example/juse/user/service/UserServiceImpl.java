@@ -116,6 +116,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(User user, MultipartFile profileImg) {
 
+        long userId = user.getId();
+
+        if (isPresent(userId)) {
+            throw new CustomRuntimeException(ExceptionCode.USER_ALREADY_EXISST);
+        }
+
         if(profileImg != null) {
             String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path("images/")
@@ -154,5 +160,9 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.findByNickname(nickname).isEmpty();
 
+    }
+
+    public boolean isPresent(long userId) {
+        return userRepository.findById(userId).isPresent();
     }
 }
