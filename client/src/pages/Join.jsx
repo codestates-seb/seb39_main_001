@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import TechStack from '../components/TechStack';
 import { apis } from '../apis/axios';
-import axios from 'axios';
-import { useCookies } from 'react-cookie';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const Join = () => {
@@ -46,7 +44,7 @@ const Join = () => {
     } else {
       apis
         .postJoin(token, user)
-        .then(alert('회원가입에 성공하였습니다.'))
+        .then(alert('회원가입에 성공하였습니다. 다시 로그인해 주세요.'))
         .then(() => {
           navigate('/');
         });

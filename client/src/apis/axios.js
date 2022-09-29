@@ -3,17 +3,23 @@ import axios from 'axios';
 export const apis = {
   // 회원가입
   postJoin: async (token, data) => {
+    const formData = new FormData();
+    formData.append(
+      'userPostDto',
+      new Blob([JSON.stringify(data)], { type: 'application/json' })
+    );
     await axios
-      .post(`http://juse.iptime.org:8080/users/join`, data, {
+      .post(`https://jusemain.duckdns.org:8080/users/join`, formData, {
         headers: {
           Auth: token,
         },
       })
+      .then((res) => console.log(res))
       .catch((err) => console.log(err));
   },
   getNickname: async (nickname) => {
     return await axios
-      .get(`http://juse.iptime.org:8080/users/nicknames?q=${nickname}`)
+      .get(`https://jusemain.duckdns.org:8080/users/nicknames?q=${nickname}`)
       .then((res) => res.data.data)
       .catch((err) => console.log(err));
   },
@@ -21,7 +27,7 @@ export const apis = {
   // 마이페이지
   getUsers: async (token) => {
     return await axios
-      .get(`http://juse.iptime.org:8080/users`, {
+      .get(`https://jusemain.duckdns.org:8080/users`, {
         headers: {
           Auth: token,
         },
@@ -31,7 +37,7 @@ export const apis = {
   },
   getOtherUsers: async (token, userId) => {
     return await axios
-      .get(`http://juse.iptime.org:8080/users/${userId}`, {
+      .get(`https://jusemain.duckdns.org:8080/users/${userId}`, {
         headers: {
           Auth: token,
         },
@@ -41,7 +47,7 @@ export const apis = {
   },
   deleteUser: async (token) => {
     await axios
-      .delete(`http://juse.iptime.org:8080/users`, {
+      .delete(`https://jusemain.duckdns.org:8080/users`, {
         headers: {
           Auth: token,
         },
@@ -53,9 +59,14 @@ export const apis = {
   },
 
   // 유저 정보 수정
-  patchUser: async (token, user) => {
+  patchUser: async (token, data) => {
+    const formData = new FormData();
+    formData.append(
+      'patchDto',
+      new Blob([JSON.stringify(data)], { type: 'application/json' })
+    );
     await axios
-      .patch(`http://juse.iptime.org:8080/users`, user, {
+      .patch(`https://jusemain.duckdns.org:8080/users`, formData, {
         headers: {
           Auth: token,
         },
@@ -67,7 +78,7 @@ export const apis = {
   // 게시물 상세
   getBoardDetail: async (token, boardId) => {
     return await axios
-      .get(`http://juse.iptime.org:8080/boards/${boardId}`, {
+      .get(`https://jusemain.duckdns.org:8080/boards/${boardId}`, {
         headers: {
           Auth: token,
         },
@@ -79,7 +90,7 @@ export const apis = {
   // 질문 게시 수정 삭제
   postQuestion: async (token, data, boardId) => {
     await axios
-      .post(`http://juse.iptime.org:8080/questions/${boardId}`, data, {
+      .post(`https://jusemain.duckdns.org:8080/questions/${boardId}`, data, {
         headers: {
           Auth: token,
         },
@@ -88,16 +99,20 @@ export const apis = {
   },
   patchQuestion: async (token, data, questionId) => {
     await axios
-      .patch(`http://juse.iptime.org:8080/questions/${questionId}`, data, {
-        headers: {
-          Auth: token,
-        },
-      })
+      .patch(
+        `https://jusemain.duckdns.org:8080/questions/${questionId}`,
+        data,
+        {
+          headers: {
+            Auth: token,
+          },
+        }
+      )
       .catch((err) => console.log(err));
   },
   deleteQuestion: async (token, questionId) => {
     await axios
-      .delete(`http://juse.iptime.org:8080/questions/${questionId}`, {
+      .delete(`https://jusemain.duckdns.org:8080/questions/${questionId}`, {
         headers: {
           Auth: token,
         },
@@ -108,7 +123,7 @@ export const apis = {
   // 답변 게시 수정 삭제
   postAnswer: async (token, data, questionId) => {
     await axios
-      .post(`http://juse.iptime.org:8080/answers/${questionId}`, data, {
+      .post(`https://jusemain.duckdns.org:8080/answers/${questionId}`, data, {
         headers: {
           Auth: token,
         },
@@ -117,7 +132,7 @@ export const apis = {
   },
   patchAnswer: async (token, data, answerId) => {
     await axios
-      .patch(`http://juse.iptime.org:8080/answers/${answerId}`, data, {
+      .patch(`https://jusemain.duckdns.org:8080/answers/${answerId}`, data, {
         headers: {
           Auth: token,
         },
@@ -126,7 +141,7 @@ export const apis = {
   },
   deleteAnswer: async (token) => {
     await axios
-      .delete(`http://juse.iptime.org:8080/answers/1`, {
+      .delete(`https://jusemain.duckdns.org:8080/answers/1`, {
         headers: {
           Auth: token,
         },
@@ -137,7 +152,7 @@ export const apis = {
   // 마이주씨
   getMyjuse: async (token) => {
     return await axios
-      .get(`http://juse.iptime.org:8080/users/myjuse`, {
+      .get(`https://jusemain.duckdns.org:8080/users/myjuse`, {
         headers: {
           Auth: token,
         },
@@ -149,7 +164,7 @@ export const apis = {
   // 게시물 작성
   postBoard: async (token, data) => {
     await axios
-      .post(`http://juse.iptime.org:8080/boards`, data, {
+      .post(`https://jusemain.duckdns.org:8080/boards`, data, {
         headers: {
           Auth: token,
         },
@@ -161,7 +176,7 @@ export const apis = {
   // 게시물 수정
   patchBoard: async (token, data, boardId) => {
     await axios
-      .patch(`http://juse.iptime.org:8080/boards/${boardId}`, data, {
+      .patch(`https://jusemain.duckdns.org:8080/boards/${boardId}`, data, {
         headers: {
           Auth: token,
         },
@@ -174,7 +189,7 @@ export const apis = {
   postApply: async (token, boardId, position) => {
     await axios
       .post(
-        `http://juse.iptime.org:8080/applications/${boardId}?position=${position}`,
+        `https://jusemain.duckdns.org:8080/applications/${boardId}?position=${position}`,
         {},
         {
           headers: {
@@ -188,7 +203,7 @@ export const apis = {
   patchAccept: async (token, applicationId) => {
     await axios
       .patch(
-        `http://juse.iptime.org:8080/applications/${applicationId}`,
+        `https://jusemain.duckdns.org:8080/applications/${applicationId}`,
         {},
         {
           headers: {
@@ -201,11 +216,14 @@ export const apis = {
   },
   deleteDeny: async (token, applicationId) => {
     await axios
-      .delete(`http://juse.iptime.org:8080/applications/${applicationId}`, {
-        headers: {
-          Auth: token,
-        },
-      })
+      .delete(
+        `https://jusemain.duckdns.org:8080/applications/${applicationId}`,
+        {
+          headers: {
+            Auth: token,
+          },
+        }
+      )
       .then((res) => console.log(res.data.data))
       .then((err) => console.log(err));
   },
@@ -214,7 +232,7 @@ export const apis = {
   postBookmark: async (token, boardId) => {
     await axios
       .post(
-        `http://juse.iptime.org:8080/bookmarks/${boardId}`,
+        `https://jusemain.duckdns.org:8080/bookmarks/${boardId}`,
         {},
         {
           headers: {
@@ -228,7 +246,7 @@ export const apis = {
   // 북마크 삭제
   deleteBookmark: async (token, boardId) => {
     await axios
-      .delete(`http://juse.iptime.org:8080/bookmarks/${boardId}`, {
+      .delete(`https://jusemain.duckdns.org:8080/bookmarks/${boardId}`, {
         headers: {
           Auth: token,
         },
@@ -240,7 +258,7 @@ export const apis = {
   postLike: async (token, id) => {
     await axios
       .post(
-        `http://juse.iptime.org:8080/likes/${id}`,
+        `https://jusemain.duckdns.org:8080/likes/${id}`,
         {},
         {
           headers: {
@@ -254,11 +272,31 @@ export const apis = {
   // 다른 유저 좋아요 삭제
   deleteLike: async (token, id) => {
     await axios
-      .delete(`http://juse.iptime.org:8080/likes/${id}`, {
+      .delete(`https://jusemain.duckdns.org:8080/likes/${id}`, {
         headers: {
           Auth: token,
         },
       })
       .then((res) => console.log(res.data.data));
+  },
+
+  // 게시물 목록 조회 및 필터링, 무한스크롤
+  getBoards: async (token, type, tag, period, status, page) => {
+    const res = await axios.get(
+      `https://jusemain.duckdns.org:8080/boards?page=${page}&type=${type.toUpperCase()}${
+        tag.length ? '&tag=' + tag.join(',') : ''
+      }${
+        period.length ? '&period=' + period.join(',') : ''
+      }&status=${status.toUpperCase()}`,
+      {
+        headers: {
+          Auth: token,
+        },
+      }
+    );
+    const { data, pagination } = res.data;
+    const isLast =
+      pagination.page === pagination.totalPages || pagination.totalPages === 0;
+    return { data, isLast, nextPage: page + 1 };
   },
 };
