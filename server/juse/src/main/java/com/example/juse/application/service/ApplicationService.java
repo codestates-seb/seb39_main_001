@@ -6,6 +6,8 @@ public interface ApplicationService {
 
     Application create(Application mappedObj);
 
+    Application create(Application mappedObj, long boardId);
+
     Application update(Application mappedObj);
 
     Application accept(long applicationId, long userId);
