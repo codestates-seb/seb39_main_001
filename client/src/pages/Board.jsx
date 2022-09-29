@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { board1 } from '../mocks/db';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import QuestionAnswer from '../components/QuestionAnswer';
 import Application from '../components/Application';
 import { ReactComponent as Eye } from '../assets/icons/eye.svg';
@@ -14,9 +14,8 @@ const Board = () => {
   const [cookies] = useCookies();
   const token = cookies.user;
   const [data, setData] = useState(board1.data);
-  // const [bookmark, setBookmark] = useState(false);
-
-  const boardId = useLocation().pathname.slice(-1);
+  const param = useParams();
+  const boardId = param.boardId;
 
   useEffect(() => {
     apis.getBoardDetail(token, boardId).then((data) => {

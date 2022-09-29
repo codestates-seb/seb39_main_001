@@ -8,7 +8,6 @@ export const apis = {
       'userPostDto',
       new Blob([JSON.stringify(data)], { type: 'application/json' })
     );
-    // formData.append('profileImg', null);
     await axios
       .post(`https://jusemain.duckdns.org:8080/users/join`, formData, {
         headers: {
@@ -60,9 +59,14 @@ export const apis = {
   },
 
   // 유저 정보 수정
-  patchUser: async (token, user) => {
+  patchUser: async (token, data) => {
+    const formData = new FormData();
+    formData.append(
+      'patchDto',
+      new Blob([JSON.stringify(data)], { type: 'application/json' })
+    );
     await axios
-      .patch(`https://jusemain.duckdns.org:8080/users`, user, {
+      .patch(`https://jusemain.duckdns.org:8080/users`, formData, {
         headers: {
           Auth: token,
         },
@@ -279,9 +283,11 @@ export const apis = {
   // 게시물 목록 조회 및 필터링, 무한스크롤
   getBoards: async (token, type, tag, period, status, page) => {
     const res = await axios.get(
-      `https://jusemain.duckdns.org:8080/boards?page=${page}&type=${type.toUpperCase()}&tag=${tag.join(
-        ','
-      )}&period=${period.join(',')}&status=${status.toUpperCase()}`,
+      `https://jusemain.duckdns.org:8080/boards?page=${page}&type=${type.toUpperCase()}${
+        tag.length ? '&tag=' + tag.join(',') : ''
+      }${
+        period.length ? '&period=' + period.join(',') : ''
+      }&status=${status.toUpperCase()}`,
       {
         headers: {
           Auth: token,
