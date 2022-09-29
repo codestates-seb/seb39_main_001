@@ -44,12 +44,11 @@ const Join = () => {
     } else if (!user.introduction) {
       alert('한 줄 소개를 입력하세요.');
     } else {
-      apis
-        .postJoin(token, user)
-        .then(alert('회원가입에 성공하였습니다.'))
-        .then(() => {
-          navigate('/');
-        });
+      apis.postJoin(token, user);
+      // .then(alert('회원가입에 성공하였습니다.'))
+      // .then(() => {
+      //   navigate('/');
+      // });
     }
   };
 
