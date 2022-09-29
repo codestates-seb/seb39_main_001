@@ -33,7 +33,12 @@ const Board = () => {
 			// setBookmark(!bookmark);
 			console.log('북마크 추가됨');
 			// 북마크 post 요청
-			apis.postBookmark(token, data.id).then((res) => console.log(res));
+			apis.postBookmark(token, data.id).then((res) => {
+				setData((prev) => {
+					const data = { ...prev, bookmarked: true };
+					return data;
+				});
+			});
 		}
 	};
 
@@ -41,7 +46,12 @@ const Board = () => {
 		// setBookmark(!bookmark);
 		console.log('북마크 삭제됨');
 		// 북마크 delete 요청
-		apis.deleteBookmark(token, data.id).then((res) => console.log(res));
+		apis.deleteBookmark(token, data.id).then((res) => {
+			setData((prev) => {
+				const data = { ...prev, bookmarked: false };
+				return data;
+			});
+		});
 	};
 
 	return (

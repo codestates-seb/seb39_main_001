@@ -87,6 +87,7 @@ const UserInfo = () => {
 	console.log('data.id:', data.id);
 	console.log('location:', location);
 	console.log('isMe:', isMe);
+	console.log('likedByMe:', data.likedByMe);
 
 	return (
 		<UserInfoContainer>
