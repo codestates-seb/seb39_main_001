@@ -6,7 +6,7 @@ export const apis = {
     const formData = new FormData();
     formData.append(
       'userPostDto',
-      new Blob([JSON.stringify(data)], { type: 'application/json' })
+      new Blob(data, { type: 'application/json' })
     );
     // formData.append('profileImg', null);
     await axios
