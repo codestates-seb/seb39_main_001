@@ -3,17 +3,16 @@ import axios from 'axios';
 export const apis = {
   // 회원가입
   postJoin: async (token, data) => {
+    const formData = new FormData();
+    formData.append('userPostDto', data);
+    console.log(formData);
     await axios
-      .post(
-        `https://jusemain.duckdns.org:8080/users/join`,
-        { userPostDto: data },
-        {
-          headers: {
-            Auth: token,
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      )
+      .post(`https://jusemain.duckdns.org:8080/users/join`, formData, {
+        headers: {
+          Auth: token,
+          'Content-Type': 'multipart/form-data',
+        },
+      })
       .catch((err) => console.log(err));
   },
   getNickname: async (nickname) => {
