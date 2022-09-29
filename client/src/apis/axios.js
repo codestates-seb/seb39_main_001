@@ -4,11 +4,16 @@ export const apis = {
   // 회원가입
   postJoin: async (token, data) => {
     await axios
-      .post(`https://jusemain.duckdns.org:8080/users/join`, data, {
-        headers: {
-          Auth: token,
-        },
-      })
+      .post(
+        `https://jusemain.duckdns.org:8080/users/join`,
+        { userPostDto: data },
+        {
+          headers: {
+            Auth: token,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      )
       .catch((err) => console.log(err));
   },
   getNickname: async (nickname) => {
