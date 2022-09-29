@@ -1,6 +1,7 @@
 package com.example.juse.user.controller;
 
 import com.example.juse.dto.SingleResponseDto;
+import com.example.juse.exception.validator.NotEmptyToken;
 import com.example.juse.security.oauth.PrincipalDetails;
 import com.example.juse.social.entity.SocialUser;
 import com.example.juse.user.dto.UserRequestDto;
@@ -13,10 +14,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
 
 @RestController
+@Validated
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
@@ -31,9 +37,10 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public ResponseEntity userJoin(@AuthenticationPrincipal PrincipalDetails principalDetails,
-                                   @RequestBody UserRequestDto.Post userPostDto) {
-
+    public ResponseEntity userJoin(
+            @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
+            @RequestBody @Valid UserRequestDto.Post userPostDto
+    ) {
         User mappedObj = userMapper.toEntityFrom(userPostDto);
         SocialUser socialUser = principalDetails.getSocialUser();
         mappedObj.setEmail(principalDetails.getSocialUser().getEmail());
@@ -48,7 +55,7 @@ public class UserController {
 
     @GetMapping("/myjuse")
     public ResponseEntity<com.example.juse.dto.SingleResponseDto<UserResponseDto.MyJuse>> getMyjuse(
-            @AuthenticationPrincipal PrincipalDetails principalDetails) {
+            @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails) {
 
         long userId = principalDetails.getSocialUser().getUser().getId();
 
@@ -62,7 +69,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<com.example.juse.dto.SingleResponseDto<UserResponseDto.MyProfile>> getProfile(
-            @AuthenticationPrincipal PrincipalDetails principalDetails
+            @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails
 
     ) {
 
@@ -76,18 +83,24 @@ public class UserController {
 
     @GetMapping("/{other-user-id}")
     public ResponseEntity<SingleResponseDto<UserResponseDto.Profile>> getOtherUserProfile(
-            @PathVariable("other-user-id") long userId
+            @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
+            @PathVariable("other-user-id") @Positive long userId
     ) {
+        long myId = principalDetails.getSocialUser().getId();
         User userProfile = userService.getProfile(userId);
         UserResponseDto.Profile responseDto = userMapper.toProfileDtoFrom(userProfile);
+
+        if (userProfile.isLikedBy(myId)) {
+            responseDto.setLikedByMe(true);
+        }
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
 
     @PatchMapping
     public ResponseEntity<com.example.juse.dto.SingleResponseDto<UserResponseDto.MyProfile>> patch(
-            @AuthenticationPrincipal PrincipalDetails principalDetails,
-            @RequestBody UserRequestDto.Patch patchDto
+            @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
+            @RequestBody @Valid UserRequestDto.Patch patchDto
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
         SocialUser socialUser = principalDetails.getSocialUser();
@@ -105,7 +118,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping
     public void deleteAccount(
-            @AuthenticationPrincipal PrincipalDetails principalDetails
+            @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
 
