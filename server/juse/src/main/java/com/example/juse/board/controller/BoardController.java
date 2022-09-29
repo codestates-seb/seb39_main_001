@@ -20,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -128,7 +127,7 @@ public class BoardController {
         System.out.println("period : " + period);
         System.out.println("status : " + status);
 
-        Pageable pageable = PageRequest.of(page - 1, 5);
+        Pageable pageable = PageRequest.of(page - 1, 6);
 
         FilterOptions filterOptions = FilterOptions.of(type, status, tag, period);
         Page<Board> pagedBoardList = boardService.getBoards(pageable, filterOptions);

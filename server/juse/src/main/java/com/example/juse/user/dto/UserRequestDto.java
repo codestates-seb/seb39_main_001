@@ -38,6 +38,9 @@ public class UserRequestDto {
     @Builder
     public static class Post {
 
+        @Setter
+        private long userId;
+
         @NotBlank
         private String introduction;
         private String portfolio;

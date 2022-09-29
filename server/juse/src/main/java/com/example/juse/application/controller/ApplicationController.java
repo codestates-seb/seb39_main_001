@@ -47,7 +47,7 @@ public class ApplicationController {
                         .build();
 
         Application mappedObj = applicationMapper.toEntityFrom(post);
-        Application createdEntity = applicationService.create(mappedObj, boardId);
+        Application createdEntity = applicationService.create(mappedObj);
         ApplicationResponseDto responseDto = applicationMapper.toResponseDtoFrom(createdEntity);
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.CREATED);
     }

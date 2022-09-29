@@ -15,6 +15,7 @@ public enum ExceptionCode {
     USER_NOT_AUTHENTICATED(-701, "인증된 사용자가 아닙니다. 소셜 로그인을 통해 인증을 진행해주세요"),
     SOCIAL_USER_NOT_FOUND(-702, "소셜 로그인 이메일 정보가 없습니다"),
     USER_NOT_MATCHED(-703, "사용자 본인만 수정 또는 삭제할 수 있습니다"),
+    USER_ALREADY_EXISST(-704, "이미 존재하는 회원입니다"),
 
     BOARD_WITHOUT_TAG(-800, "설정된 기술 스택 태그가 없습니다. 스택을 설정하세요"),
     BOARD_NOT_FOUND(-801, "없는 게시글입니다"),
