@@ -8,6 +8,9 @@ import { useCookies } from 'react-cookie';
 import { apis } from '../apis/axios';
 import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from 'react-query';
+import { ReactComponent as ToggleOn } from '../assets/icons/toggle-on.svg';
+import { ReactComponent as ToggleOff } from '../assets/icons/toggle-off.svg';
+import theme from '../assets/styles/Theme';
 
 const Home = () => {
   const [cookies] = useCookies();
@@ -73,7 +76,14 @@ const Home = () => {
     setCurrentTab(tabValue);
   };
 
-  if (status === 'error') return <div>error</div>;
+  // 모집 중, 완료 토글
+  const statusToggle = () => {
+    if (statusFilter === 'opening') {
+      setStatusFilter('');
+    } else {
+      setStatusFilter('opening');
+    }
+  };
 
   return (
     <HomeContainer>
@@ -121,7 +131,24 @@ const Home = () => {
             className={currentTab === 'study' ? 'is-active' : ''}>
             스터디
           </li>
-          <div>hi</div>
+          <StatusSelector>
+            {statusFilter === 'opening' ? (
+              <ToggleOn
+                width={'26px'}
+                height={'26px'}
+                fill={theme.colors.purple1}
+                onClick={statusToggle}
+              />
+            ) : (
+              <ToggleOff
+                width={'26px'}
+                height={'26px'}
+                fill={theme.colors.grey4}
+                onClick={statusToggle}
+              />
+            )}
+            <span>모집 중만 보기</span>
+          </StatusSelector>
         </TypeSelector>
         <Link to='/boards'>
           <CreateButton>모집 글 작성</CreateButton>
@@ -181,6 +208,7 @@ const ListHeader = styled.div`
 
 const TypeSelector = styled.ul`
   display: flex;
+  align-items: center;
   margin: 15px 0;
   font-size: 24px;
   > li {
@@ -192,6 +220,14 @@ const TypeSelector = styled.ul`
   > .is-active {
     color: inherit;
   }
+`;
+
+const StatusSelector = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  color: ${({ theme }) => theme.colors.grey5};
 `;
 
 const CreateButton = styled.button`
