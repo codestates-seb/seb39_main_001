@@ -23,6 +23,7 @@ public class ApplicationServiceStub implements ApplicationService {
         return applicationRepository.save(mappedObj);
     }
 
+
     @Override
     public Application update(Application mappedObj) {
         return null;

@@ -38,6 +38,11 @@ public class UserRequestDto {
     @Builder
     public static class Post {
 
+        @Setter
+        private Long socialUserId;
+
+        private String email;
+
         @NotBlank
         private String introduction;
         private String portfolio;
@@ -49,7 +54,7 @@ public class UserRequestDto {
         private List<String> skillStackTags = new ArrayList<>();
 
         @Builder.Default
-        private String img = "default.jpg";
+        private String img = "/icons/img/user-default.png";
 
     }
 
