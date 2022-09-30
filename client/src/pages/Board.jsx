@@ -14,60 +14,64 @@ import { useQuery, useMutation, useQueryClient } from 'react-query';
 const Board = () => {
   const [cookies] = useCookies();
   const token = cookies.user;
-  const [data, setData] = useState(board1.data);
+  const [userData, setUserData] = useState(board1.data);
   const param = useParams();
   const boardId = param.boardId;
   const queryClient = useQueryClient();
 
-  // useEffect(() => {
-  //   apis.getBoardDetail(token, boardId).then((data) => {
-  //     if (data) {
-  //       setData(data);
-  //     } else return;
-  //   });
-  // }, [token, boardId]);
+  const { data, isLoading, isError, error } = useQuery(
+    'board',
+    () => apis.getBoardDetail(token, boardId),
+    {
+      onSuccess: (data) => {
+        setUserData(data);
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    }
+  );
 
-  const res = useQuery('board', () => apis.getBoardDetail(token, boardId), {
-    refetchOnWindowFocus: true,
-    onSuccess: (data) => {
-      setData(data.data.data);
-    },
-    onError: (e) => {
-      console.log(e.message);
-    },
-  });
-
-  const bookPostMutation = useMutation(
+  const postBookmarkMutation = useMutation(
     () => apis.postBookmark(token, boardId),
     {
-      onError: (error, variable, context) => {
-        console.log(error);
+      onMutate: (variable) => {
+        console.log('onMutate', variable);
       },
       onSuccess: (data, variables, context) => {
         queryClient.invalidateQueries('board');
       },
+      onError: (error) => {
+        alert('로그인이 필요한 기능입니다.');
+      },
+      onSettled: () => {
+        console.log('settled');
+      },
     }
   );
 
-  const bookDeleteMutation = useMutation(
+  const deleteBookmarkMutation = useMutation(
     () => apis.deleteBookmark(token, boardId),
     {
-      onError: (error, variable, context) => {
-        console.log(error);
+      onMutate: (variable) => {
+        console.log('onMutate', variable);
       },
       onSuccess: (data, variables, context) => {
         queryClient.invalidateQueries('board');
       },
+      onSettled: () => {
+        console.log('settled');
+      },
     }
   );
 
-  return !res.isLoading ? (
+  return !isLoading ? (
     <BoardContainer>
       <HeaderInfo>
         <StatusType>
-          <div className='type'>{data.type}</div>
+          <div className='type'>{userData.type}</div>
           <div className='status'>
-            {data.status === 'OPENING' ? '모집 중' : '모집 완료'}
+            {userData.status === 'OPENING' ? '모집 중' : '모집 완료'}
           </div>
         </StatusType>
         <FlexContainer>
@@ -79,74 +83,74 @@ const Board = () => {
           </EditDelete>
           <ViewBookmark>
             <Eye />
-            {data.views}
-            {data.bookmarked ? (
+            {userData.views}
+            {userData.bookmarked ? (
               <BookmarkCheckedIcon
                 width={'24px'}
                 height={'24px'}
                 className='bookmark-checked-icon'
-                onClick={() => bookDeleteMutation.mutate()}
+                onClick={() => deleteBookmarkMutation.mutate()}
               />
             ) : (
               <BookmarkIcon
                 width={'24px'}
                 height={'24px'}
                 className='bookmark-icon'
-                onClick={() => bookPostMutation.mutate()}
+                onClick={() => postBookmarkMutation.mutate()}
               />
             )}
-            {data.bookmarks}
+            {userData.bookmarks}
           </ViewBookmark>
         </FlexContainer>
       </HeaderInfo>
-      <Title>{data.title}</Title>
+      <Title>{userData.title}</Title>
       <LeaderInfo>
         <SubTitle>팀장 정보</SubTitle>
         <FlexContainer>
-          <Link to={`/users/${data.user.id}`}>
+          <Link to={`/users/${userData.user.id}`}>
             <ImgContainer>
-              <img src={data.user.img} alt='팀장프로필' />
+              <img src={userData.user.img} alt='팀장프로필' />
             </ImgContainer>
           </Link>
-          <Link to={`/users/${data.user.id}`}>
-            <div className='name'>{data.user.nickname}</div>
+          <Link to={`/users/${userData.user.id}`}>
+            <div className='name'>{userData.user.nickname}</div>
           </Link>
-          {data.user.skillStackTags.map((e, i) => (
+          {userData.user.skillStackTags.map((e, i) => (
             <Stack key={i} src={`/icons/stacks/${e}.png`} alt={`${e}`} />
           ))}
         </FlexContainer>
       </LeaderInfo>
-      <Application data={data} />
+      <Application data={userData} />
       <TopTemplate>
         <LeftInfo>
           <FlexContainer>
             <Category>모집 마감일</Category>
-            {data.dueDate}
+            {userData.dueDate}
           </FlexContainer>
           <FlexContainer>
             <Category>연락 방법</Category>
-            {data.contact}
+            {userData.contact}
           </FlexContainer>
           <FlexContainer>
             <Category>진행 방식</Category>
-            {data.onOffline === 'online' ? '온라인' : '오프라인'}
+            {userData.onOffline === 'online' ? '온라인' : '오프라인'}
           </FlexContainer>
         </LeftInfo>
         <RightInfo>
           <FlexContainer>
             <Category>예상 시작일</Category>
-            {data.startingDate}
+            {userData.startingDate}
           </FlexContainer>
           <Category>기술 스택</Category>
           <TagsContainer>
-            {data.tagList.map((e, i) => (
+            {userData.tagList.map((e, i) => (
               <Stack key={i} src={`/icons/stacks/${e}.png`} alt={`${e}`} />
             ))}
           </TagsContainer>
         </RightInfo>
       </TopTemplate>
-      <Main>{data.content}</Main>
-      <QuestionAnswer data={data} />
+      <Main>{userData.content}</Main>
+      <QuestionAnswer data={userData} />
     </BoardContainer>
   ) : (
     ''

@@ -141,6 +141,7 @@ const DropdownNav = styled.nav`
   right: 0;
   width: 140px;
   box-shadow: 0 1px 8px ${({ theme }) => theme.colors.grey2};
+  z-index: 999;
 `;
 
 const DropdownLink = styled(Link)`

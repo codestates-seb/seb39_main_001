@@ -1,19 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { apis } from '../apis/axios';
 import { ReactComponent as Heart } from '../assets/icons/heart.svg';
 import { ReactComponent as HeartFill } from '../assets/icons/heart-fill.svg';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 
 const UserInfo = () => {
   const [cookies, setCookies, removeCookie] = useCookies();
   const token = cookies.user;
-  const [isLike, setIsLike] = useState(false);
+  const myId = +cookies.userId;
+  const param = useParams();
+  const userId = param.userId;
+  const queryClient = useQueryClient();
 
   const navigate = useNavigate();
 
-  const [data, setData] = useState({
+  const [userData, setUserData] = useState({
+    img: '',
     id: '',
     nickname: '',
     like: 0,
@@ -22,8 +27,9 @@ const UserInfo = () => {
     introduction: '',
     email: '',
     portfolio: '',
-    img: '/icons/img/user-default.png',
+    likedByMe: false,
   });
+
   const {
     img,
     nickname,
@@ -33,19 +39,58 @@ const UserInfo = () => {
     introduction,
     email,
     portfolio,
-  } = data;
-  // 현재 마이페이지 유저의 id
-  const userId = useParams().userId;
-  const isMe = userId ? false : true;
+    likedByMe,
+  } = userData;
+
+  const location = useLocation().pathname;
+  const isMe = location === '/users' ? true : false;
 
   // 나의 마이페이지인지, 남의 마이페이지인지 구분하여 api 호출
-  useEffect(() => {
-    if (isMe) {
-      apis.getUsers(token).then((res) => setData(res));
-    } else {
-      apis.getOtherUsers(token, userId).then((res) => setData(res));
+  const { data, isLoading, isError, error } = useQuery(
+    'userInfo',
+    isMe ? () => apis.getUsers(token) : () => apis.getOtherUsers(token, userId),
+    {
+      onSuccess: (data) => {
+        console.log(data);
+        setUserData(data);
+      },
+      onError: (error) => {
+        console.log(error);
+      },
     }
-  }, []);
+  );
+
+  // 좋아요
+  const postLikeMutation = useMutation(() => apis.postLike(token, userId), {
+    onMutate: (variable) => {
+      console.log('onMutate', variable);
+    },
+    onSuccess: (data, variable, context) => {
+      queryClient.invalidateQueries('userInfo');
+    },
+    onError: (error) => {
+      alert('자신에게 좋아요 할 수 없습니다.');
+    },
+    onSettled: () => {
+      console.log('settled');
+    },
+  });
+
+  // 좋아요 취소
+  const deleteLikeMutation = useMutation(() => apis.deleteLike(token, userId), {
+    onMutate: (variable) => {
+      console.log('onMutate', variable);
+    },
+    onSuccess: (data, variable, context) => {
+      queryClient.invalidateQueries('userInfo');
+    },
+    onError: (error) => {
+      alert('에러났다');
+    },
+    onSettled: () => {
+      console.log('settled');
+    },
+  });
 
   // 회원 탈퇴
   const deleteHandler = () => {
@@ -62,32 +107,20 @@ const UserInfo = () => {
     }
   };
 
-  const addLikeHandler = () => {
-    setIsLike(!isLike);
-    console.log('좋아요');
-    // 좋아요 post 요청
-    apis.postLike(token, userId);
-  };
-
-  const deleteLikeHandler = () => {
-    setIsLike(!isLike);
-    console.log('좋아요 취소');
-    // 좋아요 delete 요청
-    apis.deleteLike(token, userId);
-  };
-
   return (
     <UserInfoContainer>
       <BasicInfo>
         <UserImg>
-          <img src={img} alt='profile' />
+          <img src={img} alt={'프로필'}></img>
         </UserImg>
         <RoundButton>
-          {/* <Heart /> */}
-          {isLike ? (
-            <HeartFill fill='tomato' onClick={deleteLikeHandler} />
+          {likedByMe ? (
+            <HeartFill
+              fill='tomato'
+              onClick={() => deleteLikeMutation.mutate()}
+            />
           ) : (
-            <Heart onClick={addLikeHandler} />
+            <Heart onClick={() => postLikeMutation.mutate()} />
           )}
         </RoundButton>
         <MiniBox>{nickname}</MiniBox>

@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useParams } from 'react-router-dom';
 import NavbarPrivate from './components/NavbarPrivate';
 import NavbarPublic from './components/NavbarPublic';
 import Home from './pages/Home';
@@ -28,8 +28,9 @@ function App() {
         <Route path='/join' element={<Join />} />
         <Route path='/boards/:boardId' element={<Board />} />
         <Route path='/oauth2/redirect' element={<OAuth />} />
-        <Route path='/users/' element={<UserInfo />} />
-        <Route path='/users/:userId' element={<UserInfo />} />
+        {/* 같은 컴포넌트인데 path가 다를 때는 unique key를 지정*/}
+        <Route path='/users/' element={<UserInfo key='myPage' />} />
+        <Route path='/users/:userId' element={<UserInfo key='othersPage' />} />
         <Route path='/users/edit' element={<EditUser />} />
         <Route path='/boards' element={<NewMeeting />} />
         <Route path='/users/myjuse' element={<MyJuse />} />

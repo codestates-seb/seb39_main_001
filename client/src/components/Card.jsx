@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -6,11 +5,12 @@ import { ReactComponent as BookmarkIcon } from '../assets/icons/bookmark.svg';
 import { ReactComponent as BookmarkCheckedIcon } from '../assets/icons/bookmark-check-fill.svg';
 import { ReactComponent as Eye } from '../assets/icons/eye.svg';
 import { apis } from '../apis/axios';
+import { useQueryClient, useMutation } from 'react-query';
 
 const Card = ({ data }) => {
   const [cookies] = useCookies();
   const token = cookies.user;
-  // const [bookmark, setBookmark] = useState(false);
+  const queryClient = useQueryClient();
 
   // 프로젝트 기간 text 변환
   const periodNaming = (e) => {
@@ -23,25 +23,38 @@ const Card = ({ data }) => {
     }
   };
 
-  // 여기서만 로그인 여부 확인 (북마크 흰색일 때. 검은색은 이미 로그인해서 북마크 저장된 것이므로)
-  const addBookmarkHandler = () => {
-    // 로그인 여부 확인
-    if (!token) {
-      alert('로그인이 필요한 기능입니다.');
-    } else {
-      // setBookmark(!bookmark);
-      console.log('북마크 추가됨');
-      // 북마크 post 요청
-      apis.postBookmark(token, data.id).then((res) => console.log(res));
+  const postBookmarkMutation = useMutation(
+    () => apis.postBookmark(token, data.id),
+    {
+      onMutate: (variable) => {
+        console.log('onMutate', variable);
+      },
+      onSuccess: (data, variables, context) => {
+        queryClient.invalidateQueries('board');
+      },
+      onError: (error) => {
+        alert('로그인이 필요한 기능입니다.');
+      },
+      onSettled: () => {
+        console.log('settled');
+      },
     }
-  };
+  );
 
-  const deleteBookmarkHandler = () => {
-    // setBookmark(!bookmark);
-    console.log('북마크 삭제됨');
-    // 북마크 delete 요청
-    apis.deleteBookmark(token, data.id).then((res) => console.log(res));
-  };
+  const deleteBookmarkMutation = useMutation(
+    () => apis.deleteBookmark(token, data.id),
+    {
+      onMutate: (variable) => {
+        console.log('onMutate', variable);
+      },
+      onSuccess: (data, variables, context) => {
+        queryClient.invalidateQueries('board');
+      },
+      onSettled: () => {
+        console.log('settled');
+      },
+    }
+  );
 
   return (
     <CardContainer status={data.status}>
@@ -54,14 +67,14 @@ const Card = ({ data }) => {
               width={'24px'}
               height={'24px'}
               className='bookmark-checked-icon'
-              onClick={deleteBookmarkHandler}
+              onClick={() => deleteBookmarkMutation.mutate()}
             />
           ) : (
             <BookmarkIcon
               width={'24px'}
               height={'24px'}
               className='bookmark-icon'
-              onClick={addBookmarkHandler}
+              onClick={() => postBookmarkMutation.mutate()}
             />
           )}
           {data.bookmarks}
@@ -90,7 +103,7 @@ const Card = ({ data }) => {
         <Link to={`/users/${data.user.id}`}>
           <AuthorInfo>
             <ImgContainer>
-              <img src={data.user.img} alt='profile' />
+              <img src={data.user.img} alt='프로필' />
             </ImgContainer>
             <div className='name'>{data.user.nickname}</div>
           </AuthorInfo>
