@@ -60,11 +60,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public Board getBoard(long boardId) {
 
         Board entity = verifyBoardById(boardId);
-        return entity;
+        entity.setViews(entity.getViews() + 1);
+        return boardRepository.save(entity);
     }
 
     @Override
