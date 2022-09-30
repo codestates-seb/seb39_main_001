@@ -4,6 +4,8 @@ import com.example.juse.answer.entity.Answer;
 import com.example.juse.answer.mapper.AnswerMapper;
 import com.example.juse.answer.repository.AnswerRepository;
 import com.example.juse.board.entity.Board;
+import com.example.juse.exception.CustomRuntimeException;
+import com.example.juse.exception.ExceptionCode;
 import com.example.juse.question.entity.Question;
 import com.example.juse.question.service.QuestionService;
 import com.example.juse.user.entity.User;
@@ -11,8 +13,7 @@ import com.example.juse.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-
-import java.util.NoSuchElementException;
+import org.springframework.transaction.annotation.Transactional;
 
 @Profile("plain")
 @RequiredArgsConstructor
@@ -25,6 +26,7 @@ public class AnswerServiceImpl implements AnswerService {
     private final AnswerMapper answerMapper;
 
     @Override
+    @Transactional
     public Answer create(Answer mappedObj) {
 
         Question question = questionService.verifyQuestionById(mappedObj.getQuestion().getId());
@@ -32,7 +34,7 @@ public class AnswerServiceImpl implements AnswerService {
         long userId = mappedObj.getUser().getId();
 
         if (!board.isCreatedBy(userId)) {
-            throw new RuntimeException("게시글 작성자만 답글을 달 수 있습니다");
+            throw new CustomRuntimeException(ExceptionCode.ANSWER_BOARD_WRITER_NOT_MATCHED);
         }
 
         User user = userService.verifyUserById(userId);
@@ -49,7 +51,7 @@ public class AnswerServiceImpl implements AnswerService {
         long userId = mappedObj.getUser().getId();
 
         if (!answer.isCreatedBy(userId)) {
-            throw new RuntimeException("작성자가 아닙니다");
+            throw new CustomRuntimeException(ExceptionCode.ANSWER_WRITER_NOT_MATCHED);
         }
 
         answerMapper.updateEntityFromSource(answer, mappedObj);
@@ -62,7 +64,7 @@ public class AnswerServiceImpl implements AnswerService {
         Answer answer = verifyAnswerById(answerId);
 
         if (!answer.isCreatedBy(userId)) {
-            throw new RuntimeException("작성자가 아닙니다");
+            throw new CustomRuntimeException(ExceptionCode.ANSWER_WRITER_NOT_MATCHED);
         }
 
         answerRepository.delete(answer);
@@ -71,6 +73,9 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public Answer verifyAnswerById(long answerId) {
-        return answerRepository.findById(answerId).orElseThrow(NoSuchElementException::new);
+        return answerRepository.findById(answerId).orElseThrow(
+                () -> new CustomRuntimeException(ExceptionCode.ANSWER_NOT_FOUND)
+        );
     }
+
 }

@@ -11,11 +11,13 @@ public interface ApplicationMapper {
 
     @Mapping(target = "user.id", source = "userId")
     @Mapping(target = "board.id", source = "boardId")
+    @Mapping(target = "user.nickname", source = "nickname")
     Application toEntityFrom(ApplicationRequestDto.Post post);
 
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "boardId", source = "board.id")
     @Mapping(target = "isAccepted", source = "accepted")
+    @Mapping(target = "nickname", source = "user.nickname")
     ApplicationResponseDto toResponseDtoFrom(Application entity);
 
 }

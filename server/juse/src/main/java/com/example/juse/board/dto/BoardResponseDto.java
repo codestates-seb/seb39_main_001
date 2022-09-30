@@ -54,6 +54,7 @@ public class BoardResponseDto {
         private Board.Type type;
         private Board.Status status;
 
+        @Setter
         private UserResponseDto user;
 
         private LocalDateTime createdAt;
