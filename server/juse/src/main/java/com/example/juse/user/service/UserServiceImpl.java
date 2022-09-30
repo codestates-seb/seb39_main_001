@@ -116,9 +116,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(User user, MultipartFile profileImg) {
 
-        long userId = user.getId();
+        String socialUserEmail = user.getSocialUser().getEmail();
 
-        if (isPresent(userId)) {
+        if (isDuplicatedBy(socialUserEmail)) {
             throw new CustomRuntimeException(ExceptionCode.USER_ALREADY_EXISST);
         }
 
@@ -162,7 +162,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    public boolean isPresent(long userId) {
-        return userRepository.findById(userId).isPresent();
+    public boolean isDuplicatedBy(String socialUserEmail) {
+        return userRepository.findByEmail(socialUserEmail) != null;
     }
 }

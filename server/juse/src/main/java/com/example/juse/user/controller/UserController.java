@@ -44,8 +44,6 @@ public class UserController {
                                    @RequestPart @Valid UserRequestDto.Post userPostDto,
                                    @RequestPart(required = false) MultipartFile profileImg) {
 
-        long userId = principalDetails.getSocialUser().getId();
-        userPostDto.setUserId(userId);
         User mappedObj = userMapper.toEntityFrom(userPostDto);
         SocialUser socialUser = principalDetails.getSocialUser();
         mappedObj.setEmail(principalDetails.getSocialUser().getEmail());

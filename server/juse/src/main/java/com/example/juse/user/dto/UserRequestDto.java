@@ -39,7 +39,9 @@ public class UserRequestDto {
     public static class Post {
 
         @Setter
-        private long userId;
+        private Long socialUserId;
+
+        private String email;
 
         @NotBlank
         private String introduction;
