@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
+import { ReactComponent as ChevronUp } from '../assets/icons/chevron-up.svg';
 
 export default function ScrollToTop() {
   const [scrollY, setScrollY] = useState(0);
@@ -32,7 +33,7 @@ export default function ScrollToTop() {
     <div>
       {btnStatus ? (
         <PositionContainer onClick={handleScroll}>
-          <i className='fi fi-rr-angle-circle-up'></i>
+          <ChevronUp width={'35px'} height={'35px'} />
         </PositionContainer>
       ) : (
         ''
@@ -43,6 +44,9 @@ export default function ScrollToTop() {
 
 const PositionContainer = styled.div`
   position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 50px;
   height: 50px;
   bottom: 50px;
@@ -51,6 +55,7 @@ const PositionContainer = styled.div`
   font-size: 50px;
   color: ${({ theme }) => theme.colors.purple1};
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.7);
+  border: 3px solid ${({ theme }) => theme.colors.purple1};
+  background-color: rgba(255, 255, 255, 0.9);
   cursor: pointer;
 `;

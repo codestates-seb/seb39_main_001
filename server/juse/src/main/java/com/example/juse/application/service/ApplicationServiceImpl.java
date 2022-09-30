@@ -4,12 +4,13 @@ import com.example.juse.application.entity.Application;
 import com.example.juse.application.repository.ApplicationRepository;
 import com.example.juse.board.entity.Board;
 import com.example.juse.board.repository.BoardRepository;
+import com.example.juse.board.service.BoardService;
+import com.example.juse.exception.CustomRuntimeException;
+import com.example.juse.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Profile("plain")
@@ -18,17 +19,22 @@ public class ApplicationServiceImpl implements ApplicationService{
 
     private final ApplicationRepository applicationRepository;
     private final BoardRepository boardRepository;
+    private final BoardService boardService;
 
     @Override
     public Application create(Application mappedObj) {
         long userId = mappedObj.getUser().getId();
 
+        long boardId = mappedObj.getBoard().getId();
+
+        checkDuplicatedByUserIdAndBoardId(userId, boardId);
+
         Application findApply = findUserIdApplication(userId);
         System.out.println("findApply.toString() = " + findApply.toString());
 
-        if (findApply.getId() != null && userId == findApply.getUser().getId()) {
-            throw new RuntimeException("지원은 한번만 가능합니다.");
-        }
+//        if (findApply.getId() != null && userId == findApply.getUser().getId()) {
+//            throw new CustomRuntimeException(ExceptionCode.APPLICATION_DUPLICATED);
+//        }
 
         return applicationRepository.save(mappedObj);
     }
@@ -39,10 +45,11 @@ public class ApplicationServiceImpl implements ApplicationService{
     }
 
     @Override
+    @Transactional
     public Application accept(long applicationId, long userId) {
         Application findApply = findVerifiedApplication(applicationId);
 
-        Board board = boardRepository.findById(findApply.getBoard().getId()).orElseThrow();
+        Board board = boardService.verifyBoardById(findApply.getBoard().getId());
 
         System.out.println("board = " + board.toString());
         System.out.println("findApply = " + findApply.getPosition());
@@ -79,9 +86,10 @@ public class ApplicationServiceImpl implements ApplicationService{
     }
 
     @Override
+    @Transactional
     public void deny(long applicationId, long userId) {
         Application findApply = findVerifiedApplication(applicationId);
-        Board board = boardRepository.findById(findApply.getBoard().getId()).orElseThrow();
+        Board board = boardService.verifyBoardById(findApply.getBoard().getId());
         findApply.checkApplicationWriter(userId);
 
         // 거절을 눌렀을 때, 지원자의 각 포지션 카운트 감소 후 Board 테이블에 저장.
@@ -102,19 +110,20 @@ public class ApplicationServiceImpl implements ApplicationService{
     }
 
     public Application findVerifiedApplication(long applicationId) {
-        Optional<Application> optionalApplication = applicationRepository.findById(applicationId);
-
-        Application application = optionalApplication.orElseThrow(NoSuchElementException::new);
-
-        return application;
-
+        return applicationRepository.findById(applicationId).orElseThrow(
+                () -> new CustomRuntimeException(ExceptionCode.APPLICATION_NOT_FOUND)
+        );
     }
 
     public Application findUserIdApplication(long userId) {
-        Optional<Application> optionalApplication = applicationRepository.findById(userId);
+        return applicationRepository.findById(userId).orElseGet(
+                Application::new
+        );
+    }
 
-        Application application = optionalApplication.orElseGet(() -> new Application());
-
-        return application;
+    public void checkDuplicatedByUserIdAndBoardId(long userId, long boardId) {
+        if (applicationRepository.findByUserIdAndBoardId(userId, boardId).isPresent()) {
+            throw new CustomRuntimeException(ExceptionCode.APPLICATION_DUPLICATED);
+        }
     }
 }

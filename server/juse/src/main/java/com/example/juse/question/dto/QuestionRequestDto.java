@@ -2,6 +2,8 @@ package com.example.juse.question.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
+
 public class QuestionRequestDto {
 
 
@@ -11,6 +13,7 @@ public class QuestionRequestDto {
     @Builder
     public static class Post {
 
+        @NotNull
         private String content;
 
         @Setter

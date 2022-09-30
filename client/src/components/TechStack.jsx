@@ -117,11 +117,12 @@ const StackTab = styled.ul`
   > li {
     color: ${({ theme }) => theme.colors.grey3};
     padding: 10px 0;
-    padding-right: 20px;
+    margin-right: 20px;
     cursor: pointer;
   }
   > .is-active {
     color: inherit;
+    border-bottom: 2px solid ${({ theme }) => theme.colors.purple1};
   }
 `;
 

@@ -1,15 +1,46 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Card from '../components/Card';
 import ScrollToTop from '../components/ScrollToTop';
 import TechStack from '../components/TechStack';
-import { boards } from '../mocks/db';
 import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import { apis } from '../apis/axios';
+import { useInView } from 'react-intersection-observer';
+import { useInfiniteQuery } from 'react-query';
+import { ReactComponent as ToggleOn } from '../assets/icons/toggle-on.svg';
+import { ReactComponent as ToggleOff } from '../assets/icons/toggle-off.svg';
+import theme from '../assets/styles/Theme';
 
 const Home = () => {
+  const [cookies] = useCookies();
+  const token = cookies.user;
+  // filter Parameters
   const [techFilter, setTechFilter] = useState([]);
   const [periodFilter, setPeriodFilter] = useState([]);
-  const [currentTab, setCurrentTab] = useState('전체');
+  const [currentTab, setCurrentTab] = useState('');
+  const [statusFilter, setStatusFilter] = useState('opening');
+  // infinite scroll
+  const { ref, inView } = useInView();
+  const { data, status, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+    [techFilter, periodFilter, currentTab, statusFilter, token],
+    ({ pageParam = 1 }) =>
+      apis.getBoards(
+        token,
+        currentTab,
+        techFilter,
+        periodFilter,
+        statusFilter,
+        pageParam
+      ),
+    {
+      getNextPageParam: (lastPage) =>
+        !lastPage.isLast ? lastPage.nextPage : undefined,
+    }
+  );
+  useEffect(() => {
+    if (inView) fetchNextPage();
+  }, [inView, fetchNextPage]);
 
   // 프로젝트 기간 필터 설정
   const dropDownHandler = (e) => {
@@ -36,7 +67,22 @@ const Home = () => {
 
   // 게시글 타입 탭 변경
   const tabHandler = (e) => {
-    setCurrentTab(e.target.innerText);
+    let tabValue = '';
+    if (e.target.innerText === '프로젝트') {
+      tabValue = 'project';
+    } else if (e.target.innerText === '스터디') {
+      tabValue = 'study';
+    }
+    setCurrentTab(tabValue);
+  };
+
+  // 모집 중, 완료 토글
+  const statusToggle = () => {
+    if (statusFilter === 'opening') {
+      setStatusFilter('');
+    } else {
+      setStatusFilter('opening');
+    }
   };
 
   return (
@@ -72,29 +118,54 @@ const Home = () => {
         <TypeSelector>
           <li
             onClick={tabHandler}
-            className={currentTab === '전체' ? 'is-active' : ''}>
+            className={currentTab === '' ? 'is-active' : ''}>
             전체
           </li>
           <li
             onClick={tabHandler}
-            className={currentTab === '프로젝트' ? 'is-active' : ''}>
+            className={currentTab === 'project' ? 'is-active' : ''}>
             프로젝트
           </li>
           <li
             onClick={tabHandler}
-            className={currentTab === '스터디' ? 'is-active' : ''}>
+            className={currentTab === 'study' ? 'is-active' : ''}>
             스터디
           </li>
+          <StatusSelector>
+            {statusFilter === 'opening' ? (
+              <ToggleOn
+                width={'26px'}
+                height={'26px'}
+                fill={theme.colors.purple1}
+                onClick={statusToggle}
+              />
+            ) : (
+              <ToggleOff
+                width={'26px'}
+                height={'26px'}
+                fill={theme.colors.grey4}
+                onClick={statusToggle}
+              />
+            )}
+            <span>모집 중만 보기</span>
+          </StatusSelector>
         </TypeSelector>
         <Link to='/boards'>
           <CreateButton>모집 글 작성</CreateButton>
         </Link>
       </ListHeader>
       <BoardsContainer>
-        {boards.data.map((e, i) => (
-          <Card key={e.id} data={e}></Card>
+        {data?.pages.map((page, index) => (
+          <React.Fragment key={index}>
+            {page.data.length ? (
+              page.data.map((e, i) => <Card key={e.id} data={e} />)
+            ) : (
+              <NullBoards>조건에 맞는 글이 없습니다. T^T</NullBoards>
+            )}
+          </React.Fragment>
         ))}
       </BoardsContainer>
+      {isFetchingNextPage ? <div>loading</div> : <div ref={ref}></div>}
       <ScrollToTop />
     </HomeContainer>
   );
@@ -137,17 +208,26 @@ const ListHeader = styled.div`
 
 const TypeSelector = styled.ul`
   display: flex;
+  align-items: center;
   margin: 15px 0;
   font-size: 24px;
   > li {
     color: ${({ theme }) => theme.colors.grey3};
     padding: 10px 0;
-    padding-right: 20px;
+    margin-right: 20px;
     cursor: pointer;
   }
   > .is-active {
     color: inherit;
   }
+`;
+
+const StatusSelector = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  color: ${({ theme }) => theme.colors.grey5};
 `;
 
 const CreateButton = styled.button`
@@ -170,6 +250,12 @@ const BoardsContainer = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   gap: 40px 60px;
+`;
+
+const NullBoards = styled.div`
+  padding: 100px 0 50px 0;
+  font-size: 24px;
+  color: ${({ theme }) => theme.colors.grey4};
 `;
 
 export default Home;

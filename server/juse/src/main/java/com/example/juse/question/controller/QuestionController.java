@@ -1,6 +1,7 @@
 package com.example.juse.question.controller;
 
 import com.example.juse.dto.SingleResponseDto;
+import com.example.juse.exception.validator.NotEmptyToken;
 import com.example.juse.question.dto.QuestionRequestDto;
 import com.example.juse.question.dto.QuestionResponseDto;
 import com.example.juse.question.entity.Question;
@@ -11,9 +12,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+
 @RequiredArgsConstructor
+@Validated
 @RequestMapping("/questions")
 @RestController
 public class QuestionController {
@@ -23,9 +29,9 @@ public class QuestionController {
 
     @PostMapping("/{board-id}")
     public ResponseEntity<SingleResponseDto<QuestionResponseDto>> post(
-            @AuthenticationPrincipal PrincipalDetails principalDetails,
-            @PathVariable("board-id") long boardId,
-            @RequestBody QuestionRequestDto.Post postDto
+            @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
+            @PathVariable("board-id") @Positive long boardId,
+            @RequestBody @Valid QuestionRequestDto.Post postDto
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
         postDto.setUserId(userId);
@@ -39,8 +45,8 @@ public class QuestionController {
 
     @PatchMapping("/{question-id}")
     public ResponseEntity<SingleResponseDto<QuestionResponseDto>> update(
-            @AuthenticationPrincipal PrincipalDetails principalDetails,
-            @PathVariable("question-id") long questionId,
+            @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
+            @PathVariable("question-id") @Positive long questionId,
             @RequestBody QuestionRequestDto.Patch patchDto
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
@@ -56,8 +62,8 @@ public class QuestionController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{question-id}")
     public void delete(
-            @AuthenticationPrincipal PrincipalDetails principalDetails,
-            @PathVariable("question-id") long questionId
+            @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
+            @PathVariable("question-id") @Positive long questionId
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
         questionService.delete(questionId, userId);
