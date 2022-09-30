@@ -114,16 +114,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(User user, MultipartFile profileImg) {
+    public User createUser(User user, MultipartFile profileImg)  {
 
         if(profileImg != null) {
+            String savedName = storageService.store(profileImg);
+
             String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path("images/")
-                    .path(profileImg.getOriginalFilename())
+                    .path(savedName)
                     .toUriString();
 
             user.setImg(uri);
-            storageService.store(profileImg);
         }
 
         if (!user.getUserTagList().isEmpty()) {
