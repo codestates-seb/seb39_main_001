@@ -27,6 +27,7 @@ public interface UserMapper {
     User toEntityFrom(UserRequestDto.Patch patch);
 
     @Mapping(target = "userTagList", source = "skillStackTags")
+    @Mapping(target = "id", source = "userId")
     User toEntityFrom(UserRequestDto.Post post);
 
     @BeanMapping(
