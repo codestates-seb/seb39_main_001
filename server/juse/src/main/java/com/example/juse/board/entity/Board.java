@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @Builder
 @Entity
 @Table(name = "BOARDS")
-@ToString
 public class Board extends Auditing {
 
     @Id
@@ -81,7 +80,7 @@ public class Board extends Auditing {
     private List<Question> questionList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<Bookmark> bookmarkList = new ArrayList<>();
 
     @Builder.Default
@@ -130,6 +129,14 @@ public class Board extends Auditing {
 
     public boolean isCreatedBy(long userId) {
         return this.user.getId() == userId;
+    }
+
+    public boolean isBookmarkedBy(long userId) {
+        return this.bookmarkList.stream().anyMatch(bookmark -> bookmark.getUser().getId() == userId);
+    }
+
+    public boolean isWriterLikedBy(long userId) {
+        return this.user.isLikedBy(userId);
     }
 
 }

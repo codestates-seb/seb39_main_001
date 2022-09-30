@@ -15,6 +15,7 @@ import net.minidev.json.annotate.JsonIgnore;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
@@ -31,9 +32,8 @@ public class User extends Auditing {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Byte[] profileImage;
-
     private String img;
+
 
     @Column(nullable = false)
     private String introduction;
@@ -46,29 +46,23 @@ public class User extends Auditing {
 
     private int liked;
 
-    private String role;
-
-    private String provider;
-
-    private String providerId;
-
     @Column(nullable = false, unique = true)
     private String nickname;
 
     @Builder.Default
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Board> boardList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Bookmark> bookmarkList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "whoLikes")
+    @OneToMany(mappedBy = "whoLikes", cascade = CascadeType.REMOVE)
     private List<Like> whoLikesList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "whoIsLiked")
+    @OneToMany(mappedBy = "whoIsLiked", cascade = CascadeType.REMOVE)
     private List<Like> whoIsLikeList = new ArrayList<>();
 
 
@@ -77,15 +71,15 @@ public class User extends Auditing {
     private List<UserTag> userTagList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Question> questionList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Answer> answerList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Application> applicationList = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.REMOVE)
@@ -113,6 +107,9 @@ public class User extends Auditing {
         return this.whoLikesList.stream().map(Like::getWhoIsLiked).collect(Collectors.toList());
     }
 
+    public boolean isLikedBy(long userId) {
+        return this.getWhoIsLikeList().stream().anyMatch(like -> like.getWhoLikes().getId() == userId);
+    }
 
     // USER 테이블의 SOCIAL_USER_ID 컬럼에 Social User Id를 추가한다.
 
@@ -122,4 +119,5 @@ public class User extends Auditing {
             socialUser.setUser(this);
         }
     }
+
 }

@@ -19,15 +19,14 @@ public class FilterOptions {
     private List<String> tag;
     private List<String> period;
 
-    public static FilterOptions of(String type, String tag, String period, String status) {
+    public static FilterOptions of(Board.Type type, Board.Status status, String tag, String period) {
 
         return FilterOptions.builder()
-                .type(setType(type))
-                .status(setStatus(status))
+                .type(type)
+                .status(status)
                 .period(setPeriod(period))
                 .tag(setTag(tag))
                 .build();
-
 
     }
 

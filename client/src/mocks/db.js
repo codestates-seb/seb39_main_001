@@ -23,7 +23,8 @@ export const boards = {
       type: 'STUDY',
       status: 'OPENING',
       startingDate: '2022-10-05',
-      title: '스터디 같이 하실 분 구합니다. 두 줄을 넘어가는 제목 세 줄을 넘어가는 제목 세 줄을 넘어가는 제모오오오옥',
+      title:
+        '스터디 같이 하실 분 구합니다. 두 줄을 넘어가는 제목 세 줄을 넘어가는 제목 세 줄을 넘어가는 제모오오오옥',
       tagList: ['typescript', 'javascript'],
       views: 4,
       period: 'short',
@@ -140,7 +141,7 @@ export const board1 = {
     startingDate: '2022-10-05',
     period: '3',
     onOffline: 'online',
-    content: 'content1',
+    content: '<h1>HELLO WORLD</h1>',
     views: 0,
     bookmarks: 0,
     tagList: ['java', 'react'],
@@ -154,6 +155,7 @@ export const board1 = {
           nickname: '질문자',
           img: null,
         },
+        auth: true,
         answer: {
           id: 1,
           user: {
@@ -169,9 +171,10 @@ export const board1 = {
       {
         id: 1,
         content: '답변이 안달린 질문',
+        auth: false,
         user: {
-          id: 1,
-          nickname: '질문자',
+          id: 2,
+          nickname: '다른질문자',
           img: null,
         },
         answer: null,
@@ -192,6 +195,8 @@ export const board1 = {
     },
     createdAt: '2022-09-21T16:17:01.506336',
     modifiedAt: '2022-09-21T16:17:01.506336',
+    auth: true,
+    bookmarked: true,
   },
 };
 

@@ -1,6 +1,7 @@
 package com.example.juse.user.service;
 
 import com.example.juse.user.entity.User;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 
@@ -8,7 +9,7 @@ public interface UserService {
 
     User getProfile(long userId);
 
-    User update(User mappedObj);
+    User update(User mappedObj, MultipartFile profileImg);
 
     void deleteAccount(long userId);
 
@@ -17,4 +18,6 @@ public interface UserService {
     User verifyUserById(long userId);
 
     boolean isNicknameAvailable(String nickname);
+
+    User createUser(User user, MultipartFile profileImg);
 }
