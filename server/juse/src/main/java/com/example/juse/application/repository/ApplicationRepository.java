@@ -9,4 +9,5 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 
     // User Id를 통해 Application 을 찾아온다.
     Optional<Application> findByUserIdAndBoardId(long userId, long boardId);
+
 }
