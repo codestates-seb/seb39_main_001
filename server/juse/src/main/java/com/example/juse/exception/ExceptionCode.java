@@ -17,6 +17,8 @@ public enum ExceptionCode {
     USER_NOT_MATCHED(-703, "사용자 본인만 수정 또는 삭제할 수 있습니다"),
     USER_ALREADY_EXISST(-704, "이미 존재하는 회원입니다"),
 
+    NOT_VALID_IMAGE_TYPE(-705, "이미지 파일만 업로드 가능합니다."),
+
     BOARD_WITHOUT_TAG(-800, "설정된 기술 스택 태그가 없습니다. 스택을 설정하세요"),
     BOARD_NOT_FOUND(-801, "없는 게시글입니다"),
     BOARD_WRITER_NOT_MATCHED(-802, "게시글 작성자만 수정할 수 있습니다"),

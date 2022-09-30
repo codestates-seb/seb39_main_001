@@ -52,7 +52,7 @@ public class UserRequestDto {
         private List<String> skillStackTags = new ArrayList<>();
 
         @Builder.Default
-        private String img = "default.jpg";
+        private String img = "/icons/img/user-default.png";
 
     }
 
