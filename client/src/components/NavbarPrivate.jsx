@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { NavbarContainer, NavbarSubContainer, Logo } from './NavbarPublic';
 import { ReactComponent as NotificationIcon } from '../assets/icons/notification.svg';
@@ -8,8 +8,14 @@ import { ReactComponent as BookmarkIcon } from '../assets/icons/bookmark.svg';
 import { ReactComponent as LogoutIcon } from '../assets/icons/logout.svg';
 import { useCookies } from 'react-cookie';
 import { apis } from '../apis/axios';
+import { useEffect } from 'react';
 
 const NavbarPrivate = ({ removeCookie }) => {
+  const [cookies] = useCookies();
+  const token = cookies.user;
+  const [imageSrc, setImageSrc] = useState('/icons/img/user-default.png');
+  const param = useParams();
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -24,7 +30,6 @@ const NavbarPrivate = ({ removeCookie }) => {
   };
 
   // 글 한번에 여러번 쓰기 이스터에그
-  const [cookies] = useCookies();
   const handleIteration = (iter) => {
     for (let i = 0; i < iter; i++) {
       const data = {
@@ -43,9 +48,13 @@ const NavbarPrivate = ({ removeCookie }) => {
         type: 'PROJECT',
         tagList: ['java', 'react'],
       };
-      apis.postBoard(cookies.user, data);
+      apis.postBoard(token, data);
     }
   };
+
+  useEffect(() => {
+    apis.getUsers(token).then((data) => setImageSrc(data.img));
+  }, [token, param]);
 
   return (
     <NavbarContainer>
@@ -62,6 +71,7 @@ const NavbarPrivate = ({ removeCookie }) => {
             />
           </Notification>
           <Profile onClick={dropdownClickHandler}>
+            <img src={imageSrc} alt='profile' />
             {dropdownOpen ? (
               <DropdownNav>
                 <DropdownLink to='/users'>
@@ -109,6 +119,18 @@ const Profile = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.grey3};
   border-radius: 50px;
   cursor: pointer;
+  > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 999px;
+    margin: auto;
+    padding: 2px;
+  }
 `;
 
 const DropdownNav = styled.nav`

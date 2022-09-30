@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import TechStack from '../components/TechStack';
 import { apis } from '../apis/axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const Join = () => {
+  const [imageSrc, setImageSrc] = useState('/icons/img/user-default.png');
+  const [imageFile, setImageFile] = useState(null);
   const [stack, setStack] = useState([]);
   const [nickname, setNickname] = useState('aasdf');
   const [portfolio, setPortfolio] = useState('');
@@ -43,7 +45,7 @@ const Join = () => {
       alert('한 줄 소개를 입력하세요.');
     } else {
       apis
-        .postJoin(token, user)
+        .postJoin(token, user, imageFile)
         .then(alert('회원가입에 성공하였습니다. 다시 로그인해 주세요.'))
         .then(() => {
           navigate('/');
@@ -59,6 +61,29 @@ const Join = () => {
     });
   }, [nickname]);
 
+  // 프로필 이미지 업로드
+  const fileInput = useRef(null);
+  const imageButtonHandler = () => {
+    fileInput.current.click();
+  };
+  const imageChangeHandler = (e) => {
+    if (e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+    }
+    //바뀐 이미지 렌더
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setImageSrc(reader.result);
+      }
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  };
+  const imageDeleteHandler = () => {
+    setImageFile(null);
+    setImageSrc('/icons/img/user-default.png');
+  };
+
   return (
     <div>
       <JoinContainer>
@@ -68,8 +93,27 @@ const Join = () => {
         <ProfileUpload>
           <p>프로필 사진</p>
           <div className='uploader'>
-            <div className='image-container'>사진</div>
-            <StyledButton>업로드</StyledButton>
+            <ImageContainer>
+              <img
+                src={
+                  imageSrc === 'default.jpg'
+                    ? '/icons/img/user-default.png'
+                    : imageSrc
+                }
+                alt='프로필'
+              />
+            </ImageContainer>
+            <input
+              type='file'
+              style={{ display: 'none' }}
+              accept='image/*'
+              onChange={imageChangeHandler}
+              ref={fileInput}
+            />
+            <StyledButton onClick={imageButtonHandler}>업로드</StyledButton>
+            <StyledButton onClick={imageDeleteHandler}>
+              업로드 삭제
+            </StyledButton>
           </div>
         </ProfileUpload>
         <JoinInput>
@@ -115,13 +159,29 @@ const ProfileUpload = styled.div`
     display: flex;
     align-items: end;
     margin: 10px 0;
-    > .image-container {
-      padding: 50px;
-      border: 1px solid ${({ theme }) => theme.colors.grey2};
-    }
     > button {
       margin-left: 10px;
     }
+  }
+`;
+
+const ImageContainer = styled.div`
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 999px;
+  > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 999px;
+    margin: auto;
+    padding: 5px;
   }
 `;
 

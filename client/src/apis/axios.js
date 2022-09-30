@@ -2,12 +2,13 @@ import axios from 'axios';
 
 export const apis = {
   // 회원가입
-  postJoin: async (token, data) => {
+  postJoin: async (token, data, img) => {
     const formData = new FormData();
     formData.append(
       'userPostDto',
       new Blob([JSON.stringify(data)], { type: 'application/json' })
     );
+    formData.append('profileImg', img);
     await axios
       .post(`https://jusemain.duckdns.org:8080/users/join`, formData, {
         headers: {
@@ -59,12 +60,13 @@ export const apis = {
   },
 
   // 유저 정보 수정
-  patchUser: async (token, data) => {
+  patchUser: async (token, data, img) => {
     const formData = new FormData();
     formData.append(
       'patchDto',
       new Blob([JSON.stringify(data)], { type: 'application/json' })
     );
+    formData.append('profileImg', img);
     await axios
       .patch(`https://jusemain.duckdns.org:8080/users`, formData, {
         headers: {
@@ -74,17 +76,33 @@ export const apis = {
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   },
+  // patchImg: async (token, data, img) => {
+  //   const formData = new FormData();
+  //   formData.append(
+  //     'patchDto',
+  //     new Blob([JSON.stringify(data)], { type: 'application/json' })
+  //   );
+  //   formData.append('profileImg', img);
+  //   await axios
+  //     .patch(`https://jusemain.duckdns.org:8080/users`, formData, {
+  //       headers: {
+  //         Auth: token,
+  //       },
+  //     })
+  //     .then((res) => console.log(res))
+  //     .catch((err) => console.log(err));
+  // },
 
   // 게시물 상세
   getBoardDetail: async (token, boardId) => {
-    return await axios
-      .get(`https://jusemain.duckdns.org:8080/boards/${boardId}`, {
+    return await axios.get(
+      `https://jusemain.duckdns.org:8080/boards/${boardId}`,
+      {
         headers: {
           Auth: token,
         },
-      })
-      .then((res) => res.data.data)
-      .catch((err) => console.log(err));
+      }
+    );
   },
 
   // 질문 게시 수정 삭제
@@ -230,28 +248,27 @@ export const apis = {
 
   // 북마크 등록
   postBookmark: async (token, boardId) => {
-    await axios
-      .post(
-        `https://jusemain.duckdns.org:8080/bookmarks/${boardId}`,
-        {},
-        {
-          headers: {
-            Auth: token,
-          },
-        }
-      )
-      .then((res) => console.log(res.data.data));
+    return await axios.post(
+      `https://jusemain.duckdns.org:8080/bookmarks/${boardId}`,
+      {},
+      {
+        headers: {
+          Auth: token,
+        },
+      }
+    );
   },
 
   // 북마크 삭제
   deleteBookmark: async (token, boardId) => {
-    await axios
-      .delete(`https://jusemain.duckdns.org:8080/bookmarks/${boardId}`, {
+    await axios.delete(
+      `https://jusemain.duckdns.org:8080/bookmarks/${boardId}`,
+      {
         headers: {
           Auth: token,
         },
-      })
-      .then((res) => console.log(res));
+      }
+    );
   },
 
   // 다른 유저 좋아요

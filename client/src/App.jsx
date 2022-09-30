@@ -14,7 +14,7 @@ import MyJuse from './pages/MyJuse';
 
 // 프록시: https://cors-jwy.herokuapp.com/
 function App() {
-  const [cookies, setCookie, removeCookie] = useCookies(['user']);
+  const [cookies, setCookie, removeCookie] = useCookies();
 
   return (
     <>

@@ -87,10 +87,14 @@ const Card = ({ data }) => {
         </CardSummary>
       </Link>
       <CardInfo>
-        <AuthorInfo>
-          <div className='picture'></div>
-          <div className='name'>{data.user.nickname}</div>
-        </AuthorInfo>
+        <Link to={`/users/${data.user.id}`}>
+          <AuthorInfo>
+            <ImgContainer>
+              <img src={data.user.img} alt='profile' />
+            </ImgContainer>
+            <div className='name'>{data.user.nickname}</div>
+          </AuthorInfo>
+        </Link>
         <Views>
           <Eye />
           {data.views}
@@ -179,15 +183,29 @@ const AuthorInfo = styled.div`
   display: flex;
   align-items: center;
   padding: 15px 0;
-  > .picture {
-    border: 1px solid ${({ theme }) => theme.colors.grey3};
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-  }
   > .name {
     font-size: 18px;
     padding-left: 10px;
+  }
+`;
+
+const ImgContainer = styled.div`
+  position: relative;
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 999px;
+    margin: auto;
+    padding: 2px;
   }
 `;
 

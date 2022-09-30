@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { apis } from '../apis/axios';
 import { ReactComponent as Heart } from '../assets/icons/heart.svg';
@@ -22,8 +22,10 @@ const UserInfo = () => {
     introduction: '',
     email: '',
     portfolio: '',
+    img: '/icons/img/user-default.png',
   });
   const {
+    img,
     nickname,
     liked,
     myUserList,
@@ -32,17 +34,16 @@ const UserInfo = () => {
     email,
     portfolio,
   } = data;
-  const location = useLocation().pathname;
   // 현재 마이페이지 유저의 id
-  const userId = location.slice(-1);
-  const isMe = location === '/users' ? true : false;
+  const userId = useParams().userId;
+  const isMe = userId ? false : true;
 
   // 나의 마이페이지인지, 남의 마이페이지인지 구분하여 api 호출
   useEffect(() => {
     if (isMe) {
       apis.getUsers(token).then((res) => setData(res));
     } else {
-      apis.getOtherUsers(token, location.slice(-1)).then((res) => setData(res));
+      apis.getOtherUsers(token, userId).then((res) => setData(res));
     }
   }, []);
 
@@ -75,12 +76,12 @@ const UserInfo = () => {
     apis.deleteLike(token, userId);
   };
 
-  console.log(userId);
-
   return (
     <UserInfoContainer>
       <BasicInfo>
-        <UserImg></UserImg>
+        <UserImg>
+          <img src={img} alt='profile' />
+        </UserImg>
         <RoundButton>
           {/* <Heart /> */}
           {isLike ? (
@@ -157,10 +158,23 @@ const BasicInfo = styled.div`
 `;
 
 const UserImg = styled.div`
+  position: relative;
   width: 150px;
   height: 150px;
-  background-color: ${({ theme }) => theme.colors.grey3};
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
   border-radius: 50%;
+  > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 999px;
+    margin: auto;
+    padding: 2px;
+  }
 `;
 
 const RoundButton = styled.button`
