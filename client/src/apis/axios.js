@@ -95,14 +95,14 @@ export const apis = {
 
   // 게시물 상세
   getBoardDetail: async (token, boardId) => {
-    return await axios.get(
-      `https://jusemain.duckdns.org:8080/boards/${boardId}`,
-      {
+    return await axios
+      .get(`https://jusemain.duckdns.org:8080/boards/${boardId}`, {
         headers: {
           Auth: token,
         },
-      }
-    );
+      })
+      .then((res) => res.data.data)
+      .catch((err) => console.log(err));
   },
 
   // 질문 게시 수정 삭제
