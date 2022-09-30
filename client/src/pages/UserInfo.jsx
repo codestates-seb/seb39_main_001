@@ -15,7 +15,6 @@ const UserInfo = () => {
 	const param = useParams();
 	const userId = param.userId;
 	const queryClient = useQueryClient();
-	// const [isLike, setIsLike] = useState(false);
 
 	const navigate = useNavigate();
 
@@ -78,7 +77,7 @@ const UserInfo = () => {
 			queryClient.invalidateQueries('userInfo');
 		},
 		onError: (error) => {
-			alert('에러났다');
+			alert('나에게 좋아요 할 수 없습니다.');
 		},
 		onSettled: () => {
 			console.log('settled');

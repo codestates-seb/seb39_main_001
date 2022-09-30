@@ -9,8 +9,7 @@ import { ReactComponent as BookmarkCheckedIcon } from '../assets/icons/bookmark-
 import { useState } from 'react';
 import { apis } from '../apis/axios';
 import { useCookies } from 'react-cookie';
-import { useQuery, useQueryClient } from 'react-query';
-import { useMutation } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 
 const Board = () => {
 	const [cookies] = useCookies();
