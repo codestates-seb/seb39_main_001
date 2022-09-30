@@ -97,9 +97,9 @@ VALUES(1, 'img', 'user1', 'hsbang.thom@gmail.com', 'test', 0, 'nickname', 1);
 
 INSERT INTO USERS (id, img, introduction, email, portfolio, liked, nickname, social_user_id)
 VALUES(2, 'img2', 'user2', 'gatzby3645@gmail.com', 'test2', 0,'nickname2', 2);
-
-INSERT INTO USERS (id, img, introduction, email, portfolio, liked, nickname, social_user_id)
-VALUES(3, 'img3', 'user3', 'tayloredwings@gmail.com', 'test3', 0, 'nickname3', 3);
+--
+--INSERT INTO USERS (id, img, introduction, email, portfolio, liked, nickname, social_user_id)
+--VALUES(3, 'img3', 'user3', 'tayloredwings@gmail.com', 'test3', 0, 'nickname3', 3);
 
 
 INSERT INTO BOARDS
@@ -138,13 +138,13 @@ INSERT INTO BOARDS
 (id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id)
 VALUES(9, current_timestamp, current_timestamp, 0, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, '6', '2022-10-10', 'CLOSED', '', 'STUDY', 0, 2);
 
-INSERT INTO BOARDS
-(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id)
-VALUES(10, current_timestamp, current_timestamp, 0, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, '1', '2022-10-10', 'CLOSED', '', 'PROJECT', 0, 3);
-
-INSERT INTO BOARDS
-(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id)
-VALUES(11, current_timestamp, current_timestamp, 0, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, '1', '2022-10-10', 'CLOSED', '', 'PROJECT', 0, 3);
+--INSERT INTO BOARDS
+--(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id)
+--VALUES(10, current_timestamp, current_timestamp, 0, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, '1', '2022-10-10', 'CLOSED', '', 'PROJECT', 0, 3);
+--
+--INSERT INTO BOARDS
+--(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id)
+--VALUES(11, current_timestamp, current_timestamp, 0, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, '1', '2022-10-10', 'CLOSED', '', 'PROJECT', 0, 3);
 
 INSERT INTO BOARDS_TAGS (id, board_id, tag_id)
 VALUES(1, 1, 1);
@@ -184,11 +184,11 @@ VALUES(12, 8, 1);
 
 INSERT INTO BOARDS_TAGS (id, board_id, tag_id)
 VALUES(13, 9, 2);
-
-INSERT INTO BOARDS_TAGS (id, board_id, tag_id)
-VALUES(14, 10, 1);
-
-INSERT INTO BOARDS_TAGS (id, board_id, tag_id)
-VALUES(15, 11, 4);
-
+--
+--INSERT INTO BOARDS_TAGS (id, board_id, tag_id)
+--VALUES(14, 10, 1);
+--
+--INSERT INTO BOARDS_TAGS (id, board_id, tag_id)
+--VALUES(15, 11, 4);
+--
 

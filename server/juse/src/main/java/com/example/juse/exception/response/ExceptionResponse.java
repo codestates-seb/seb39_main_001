@@ -50,6 +50,13 @@ public class ExceptionResponse {
 
     }
 
+    public static ExceptionResponse of(Exception e) {
+        return ExceptionResponse.builder()
+                .code(ExceptionCode.UNKNOWN_ERROR.getCode())
+                .message(ExceptionCode.UNKNOWN_ERROR.getDesc())
+                .build();
+    }
+
 
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
