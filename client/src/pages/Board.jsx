@@ -24,7 +24,6 @@ const Board = () => {
 		() => apis.getBoardDetail(token, boardId),
 		{
 			onSuccess: (data) => {
-				console.log(data);
 				setUserData(data);
 			},
 			onError: (error) => {

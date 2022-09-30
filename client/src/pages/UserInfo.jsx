@@ -1,12 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { apis } from '../apis/axios';
 import { ReactComponent as Heart } from '../assets/icons/heart.svg';
 import { ReactComponent as HeartFill } from '../assets/icons/heart-fill.svg';
-import { useQuery, useQueryClient } from 'react-query';
-import { useMutation } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 
 const UserInfo = () => {
 	const [cookies, setCookies, removeCookie] = useCookies();
@@ -44,6 +43,7 @@ const UserInfo = () => {
 	const location = useLocation().pathname;
 	const isMe = location === '/users' ? true : false;
 
+	// 나의 마이페이지인지, 남의 마이페이지인지 구분하여 api 호출
 	const { data, isLoading, isError, error } = useQuery(
 		'userInfo',
 		isMe ? () => apis.getUsers(token) : () => apis.getOtherUsers(token, userId),
@@ -58,17 +58,7 @@ const UserInfo = () => {
 		}
 	);
 
-	// 나의 마이페이지인지, 남의 마이페이지인지 구분하여 api 호출
-	// useEffect(() => {
-	// 	if (isMe) {
-	// 		apis.getUsers(token).then((res) => setUserData(res));
-	// 	} else {
-	// 		apis
-	// 			.getOtherUsers(token, location.slice(-1))
-	// 			.then((res) => setUserData(res));
-	// 	}
-	// }, []);
-
+	// 좋아요
 	const postLikeMutation = useMutation(() => apis.postLike(token, userId), {
 		onMutate: (variable) => {
 			console.log('onMutate', variable);
@@ -77,13 +67,14 @@ const UserInfo = () => {
 			queryClient.invalidateQueries('userInfo');
 		},
 		onError: (error) => {
-			alert('나에게 좋아요 할 수 없습니다.');
+			alert('자신에게 좋아요 할 수 없습니다.');
 		},
 		onSettled: () => {
 			console.log('settled');
 		},
 	});
 
+	// 좋아요 취소
 	const deleteLikeMutation = useMutation(() => apis.deleteLike(token, userId), {
 		onMutate: (variable) => {
 			console.log('onMutate', variable);
@@ -99,30 +90,6 @@ const UserInfo = () => {
 		},
 	});
 
-	// const addLikeHandler = () => {
-	// 	// 내가 좋아요를 누르는 사람이 나 자신이 아닌지 확인
-	// 	if (!isMe && myId !== userData.id) {
-	// 		setIsLike((prev) => !prev);
-	// 		console.log('좋아요');
-	// 		// 좋아요 post 요청
-	// 		apis.postLike(token, userData.id);
-	// 	} else {
-	// 		alert('자기 자신을 좋아요 할 수 없습니다!');
-	// 	}
-	// };
-
-	// const deleteLikeHandler = () => {
-	// 	// 내가 좋아요 해제를 누르는 사람이 나 자신이 아닌지 확인
-	// 	if (!isMe && myId !== userData.id) {
-	// 		setIsLike((prev) => !prev);
-	// 		console.log('좋아요 취소');
-	// 		// 좋아요 delete 요청
-	// 		apis.deleteLike(token, userData.id);
-	// 	} else {
-	// 		alert('자기 자신을 싫어요 할 수 없습니다!');
-	// 	}
-	// };
-
 	// 회원 탈퇴
 	const deleteHandler = () => {
 		if (window.confirm('정말 탈퇴하시겠습니까?')) {
@@ -137,12 +104,6 @@ const UserInfo = () => {
 			return;
 		}
 	};
-
-	console.log('myId:', myId);
-	console.log('userId:', userId);
-	console.log('userData.likedByMe:', userData.likedByMe);
-	console.log('likedByMe:', likedByMe);
-	console.log(userData);
 
 	return (
 		<UserInfoContainer>
