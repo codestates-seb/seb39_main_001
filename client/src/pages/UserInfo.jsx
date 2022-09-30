@@ -1,19 +1,25 @@
-import { useEffect } from 'react';
 import { useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { apis } from '../apis/axios';
 import { ReactComponent as Heart } from '../assets/icons/heart.svg';
 import { ReactComponent as HeartFill } from '../assets/icons/heart-fill.svg';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 
 const UserInfo = () => {
   const [cookies, setCookies, removeCookie] = useCookies();
   const token = cookies.user;
+  const myId = +cookies.userId;
+  const param = useParams();
+  const userId = param.userId;
+  const queryClient = useQueryClient();
 
   const navigate = useNavigate();
 
-  const [data, setData] = useState({
+  const [userData, setUserData] = useState({
+    img: '',
+    id: '',
     nickname: '',
     like: 0,
     myUserList: [],
@@ -21,8 +27,11 @@ const UserInfo = () => {
     introduction: '',
     email: '',
     portfolio: '',
+    likedByMe: false,
   });
+
   const {
+    img,
     nickname,
     liked,
     myUserList,
@@ -30,25 +39,68 @@ const UserInfo = () => {
     introduction,
     email,
     portfolio,
-  } = data;
+    likedByMe,
+  } = userData;
+
   const location = useLocation().pathname;
   const isMe = location === '/users' ? true : false;
 
   // 나의 마이페이지인지, 남의 마이페이지인지 구분하여 api 호출
-  useEffect(() => {
-    if (isMe) {
-      apis.getUsers(token).then((res) => setData(res));
-    } else {
-      apis.getOtherUsers(token, location.slice(-1)).then((res) => setData(res));
+  const { data, isLoading, isError, error } = useQuery(
+    'userInfo',
+    isMe ? () => apis.getUsers(token) : () => apis.getOtherUsers(token, userId),
+    {
+      onSuccess: (data) => {
+        console.log(data);
+        setUserData(data);
+      },
+      onError: (error) => {
+        console.log(error);
+      },
     }
-  }, []);
+  );
+
+  // 좋아요
+  const postLikeMutation = useMutation(() => apis.postLike(token, userId), {
+    onMutate: (variable) => {
+      console.log('onMutate', variable);
+    },
+    onSuccess: (data, variable, context) => {
+      queryClient.invalidateQueries('userInfo');
+    },
+    onError: (error) => {
+      alert('자신에게 좋아요 할 수 없습니다.');
+    },
+    onSettled: () => {
+      console.log('settled');
+    },
+  });
+
+  // 좋아요 취소
+  const deleteLikeMutation = useMutation(() => apis.deleteLike(token, userId), {
+    onMutate: (variable) => {
+      console.log('onMutate', variable);
+    },
+    onSuccess: (data, variable, context) => {
+      queryClient.invalidateQueries('userInfo');
+    },
+    onError: (error) => {
+      alert('에러났다');
+    },
+    onSettled: () => {
+      console.log('settled');
+    },
+  });
 
   // 회원 탈퇴
   const deleteHandler = () => {
     if (window.confirm('정말 탈퇴하시겠습니까?')) {
       apis
         .deleteUser(token)
-        .then(removeCookie('user', { path: '/' }))
+        .then(() => {
+          removeCookie('user', { path: '/' });
+          removeCookie('userId', { path: '/' });
+        })
         .then(navigate('/'));
     } else {
       return;
@@ -58,13 +110,22 @@ const UserInfo = () => {
   return (
     <UserInfoContainer>
       <BasicInfo>
-        <UserImg></UserImg>
+        <UserImg>
+          <img src={img} alt={'프로필'}></img>
+        </UserImg>
         <RoundButton>
-          <Heart />
+          {likedByMe ? (
+            <HeartFill
+              fill='tomato'
+              onClick={() => deleteLikeMutation.mutate()}
+            />
+          ) : (
+            <Heart onClick={() => postLikeMutation.mutate()} />
+          )}
         </RoundButton>
         <MiniBox>{nickname}</MiniBox>
         <MiniBox>
-          <HeartFill fill='red' />
+          <HeartFill fill='tomato' />
           {liked}
         </MiniBox>
       </BasicInfo>
@@ -130,10 +191,23 @@ const BasicInfo = styled.div`
 `;
 
 const UserImg = styled.div`
+  position: relative;
   width: 150px;
   height: 150px;
-  background-color: ${({ theme }) => theme.colors.grey3};
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
   border-radius: 50%;
+  > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 999px;
+    margin: auto;
+    padding: 2px;
+  }
 `;
 
 const RoundButton = styled.button`

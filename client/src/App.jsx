@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useParams } from 'react-router-dom';
 import NavbarPrivate from './components/NavbarPrivate';
 import NavbarPublic from './components/NavbarPublic';
 import Home from './pages/Home';
@@ -12,32 +12,32 @@ import EditNewMeeting from './pages/EditNewMeeting';
 import { useCookies } from 'react-cookie';
 import MyJuse from './pages/MyJuse';
 
+// 프록시: https://cors-jwy.herokuapp.com/
 function App() {
-	// TODO: 서버로 부터 token 받으면 클라이언트에 cookie에 담기
-	const [cookies, setCookie, removeCookie] = useCookies(['user']);
-	// 프록시: https://cors-jwy.herokuapp.com/
+  const [cookies, setCookie, removeCookie] = useCookies();
 
-	return (
-		<>
-			{cookies.user ? (
-				<NavbarPrivate removeCookie={removeCookie} />
-			) : (
-				<NavbarPublic />
-			)}
-			<Routes>
-				<Route path='/' element={<Home />} />
-				<Route path='/join' element={<Join />} />
-				<Route path='/boards/:boardId' element={<Board />} />
-				<Route path='/oauth2/redirect' element={<OAuth />} />
-				<Route path='/users/' element={<UserInfo />} />
-				<Route path='/users/:userId' element={<UserInfo />} />
-				<Route path='/users/edit' element={<EditUser />} />
-				<Route path='/boards' element={<NewMeeting />} />
-				<Route path='/users/myjuse' element={<MyJuse />} />
-				<Route path='/boards/edit' element={<EditNewMeeting />} />
-			</Routes>
-		</>
-	);
+  return (
+    <>
+      {cookies.user ? (
+        <NavbarPrivate removeCookie={removeCookie} />
+      ) : (
+        <NavbarPublic />
+      )}
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/join' element={<Join />} />
+        <Route path='/boards/:boardId' element={<Board />} />
+        <Route path='/oauth2/redirect' element={<OAuth />} />
+        {/* 같은 컴포넌트인데 path가 다를 때는 unique key를 지정*/}
+        <Route path='/users/' element={<UserInfo key='myPage' />} />
+        <Route path='/users/:userId' element={<UserInfo key='othersPage' />} />
+        <Route path='/users/edit' element={<EditUser />} />
+        <Route path='/boards' element={<NewMeeting />} />
+        <Route path='/users/myjuse' element={<MyJuse />} />
+        <Route path='/boards/edit' element={<EditNewMeeting />} />
+      </Routes>
+    </>
+  );
 }
 
 export default App;
