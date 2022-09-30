@@ -31,11 +31,4 @@ public class GlobalExceptionAdvice {
     public ExceptionResponse handlerConstraintViolationException(ConstraintViolationException exception) {
 
         return ExceptionResponse.of(exception.getConstraintViolations());
-    }
-
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ExceptionResponse handlerException(Exception e) {
-        return ExceptionResponse.of(e);
-    }
 }
