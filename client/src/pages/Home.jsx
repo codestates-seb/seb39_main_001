@@ -5,7 +5,6 @@ import ScrollToTop from '../components/ScrollToTop';
 import TechStack from '../components/TechStack';
 import { boards } from '../mocks/db';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 
 const Home = () => {
   const [techFilter, setTechFilter] = useState([]);
@@ -71,13 +70,19 @@ const Home = () => {
       </PeriodContainer>
       <ListHeader>
         <TypeSelector>
-          <li onClick={tabHandler} className={currentTab === '전체' ? 'is-active' : ''}>
+          <li
+            onClick={tabHandler}
+            className={currentTab === '전체' ? 'is-active' : ''}>
             전체
           </li>
-          <li onClick={tabHandler} className={currentTab === '프로젝트' ? 'is-active' : ''}>
+          <li
+            onClick={tabHandler}
+            className={currentTab === '프로젝트' ? 'is-active' : ''}>
             프로젝트
           </li>
-          <li onClick={tabHandler} className={currentTab === '스터디' ? 'is-active' : ''}>
+          <li
+            onClick={tabHandler}
+            className={currentTab === '스터디' ? 'is-active' : ''}>
             스터디
           </li>
         </TypeSelector>
@@ -87,7 +92,7 @@ const Home = () => {
       </ListHeader>
       <BoardsContainer>
         {boards.data.map((e, i) => (
-          <Card key={i} data={e}></Card>
+          <Card key={e.id} data={e}></Card>
         ))}
       </BoardsContainer>
       <ScrollToTop />
@@ -146,7 +151,18 @@ const TypeSelector = styled.ul`
 `;
 
 const CreateButton = styled.button`
-  padding: 5px 15px;
+  padding: 10px 15px;
+  background: #ffffff;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.black1};
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 4px;
+  cursor: pointer;
+  :hover {
+    color: #ffffff;
+    border: 1px solid ${({ theme }) => theme.colors.purple1};
+    background: ${({ theme }) => theme.colors.purple1};
+  }
 `;
 
 const BoardsContainer = styled.div`

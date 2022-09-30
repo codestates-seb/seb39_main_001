@@ -22,7 +22,15 @@ const UserInfo = () => {
     email: '',
     portfolio: '',
   });
-  const { nickname, liked, myUserList, skillStackTags, introduction, email, portfolio } = data;
+  const {
+    nickname,
+    liked,
+    myUserList,
+    skillStackTags,
+    introduction,
+    email,
+    portfolio,
+  } = data;
   const location = useLocation().pathname;
   const isMe = location === '/users' ? true : false;
 
@@ -93,8 +101,10 @@ const UserInfo = () => {
       </MainInfo>
       {isMe ? (
         <ButtonContainer>
-          <button>정보 수정</button>
-          <button onClick={() => deleteHandler(token)}>회원 탈퇴</button>
+          <Link to='/users/edit'>
+            <StyledButton>정보 수정</StyledButton>
+          </Link>
+          <StyledButton onClick={deleteHandler}>회원 탈퇴</StyledButton>
         </ButtonContainer>
       ) : (
         ''
@@ -203,10 +213,26 @@ const Stack = styled.img`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   gap: 15px;
   margin-top: 30px;
-  > button {
+  button {
     padding: 10px;
+  }
+`;
+
+const StyledButton = styled.button`
+  padding: 5px 10px;
+  background: #ffffff;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.black1};
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 4px;
+  cursor: pointer;
+  :hover {
+    color: #ffffff;
+    border: 1px solid ${({ theme }) => theme.colors.purple1};
+    background: ${({ theme }) => theme.colors.purple1};
   }
 `;
 
