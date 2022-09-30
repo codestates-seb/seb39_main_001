@@ -2,10 +2,7 @@ package com.example.juse.question.dto;
 
 import com.example.juse.answer.dto.AnswerResponseDto;
 import com.example.juse.user.dto.UserResponseDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -20,6 +17,9 @@ public class QuestionResponseDto {
     private UserResponseDto.Brief user;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
+    @Setter
+    private boolean isAuth;
 
     private AnswerResponseDto.AnswerToQuestion answer;
 }

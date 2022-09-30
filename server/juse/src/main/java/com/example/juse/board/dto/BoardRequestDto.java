@@ -3,8 +3,11 @@ package com.example.juse.board.dto;
 import com.example.juse.board.entity.Board;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +19,9 @@ public class BoardRequestDto {
     @Builder
     public static class Post {
 
+        @NotEmpty
         private String title;
+        @NotEmpty
         private String content;
         private Integer backend;
         private Integer frontend;
@@ -26,15 +31,20 @@ public class BoardRequestDto {
         private String contact;
         private LocalDate dueDate;
         private LocalDate startingDate;
+
+        @NotBlank
         private String period;
         private String onOffline;
 
+        @NotNull
         private Board.Type type;
 
+        @NotEmpty
         @Builder.Default
         private List<String> tagList = new ArrayList<>();
 
         @Setter
+        @Positive
         private Long userId;
 
     }
@@ -50,16 +60,27 @@ public class BoardRequestDto {
         private String contact;
         private LocalDate dueDate;
         private LocalDate startingDate;
+
+        @NotBlank
         private String period;
         private String onOffline;
-        private List<String> tagList;
 
+        @NotEmpty
+        @Builder.Default
+        private List<String> tagList = new ArrayList<>();
+
+        @NotNull
         private Board.Type type;
 
+        @NotNull
+        private Board.Status status;
+
         @Setter
+        @Positive
         private Long userId;
 
         @Setter
+        @Positive
         private Long boardId;
     }
 

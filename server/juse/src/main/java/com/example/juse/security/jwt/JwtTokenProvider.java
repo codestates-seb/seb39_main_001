@@ -38,7 +38,8 @@ public class JwtTokenProvider {
 
     // JWT token 생성
     public TokenDto generateToken(String uid, String role) {
-        long tokenPeriod = 1000L * 60L * 60L;
+
+        long tokenPeriod = 1000L * 60L * 150000L;
         long refreshPeriod = 1000L * 60L * 60L * 24L * 30L * 3L;
 
         Claims claims = Jwts.claims().setSubject(uid);

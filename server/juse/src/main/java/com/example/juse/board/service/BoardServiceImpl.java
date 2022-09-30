@@ -3,6 +3,8 @@ package com.example.juse.board.service;
 import com.example.juse.board.entity.Board;
 import com.example.juse.board.mapper.BoardMapper;
 import com.example.juse.board.repository.BoardRepository;
+import com.example.juse.exception.CustomRuntimeException;
+import com.example.juse.exception.ExceptionCode;
 import com.example.juse.helper.filterings.FilterOptions;
 import com.example.juse.tag.entity.BoardTag;
 import com.example.juse.tag.entity.Tag;
@@ -19,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Profile("plain")
@@ -35,9 +36,14 @@ public class BoardServiceImpl implements BoardService {
     private final BoardTagService boardTagService;
 
     @Override
+    @Transactional
     public Board create(Board post) {
 
         User foundUser = userService.verifyUserById(post.getUser().getId());
+
+        if (post.getBoardTagList().isEmpty()) {
+            throw new CustomRuntimeException(ExceptionCode.BOARD_WITHOUT_TAG);
+        }
 
         post.getBoardTagList().forEach(
             boardTag -> {
@@ -54,21 +60,27 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public Board getBoard(long boardId) {
 
         Board entity = verifyBoardById(boardId);
-        return entity;
+        entity.setViews(entity.getViews() + 1);
+        return boardRepository.save(entity);
     }
 
     @Override
+    @Transactional
     public Board update(Board patch) {
 
         Board board = verifyBoardById(patch.getId());
         long userId = patch.getUser().getId();
 
         if (!board.isCreatedBy(userId)) {
-            throw new RuntimeException("작성자가 아닙니다");
+            throw new CustomRuntimeException(ExceptionCode.BOARD_WRITER_NOT_MATCHED);
+        }
+
+        if (patch.getBoardTagList().isEmpty()) {
+            throw new CustomRuntimeException(ExceptionCode.BOARD_WITHOUT_TAG);
         }
 
         boardMapper.updateEntityFromSource(board, patch);
@@ -95,18 +107,20 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional
     public void delete(long boardId, long userId) {
 
         Board board = verifyBoardById(boardId);
 
         if (!board.isCreatedBy(userId)) {
-            throw new RuntimeException("작성자여야 합니다");
+            throw new CustomRuntimeException(ExceptionCode.BOARD_WRITER_NOT_MATCHED);
         }
 
         boardRepository.delete(board);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<Board> getBoards(Pageable pageable, FilterOptions filterOptions) {
 
         return
@@ -126,7 +140,9 @@ public class BoardServiceImpl implements BoardService {
     public Board verifyBoardById(long boardId) {
         return boardRepository
                 .findById(boardId)
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(
+                        () -> new CustomRuntimeException(ExceptionCode.BOARD_NOT_FOUND)
+                );
     }
 }
 
