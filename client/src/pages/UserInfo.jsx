@@ -1,31 +1,142 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { user } from '../mocks/db';
+import { apis } from '../apis/axios';
+import { ReactComponent as Heart } from '../assets/icons/heart.svg';
+import { ReactComponent as HeartFill } from '../assets/icons/heart-fill.svg';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 
 const UserInfo = () => {
-  const { nickname, liked, myUserList, skillStackTags, introduction, email, portfolio, isAuth = false } = user.data;
+  const [cookies, setCookies, removeCookie] = useCookies();
+  const token = cookies.user;
+  const myId = +cookies.userId;
+  const param = useParams();
+  const userId = param.userId;
+  const queryClient = useQueryClient();
+
+  const navigate = useNavigate();
+
+  const [userData, setUserData] = useState({
+    img: '',
+    id: '',
+    nickname: '',
+    like: 0,
+    myUserList: [],
+    skillStackTags: [],
+    introduction: '',
+    email: '',
+    portfolio: '',
+    likedByMe: false,
+  });
+
+  const {
+    img,
+    nickname,
+    liked,
+    myUserList,
+    skillStackTags,
+    introduction,
+    email,
+    portfolio,
+    likedByMe,
+  } = userData;
+
+  const location = useLocation().pathname;
+  const isMe = location === '/users' ? true : false;
+
+  // 나의 마이페이지인지, 남의 마이페이지인지 구분하여 api 호출
+  const { data, isLoading, isError, error } = useQuery(
+    'userInfo',
+    isMe ? () => apis.getUsers(token) : () => apis.getOtherUsers(token, userId),
+    {
+      onSuccess: (data) => {
+        console.log(data);
+        setUserData(data);
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    }
+  );
+
+  // 좋아요
+  const postLikeMutation = useMutation(() => apis.postLike(token, userId), {
+    onMutate: (variable) => {
+      console.log('onMutate', variable);
+    },
+    onSuccess: (data, variable, context) => {
+      queryClient.invalidateQueries('userInfo');
+    },
+    onError: (error) => {
+      alert('자신에게 좋아요 할 수 없습니다.');
+    },
+    onSettled: () => {
+      console.log('settled');
+    },
+  });
+
+  // 좋아요 취소
+  const deleteLikeMutation = useMutation(() => apis.deleteLike(token, userId), {
+    onMutate: (variable) => {
+      console.log('onMutate', variable);
+    },
+    onSuccess: (data, variable, context) => {
+      queryClient.invalidateQueries('userInfo');
+    },
+    onError: (error) => {
+      alert('에러났다');
+    },
+    onSettled: () => {
+      console.log('settled');
+    },
+  });
+
+  // 회원 탈퇴
+  const deleteHandler = () => {
+    if (window.confirm('정말 탈퇴하시겠습니까?')) {
+      apis
+        .deleteUser(token)
+        .then(() => {
+          removeCookie('user', { path: '/' });
+          removeCookie('userId', { path: '/' });
+        })
+        .then(navigate('/'));
+    } else {
+      return;
+    }
+  };
 
   return (
     <UserInfoContainer>
       <BasicInfo>
-        <UserImg></UserImg>
+        <UserImg>
+          <img src={img} alt={'프로필'}></img>
+        </UserImg>
         <RoundButton>
-          <i className='fi fi-rr-heart'></i>
+          {likedByMe ? (
+            <HeartFill
+              fill='tomato'
+              onClick={() => deleteLikeMutation.mutate()}
+            />
+          ) : (
+            <Heart onClick={() => postLikeMutation.mutate()} />
+          )}
         </RoundButton>
         <MiniBox>{nickname}</MiniBox>
         <MiniBox>
-          <i className='fi fi-sr-heart'></i>
+          <HeartFill fill='tomato' />
           {liked}
         </MiniBox>
       </BasicInfo>
       <MainInfo>
-        {isAuth ? (
+        {isMe ? (
           <div>
             <InfoLabel>내가 좋아하는 사용자</InfoLabel>
             <LikedUsers>
               {myUserList.map((e, i) => (
-                <Link to={`/users/${e.id}`}>
-                  <User key={i}>
+                <Link key={i} to={`/users/${e.id}`}>
+                  <User>
                     <div className='img'></div>
                     <span>{e.nickname}</span>
                   </User>
@@ -49,10 +160,12 @@ const UserInfo = () => {
         <InfoLabel>한 줄 소개</InfoLabel>
         <p>{introduction}</p>
       </MainInfo>
-      {isAuth ? (
+      {isMe ? (
         <ButtonContainer>
-          <button>정보 수정</button>
-          <button>회원 탈퇴</button>
+          <Link to='/users/edit'>
+            <StyledButton>정보 수정</StyledButton>
+          </Link>
+          <StyledButton onClick={deleteHandler}>회원 탈퇴</StyledButton>
         </ButtonContainer>
       ) : (
         ''
@@ -78,10 +191,23 @@ const BasicInfo = styled.div`
 `;
 
 const UserImg = styled.div`
+  position: relative;
   width: 150px;
   height: 150px;
-  background-color: ${({ theme }) => theme.colors.grey3};
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
   border-radius: 50%;
+  > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 999px;
+    margin: auto;
+    padding: 2px;
+  }
 `;
 
 const RoundButton = styled.button`
@@ -109,10 +235,6 @@ const MiniBox = styled.div`
   margin-bottom: 10px;
   width: 100%;
   border: 1px solid ${({ theme }) => theme.colors.grey2};
-  > i {
-    color: #ff0000;
-    transform: translateY(1px);
-  }
 `;
 
 const MainInfo = styled.div`
@@ -165,10 +287,26 @@ const Stack = styled.img`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   gap: 15px;
   margin-top: 30px;
-  > button {
+  button {
     padding: 10px;
+  }
+`;
+
+const StyledButton = styled.button`
+  padding: 5px 10px;
+  background: #ffffff;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.black1};
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 4px;
+  cursor: pointer;
+  :hover {
+    color: #ffffff;
+    border: 1px solid ${({ theme }) => theme.colors.purple1};
+    background: ${({ theme }) => theme.colors.purple1};
   }
 `;
 

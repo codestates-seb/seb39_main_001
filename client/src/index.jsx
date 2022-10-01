@@ -8,10 +8,11 @@ import App from './App';
 import GlobalStyles from './assets/styles/GlobalStyle';
 import theme from './assets/styles/Theme';
 import { worker } from './mocks/worker';
+import { ReactQueryDevtools } from 'react-query/devtools';
 
-if (process.env.NODE_ENV === 'development') {
-  worker.start();
-}
+// if (process.env.NODE_ENV === 'development') {
+//   worker.start();
+// }
 
 const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -23,6 +24,7 @@ root.render(
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={theme}>
             <GlobalStyles />
+            <ReactQueryDevtools initialIsOpen={false} />
             <App />
           </ThemeProvider>
         </QueryClientProvider>

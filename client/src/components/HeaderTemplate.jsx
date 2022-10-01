@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Select from 'react-select';
-import TechStack2 from './TechStack2';
+import TechStack from './TechStack';
 // datepicker
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers';
@@ -9,7 +9,14 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import TextField from '@mui/material/TextField';
 import dayjs from 'dayjs';
 
-const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
+const HeaderTemplate = ({
+  formData,
+  setFormData,
+  company,
+  setCompany,
+  count,
+  setCount,
+}) => {
   // 모집 기간, 포지션 select options
   const period = [
     { value: 'short', label: '1개월 미만' },
@@ -31,9 +38,8 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
 
   // 클릭된 버튼 스타일링 (default: 모집 중 버튼)
   const [defaultBtnActive, setDefaultBtnActive] = useState('OPENING');
-  const [typeBtnActive, setTypeBtnActive] = useState('');
+  const [typeBtnActive, setTypeBtnActive] = useState('PROJECT');
   const [onlineBtnActive, setOnlineBtnActive] = useState('');
-  const [contactBtnActive, setContactBtnActive] = useState('');
 
   // 예상 기간 선택
   const [periodSelected, setPeriodSelected] = useState(period[0]);
@@ -41,7 +47,18 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
   // 선택된 기술스택
   const [stack, setStack] = useState([]);
 
-  // event handlers
+  // 스터디 인원 수
+  // const [count, setCount] = useState(0);
+
+  // stack 이 바뀔때마다 formdata update 해주는 useEffect
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      tagList: [...stack],
+    });
+  }, [stack.length]);
+
+  // 이벤트 핸들러
   const meetingStatusHandler = (e) => {
     setDefaultBtnActive(e.target.id);
     setFormData({
@@ -64,10 +81,6 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
       ...formData,
       onOffline: e.target.id,
     });
-  };
-
-  const contactBtnClickHandler = (e) => {
-    setContactBtnActive(e.target.id);
   };
 
   const inputValueHandler = (e) => {
@@ -99,18 +112,21 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
     });
   };
 
+  // 모집 유형 프로젝트일 때 인원
   const decreaseHandler = (i) => {
     const temp = [...company];
-    // temp[i].count--;
     if (temp[i].count > 0) {
       temp[i].count--;
     }
     setCompany(temp);
+    setFormData((prev) => ({ ...prev, [temp[i].position]: temp[i].count }));
   };
+
   const increaseHandler = (i) => {
     const temp = [...company];
     temp[i].count++;
     setCompany(temp);
+    setFormData((prev) => ({ ...prev, [temp[i].position]: temp[i].count }));
   };
 
   const positionChangeHandler = (e, i) => {
@@ -123,35 +139,56 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
     setCompany([...company, { position: 'frontend', count: 0 }]);
   };
 
+  // 모집 유형 스터디일 때 인원
+  const peopleDecreaseHandler = () => {
+    const temp = count - 1;
+    setCount(temp);
+    setFormData((prev) => ({ ...prev, people: temp }));
+  };
+
+  const peopleIncreaseHandler = () => {
+    const temp = count + 1;
+    setCount(temp);
+    setFormData((prev) => ({ ...prev, people: temp }));
+  };
+
   return (
     <HeaderTemplateContainer>
-      <SelectOneType>
+      <SelectSingle>
         <label>모집 상태</label>
         <div
-          className={`select-btn ${defaultBtnActive === 'OPENING' ? 'active' : ''}`}
+          className={`select-btn ${
+            defaultBtnActive === 'OPENING' ? 'active' : ''
+          }`}
           id='OPENING'
           onClick={meetingStatusHandler}>
           모집 중
         </div>
         <div
-          className={`select-btn ${defaultBtnActive === 'CLOSED' ? 'active' : ''}`}
+          className={`select-btn ${
+            defaultBtnActive === 'CLOSED' ? 'active' : ''
+          }`}
           id='CLOSED'
           onClick={meetingStatusHandler}>
           모집 완료
         </div>
-      </SelectOneType>
+      </SelectSingle>
       <div className='group-selection'>
         <SelectButton>
           <label>유형</label>
           <div
             id='PROJECT'
-            className={`select-btn ${typeBtnActive === 'PROJECT' ? 'active' : ''}`}
+            className={`select-btn ${
+              typeBtnActive === 'PROJECT' ? 'active' : ''
+            }`}
             onClick={meetingTypeHandler}>
             프로젝트
           </div>
           <div
             id='STUDY'
-            className={`select-btn ${typeBtnActive === 'STUDY' ? 'active' : ''}`}
+            className={`select-btn ${
+              typeBtnActive === 'STUDY' ? 'active' : ''
+            }`}
             onClick={meetingTypeHandler}>
             스터디
           </div>
@@ -160,13 +197,17 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
           <label>진행 방법</label>
           <div
             id='online'
-            className={`select-btn ${onlineBtnActive === 'online' ? 'active' : ''}`}
+            className={`select-btn ${
+              onlineBtnActive === 'online' ? 'active' : ''
+            }`}
             onClick={meetingOnlineHandler}>
             온라인
           </div>
           <div
             id='offline'
-            className={`select-btn ${onlineBtnActive === 'offline' ? 'active' : ''}`}
+            className={`select-btn ${
+              onlineBtnActive === 'offline' ? 'active' : ''
+            }`}
             onClick={meetingOnlineHandler}>
             오프라인
           </div>
@@ -216,19 +257,10 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
         </SelectType>
         <SelectButton>
           <label>연락 방법</label>
-          <div
-            id='chatLink'
-            className={`select-btn ${contactBtnActive ? 'active' : ''}`}
-            onClick={contactBtnClickHandler}>
-            오픈 채팅
-          </div>
-          <div id='email' className={`select-btn ${contactBtnActive ? 'active' : ''}`} onClick={contactBtnClickHandler}>
-            이메일
-          </div>
           <input
             id='contact'
             type='text'
-            placeholder='링크 또는 이메일을 입력해주세요'
+            placeholder='오픈채팅 링크 또는 이메일을 입력해주세요'
             value={formData.contact}
             onChange={inputValueHandler}
           />
@@ -239,37 +271,55 @@ const HeaderTemplate = ({ formData, setFormData, company, setCompany }) => {
           <label>모집 포지션</label>
           <label>인원</label>
         </div>
-        {company &&
+        {formData.type === 'PROJECT' ? (
+          company &&
           company.map((e, i) => (
-            <>
-              <div className='position' key={i}>
-                <PositionSelectBox>
-                  <Select
-                    id='position'
-                    options={position}
-                    value={e.value}
-                    defaultValue={position[0]}
-                    onChange={(e) => positionChangeHandler(e, i)}
-                  />
-                </PositionSelectBox>
-                <PositionCountBtn>
-                  <div className='count-button-group'>
-                    <button onClick={() => decreaseHandler(i)}>-</button>
-                    <span id='people'>{e.count}</span>
-                    <button onClick={() => increaseHandler(i)}>+</button>
-                  </div>
-                </PositionCountBtn>
+            <div className='position' key={i}>
+              <PositionSelectBox>
+                <Select
+                  id='position'
+                  options={position}
+                  value={e.value}
+                  defaultValue={position[0]}
+                  onChange={(e) => positionChangeHandler(e, i)}
+                />
+              </PositionSelectBox>
+              <PositionCountBtn>
+                <div className='count-button-group'>
+                  <button onClick={() => decreaseHandler(i)}>-</button>
+                  <span>{e.count}</span>
+                  <button onClick={() => increaseHandler(i)}>+</button>
+                </div>
+              </PositionCountBtn>
+            </div>
+          ))
+        ) : (
+          <div className='position'>
+            <PositionSelectBox>
+              <Select isDisabled={true} />
+            </PositionSelectBox>
+            <PositionCountBtn>
+              <div className='count-button-group'>
+                <button onClick={peopleDecreaseHandler}>-</button>
+                <span id='people'>{count}</span>
+                <button onClick={peopleIncreaseHandler}>+</button>
               </div>
-            </>
-          ))}
+            </PositionCountBtn>
+          </div>
+        )}
       </SelectPositionContainer>
       <AddButton className='add-btn' onClick={clickHandler}>
         추가
       </AddButton>
-      <SelectOneType>
+      <SelectSingle>
         <label className='individual-selection'>기술 스택</label>
-        <TechStack2 selected={stack} setSelected={setStack} formData={formData} setFormData={setFormData} />
-      </SelectOneType>
+        <TechStack
+          selected={stack}
+          setSelected={setStack}
+          formData={formData}
+          setFormData={setFormData}
+        />
+      </SelectSingle>
     </HeaderTemplateContainer>
   );
 };
@@ -328,7 +378,6 @@ const SelectButton = styled.div`
     padding: 10px 15px;
     border: 1px solid ${({ theme }) => theme.colors.grey3};
     border-radius: inherit;
-    margin-top: 10px;
     :focus {
       outline: 1px solid ${({ theme }) => theme.colors.purple1};
     }
@@ -369,7 +418,7 @@ const SelectType = styled.div`
   }
 `;
 
-const SelectOneType = styled.div`
+const SelectSingle = styled.div`
   width: 500px;
   margin-left: 63px;
   > label {

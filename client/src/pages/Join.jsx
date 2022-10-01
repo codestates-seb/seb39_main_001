@@ -1,21 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import TechStack from '../components/TechStack';
-import { joinSubmit } from '../apis/axios';
-import axios from 'axios';
+import { apis } from '../apis/axios';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Join = () => {
+  const [imageSrc, setImageSrc] = useState('/icons/img/user-default.png');
+  const [imageFile, setImageFile] = useState(null);
   const [stack, setStack] = useState([]);
   const [nickname, setNickname] = useState('aasdf');
   const [portfolio, setPortfolio] = useState('');
   const [introduction, setIntroduction] = useState('');
-  const [nick, setNick] = useState(false);
+  const [isValid, setIsValid] = useState(true);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // OAuth 페이지에서 넘겨준 토큰
+  const token = location.state.token;
 
   //유저 데이터
   const user = {
     nickname,
     portfolio,
     introduction,
+    skillStackTags: stack,
   };
 
   //인풋 핸들러들
@@ -29,19 +37,52 @@ const Join = () => {
     setIntroduction(e.target.value);
   };
 
-  const getNickname = async (nickname) => {
-    await axios
-      .get(`http://juse.iptime.org:8080/users/nicknames?q=${nickname}`)
-      .then((res) => {
-        setNick(res.data.data);
-        console.log(nick);
-      })
-      .catch((err) => console.log(err));
+  // 회원가입 submit
+  const postJoinHandler = () => {
+    if (!user.nickname) {
+      alert('닉네임을 입력하세요.');
+    } else if (!user.introduction) {
+      alert('한 줄 소개를 입력하세요.');
+    } else {
+      apis
+        .postJoin(token, user, imageFile)
+        .then(alert('회원가입에 성공하였습니다. 다시 로그인해 주세요.'))
+        .then(() => {
+          navigate('/');
+        });
+    }
   };
 
+  // 중복확인
   useEffect(() => {
-    getNickname(nickname);
+    apis.getNickname(nickname).then((data) => {
+      console.log(data);
+      setIsValid(data);
+    });
   }, [nickname]);
+
+  // 프로필 이미지 업로드
+  const fileInput = useRef(null);
+  const imageButtonHandler = () => {
+    fileInput.current.click();
+  };
+  const imageChangeHandler = (e) => {
+    if (e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+    }
+    //바뀐 이미지 렌더
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setImageSrc(reader.result);
+      }
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  };
+  const imageDeleteHandler = () => {
+    setImageFile(null);
+    setImageSrc('/icons/img/user-default.png');
+  };
 
   return (
     <div>
@@ -52,16 +93,37 @@ const Join = () => {
         <ProfileUpload>
           <p>프로필 사진</p>
           <div className='uploader'>
-            <div className='image-container'>사진</div>
-            <StyledButton>업로드</StyledButton>
+            <ImageContainer>
+              <img
+                src={
+                  imageSrc === 'default.jpg'
+                    ? '/icons/img/user-default.png'
+                    : imageSrc
+                }
+                alt='프로필'
+              />
+            </ImageContainer>
+            <input
+              type='file'
+              style={{ display: 'none' }}
+              accept='image/*'
+              onChange={imageChangeHandler}
+              ref={fileInput}
+            />
+            <StyledButton onClick={imageButtonHandler}>업로드</StyledButton>
+            <StyledButton onClick={imageDeleteHandler}>
+              업로드 삭제
+            </StyledButton>
           </div>
         </ProfileUpload>
         <JoinInput>
           <p>닉네임</p>
           <input type='text' onChange={nicknameHandler}></input>
-          <p>{nick ? '사용가능한 닉네임입니다.' : '중복된 닉네임이 존재합니다.'}</p>
-          <p>이메일</p>
-          <input type='text' value='milk@gmail.com'></input>
+          <Validation className={isValid ? 'valid' : 'not-valid'}>
+            {isValid
+              ? '사용가능한 닉네임입니다.'
+              : '중복된 닉네임이 존재합니다.'}
+          </Validation>
           <p>포트폴리오 링크 (깃헙, 노션, 블로그...)</p>
           <input type='text' onChange={portfolioHandler}></input>
           <p>기술 스택</p>
@@ -69,7 +131,7 @@ const Join = () => {
           <p>한 줄 소개</p>
           <textarea type='text' onChange={introductionHandler}></textarea>
         </JoinInput>
-        <StyledButton>회원 가입</StyledButton>
+        <StyledButton onClick={postJoinHandler}>회원 가입</StyledButton>
       </JoinContainer>
     </div>
   );
@@ -78,6 +140,7 @@ const Join = () => {
 const JoinContainer = styled.div`
   max-width: 1300px;
   padding: 0 30px;
+  padding-bottom: 50px;
   margin: auto;
 `;
 
@@ -96,13 +159,29 @@ const ProfileUpload = styled.div`
     display: flex;
     align-items: end;
     margin: 10px 0;
-    > .image-container {
-      padding: 50px;
-      border: 1px solid ${({ theme }) => theme.colors.grey2};
-    }
     > button {
       margin-left: 10px;
     }
+  }
+`;
+
+const ImageContainer = styled.div`
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 999px;
+  > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 999px;
+    margin: auto;
+    padding: 5px;
   }
 `;
 
@@ -120,14 +199,29 @@ const JoinInput = styled.div`
   }
 `;
 
+const Validation = styled.p`
+  font-size: 13px;
+  margin-bottom: 15px;
+  &.valid {
+    color: blue;
+  }
+  &.not-valid {
+    color: red;
+  }
+`;
+
 const StyledButton = styled.button`
-  background-color: #fff;
-  border: 1px solid ${({ theme }) => theme.colors.grey3};
-  border-radius: 3px;
   padding: 5px 10px;
+  background: #ffffff;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.black1};
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 4px;
   cursor: pointer;
   :hover {
-    border: 1px solid ${({ theme }) => theme.colors.grey4};
+    color: #ffffff;
+    border: 1px solid ${({ theme }) => theme.colors.purple1};
+    background: ${({ theme }) => theme.colors.purple1};
   }
 `;
 
