@@ -59,7 +59,7 @@ const LogoLink = styled(Link)`
 const LoginButton = styled.button`
 	width: 80px;
 	padding: 10px;
-	background-color: #ffffff;
+	background-color: ${({ theme }) => theme.background};
 	border: 1px solid ${({ theme }) => theme.colors.purple1};
 	color: ${({ theme }) => theme.colors.purple1};
 	border-radius: 4px;
