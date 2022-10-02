@@ -11,6 +11,7 @@ import { useInfiniteQuery } from 'react-query';
 import { ReactComponent as ToggleOn } from '../assets/icons/toggle-on.svg';
 import { ReactComponent as ToggleOff } from '../assets/icons/toggle-off.svg';
 import theme from '../assets/styles/Theme';
+import Select from 'react-select';
 
 const Home = () => {
   const [cookies] = useCookies();
@@ -44,26 +45,20 @@ const Home = () => {
 
   // 프로젝트 기간 필터 설정
   const dropDownHandler = (e) => {
-    if (!periodFilter.includes(e.target.value)) {
-      setPeriodFilter((prev) => [...prev, e.target.value]);
-    }
+    const periodArr = e.map((obj) => obj.value);
+    setPeriodFilter(periodArr);
   };
 
-  // 프로젝트 기간 필터 삭제
-  const periodDeleteHandler = (idx) => {
-    const deletedArr = periodFilter.filter((e, i) => i !== idx);
-    setPeriodFilter(deletedArr);
-  };
-
-  const periodNaming = (e) => {
-    if (e === 'short') {
-      return '1개월 미만';
-    } else if (e === 'long') {
-      return '장기';
-    } else {
-      return e + '개월';
-    }
-  };
+  const periodOptions = [
+    { value: 'short', label: '1개월 미만' },
+    { value: '1', label: '1개월' },
+    { value: '2', label: '2개월' },
+    { value: '3', label: '3개월' },
+    { value: '4', label: '4개월' },
+    { value: '5', label: '5개월' },
+    { value: '6', label: '6개월' },
+    { value: 'long', label: '장기' },
+  ];
 
   // 게시글 타입 탭 변경
   const tabHandler = (e) => {
@@ -90,29 +85,22 @@ const Home = () => {
       <StyledCarousel></StyledCarousel>
       <TechStack selected={techFilter} setSelected={setTechFilter} />
       <PeriodContainer>
-        <select onChange={dropDownHandler} defaultValue='기간 설정'>
-          <option disabled>기간 설정</option>
-          <option value='short'>1개월 미만</option>
-          <option value='1'>1개월</option>
-          <option value='2'>2개월</option>
-          <option value='3'>3개월</option>
-          <option value='4'>4개월</option>
-          <option value='5'>5개월</option>
-          <option value='6'>6개월</option>
-          <option value='long'>장기</option>
-        </select>
-        {periodFilter.length ? (
-          <SelectedContainer>
-            {periodFilter.map((e, i) => (
-              <div key={i}>
-                {periodNaming(e)}
-                <button onClick={() => periodDeleteHandler(i)}>X</button>
-              </div>
-            ))}
-          </SelectedContainer>
-        ) : (
-          ''
-        )}
+        <Select
+          className='period-select'
+          options={periodOptions}
+          isMulti={true}
+          placeholder={'모든 기간'}
+          styles={{
+            multiValue: (provided) => ({
+              ...provided,
+              backgroundColor: theme.colors.grey1,
+              padding: '3px',
+            }),
+          }}
+          onChange={(e) => {
+            dropDownHandler(e);
+          }}
+        />
       </PeriodContainer>
       <ListHeader>
         <TypeSelector>
@@ -187,16 +175,10 @@ const StyledCarousel = styled.div`
   background-position: center;
 `;
 
-const PeriodContainer = styled.div``;
-
-const SelectedContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  padding: 20px 0;
-  > div {
-    padding: 7px;
-    background-color: ${({ theme }) => theme.colors.grey1};
+const PeriodContainer = styled.div`
+  > .period-select {
+    width: 50%;
+    min-width: 300px;
   }
 `;
 
