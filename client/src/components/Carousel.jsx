@@ -10,7 +10,7 @@ const Carousel = () => {
   const settings = {
     dots: true,
     speed: 500,
-    autoplay: true,
+    autoplay: false,
     autoplaySpeed: 6000,
     arrows: false,
     pauseOnHover: true,
@@ -115,10 +115,11 @@ const Introduction = styled.div`
   line-height: 1.6;
   color: ${({ theme }) => theme.colors.grey5};
   h2 {
+    font-size: 28px;
     font-weight: 900;
     color: ${({ theme }) => theme.colors.purple1};
     span {
-      font-size: 34px;
+      font-size: 46px;
     }
   }
 `;
