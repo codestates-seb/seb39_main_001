@@ -81,6 +81,8 @@ const Home = () => {
     }
   };
 
+  console.log(isFetchingNextPage);
+
   return (
     <HomeContainer>
       <Carousel />
@@ -153,7 +155,11 @@ const Home = () => {
             )}
           </React.Fragment>
         ))}
-        {isFetchingNextPage ? <div>loading...</div> : <div ref={ref}></div>}
+        {isFetchingNextPage ? (
+          <div>loading...</div>
+        ) : (
+          <div className='end' ref={ref}></div>
+        )}
       </BoardsContainer>
       {status === 'loading' ? (
         <NullBoards>서버 휴식 중.. (๑ᵕ⌓ᵕ̤)...zzZ</NullBoards>
@@ -229,6 +235,9 @@ const BoardsContainer = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   gap: 40px 60px;
+  .end {
+    width: 370px;
+  }
 `;
 
 const NullBoards = styled.div`
