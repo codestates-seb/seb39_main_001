@@ -57,7 +57,12 @@ const Carousel = () => {
                       className={
                         index === i ? 'slide-in' : 'slide-in slide-out'
                       }>
-                      <a href={el.github}>{el.name}</a>
+                      <a href={el.github}>
+                        <span>
+                          {i % 2 === 0 ? 'BE Developer' : 'FE Developer'}
+                        </span>
+                        {el.name}
+                      </a>
                     </span>
                   );
                 })}
@@ -119,10 +124,11 @@ const Introduction = styled.div`
 `;
 
 const TeamContainer = styled.div`
+  width: 412px;
   > h2 {
     font-weight: 700;
     color: ${({ theme }) => theme.colors.purple5};
-    font-size: 24px;
+    font-size: 36px;
   }
 `;
 
@@ -147,6 +153,12 @@ const ChickenMilktea = styled.span`
     cursor: pointer;
     :first-child {
       opacity: 1;
+    }
+    > a > span {
+      color: ${({ theme }) => theme.colors.black1};
+      font-weight: 700;
+      font-size: 28px;
+      margin-right: 20px;
     }
   }
   > .slide-in {

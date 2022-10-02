@@ -4,6 +4,7 @@ import { ReactComponent as Delete } from '../assets/icons/delete.svg';
 import { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { apis } from '../apis/axios';
+import { Link } from 'react-router-dom';
 
 const Question = ({ data }) => {
   const [isEdit, setIsEdit] = useState(false);
@@ -52,7 +53,12 @@ const Question = ({ data }) => {
         ) : (
           ''
         )}
-        <UserInfo>{data.user.nickname}</UserInfo>
+        <Link to={`/users/${data.user.id}`}>
+          <UserInfo>
+            <img src={data.user.img} alt='profile' />
+            {data.user.nickname}
+          </UserInfo>
+        </Link>
       </QuestionContent>
       {isEdit ? (
         <QuestionEditor>
@@ -69,6 +75,7 @@ const Question = ({ data }) => {
 const QuestionContent = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding-bottom: 20px;
 `;
 
@@ -83,7 +90,17 @@ const ButtonContainer = styled.div`
 `;
 
 const UserInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-left: 20px;
+  > img {
+    width: 30px;
+    height: 30px;
+    padding: 1px;
+    border: 1px solid ${({ theme }) => theme.colors.grey3};
+    border-radius: 50%;
+  }
 `;
 
 const QuestionEditor = styled.div`
