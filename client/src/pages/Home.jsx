@@ -156,7 +156,7 @@ const Home = () => {
         {isFetchingNextPage ? <div>loading...</div> : <div ref={ref}></div>}
       </BoardsContainer>
       {status === 'loading' ? (
-        <NullBoards>서버 잔다.. (๑ᵕ⌓ᵕ̤)...zzZ</NullBoards>
+        <NullBoards>서버 휴식 중.. (๑ᵕ⌓ᵕ̤)...zzZ</NullBoards>
       ) : (
         ''
       )}
