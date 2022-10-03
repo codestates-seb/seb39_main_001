@@ -11,6 +11,8 @@ import { useInfiniteQuery } from 'react-query';
 import { ReactComponent as ToggleOn } from '../assets/icons/toggle-on.svg';
 import { ReactComponent as ToggleOff } from '../assets/icons/toggle-off.svg';
 import theme from '../assets/styles/Theme';
+import Select from 'react-select';
+import Carousel from '../components/Carousel';
 
 const Home = () => {
   const [cookies] = useCookies();
@@ -44,26 +46,20 @@ const Home = () => {
 
   // 프로젝트 기간 필터 설정
   const dropDownHandler = (e) => {
-    if (!periodFilter.includes(e.target.value)) {
-      setPeriodFilter((prev) => [...prev, e.target.value]);
-    }
+    const periodArr = e.map((obj) => obj.value);
+    setPeriodFilter(periodArr);
   };
 
-  // 프로젝트 기간 필터 삭제
-  const periodDeleteHandler = (idx) => {
-    const deletedArr = periodFilter.filter((e, i) => i !== idx);
-    setPeriodFilter(deletedArr);
-  };
-
-  const periodNaming = (e) => {
-    if (e === 'short') {
-      return '1개월 미만';
-    } else if (e === 'long') {
-      return '장기';
-    } else {
-      return e + '개월';
-    }
-  };
+  const periodOptions = [
+    { value: 'short', label: '1개월 미만' },
+    { value: '1', label: '1개월' },
+    { value: '2', label: '2개월' },
+    { value: '3', label: '3개월' },
+    { value: '4', label: '4개월' },
+    { value: '5', label: '5개월' },
+    { value: '6', label: '6개월' },
+    { value: 'long', label: '장기' },
+  ];
 
   // 게시글 타입 탭 변경
   const tabHandler = (e) => {
@@ -85,34 +81,29 @@ const Home = () => {
     }
   };
 
+  console.log(isFetchingNextPage);
+
   return (
     <HomeContainer>
-      <StyledCarousel></StyledCarousel>
+      <Carousel />
       <TechStack selected={techFilter} setSelected={setTechFilter} />
       <PeriodContainer>
-        <select onChange={dropDownHandler} defaultValue='기간 설정'>
-          <option disabled>기간 설정</option>
-          <option value='short'>1개월 미만</option>
-          <option value='1'>1개월</option>
-          <option value='2'>2개월</option>
-          <option value='3'>3개월</option>
-          <option value='4'>4개월</option>
-          <option value='5'>5개월</option>
-          <option value='6'>6개월</option>
-          <option value='long'>장기</option>
-        </select>
-        {periodFilter.length ? (
-          <SelectedContainer>
-            {periodFilter.map((e, i) => (
-              <div key={i}>
-                {periodNaming(e)}
-                <button onClick={() => periodDeleteHandler(i)}>X</button>
-              </div>
-            ))}
-          </SelectedContainer>
-        ) : (
-          ''
-        )}
+        <Select
+          className='period-select'
+          options={periodOptions}
+          isMulti={true}
+          placeholder={'모든 기간'}
+          styles={{
+            multiValue: (provided) => ({
+              ...provided,
+              backgroundColor: theme.colors.grey1,
+              padding: '3px',
+            }),
+          }}
+          onChange={(e) => {
+            dropDownHandler(e);
+          }}
+        />
       </PeriodContainer>
       <ListHeader>
         <TypeSelector>
@@ -164,85 +155,79 @@ const Home = () => {
             )}
           </React.Fragment>
         ))}
+        {isFetchingNextPage ? (
+          <div>loading...</div>
+        ) : (
+          <div className='end' ref={ref}></div>
+        )}
       </BoardsContainer>
-      {isFetchingNextPage ? <div>loading</div> : <div ref={ref}></div>}
+      {status === 'loading' ? (
+        <NullBoards>서버 휴식 중.. (๑ᵕ⌓ᵕ̤)...zzZ</NullBoards>
+      ) : (
+        ''
+      )}
       <ScrollToTop />
     </HomeContainer>
   );
 };
 
 const HomeContainer = styled.div`
-  max-width: 1300px;
-  margin: auto;
-  padding: 0 30px;
-  padding-bottom: 100px;
+	max-width: 1300px;
+	margin: auto;
+	padding: 0 30px;
+	padding-bottom: 100px;
 `;
 
-const StyledCarousel = styled.div`
-  height: 350px;
-  background-color: ${({ theme }) => theme.colors.grey2};
-  background-image: url('치킨밀크티.png');
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-`;
-
-const PeriodContainer = styled.div``;
-
-const SelectedContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  padding: 20px 0;
-  > div {
-    padding: 7px;
-    background-color: ${({ theme }) => theme.colors.grey1};
-  }
+const PeriodContainer = styled.div`
+	> .period-select {
+		width: 50%;
+		min-width: 300px;
+	}
 `;
 
 const ListHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 `;
 
 const TypeSelector = styled.ul`
-  display: flex;
-  align-items: center;
-  margin: 15px 0;
-  font-size: 24px;
-  > li {
-    color: ${({ theme }) => theme.colors.grey3};
-    padding: 10px 0;
-    margin-right: 20px;
-    cursor: pointer;
-  }
-  > .is-active {
-    color: inherit;
-  }
+	display: flex;
+	align-items: center;
+	margin: 15px 0;
+	font-size: 24px;
+	> li {
+		color: ${({ theme }) => theme.colors.grey3};
+		padding: 10px 0;
+		margin-right: 20px;
+		cursor: pointer;
+	}
+	> .is-active {
+		color: inherit;
+	}
 `;
 
 const StatusSelector = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 18px;
-  color: ${({ theme }) => theme.colors.grey5};
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 18px;
+	color: ${({ theme }) => theme.colors.grey5};
 `;
 
 const CreateButton = styled.button`
-  padding: 10px 15px;
-  background: #ffffff;
-  font-size: 14px;
-  color: ${({ theme }) => theme.colors.black1};
-  border: 1px solid ${({ theme }) => theme.colors.grey3};
-  border-radius: 4px;
-  cursor: pointer;
-  :hover {
-    color: #ffffff;
-    border: 1px solid ${({ theme }) => theme.colors.purple1};
-    background: ${({ theme }) => theme.colors.purple1};
-  }
+	padding: 10px 15px;
+	background: #ffffff;
+	font-size: 14px;
+	color: ${({ theme }) => theme.colors.black1};
+	border: 1px solid ${({ theme }) => theme.colors.grey3};
+	border-radius: 4px;
+	cursor: pointer;
+	:hover {
+		color: #ffffff;
+		border: 1px solid ${({ theme }) => theme.colors.purple1};
+		background: ${({ theme }) => theme.colors.purple1};
+	}
 `;
 
 const BoardsContainer = styled.div`
@@ -250,12 +235,16 @@ const BoardsContainer = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   gap: 40px 60px;
+  .end {
+    width: 370px;
+  }
 `;
 
 const NullBoards = styled.div`
   padding: 100px 0 50px 0;
   font-size: 24px;
   color: ${({ theme }) => theme.colors.grey4};
+  text-align: center;
 `;
 
 export default Home;

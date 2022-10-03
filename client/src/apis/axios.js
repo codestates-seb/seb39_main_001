@@ -76,22 +76,6 @@ export const apis = {
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   },
-  // patchImg: async (token, data, img) => {
-  //   const formData = new FormData();
-  //   formData.append(
-  //     'patchDto',
-  //     new Blob([JSON.stringify(data)], { type: 'application/json' })
-  //   );
-  //   formData.append('profileImg', img);
-  //   await axios
-  //     .patch(`https://jusemain.duckdns.org:8080/users`, formData, {
-  //       headers: {
-  //         Auth: token,
-  //       },
-  //     })
-  //     .then((res) => console.log(res))
-  //     .catch((err) => console.log(err));
-  // },
 
   // 게시물 상세
   getBoardDetail: async (token, boardId) => {
@@ -157,9 +141,9 @@ export const apis = {
       })
       .catch((err) => console.log(err));
   },
-  deleteAnswer: async (token) => {
+  deleteAnswer: async (token, answerId) => {
     await axios
-      .delete(`https://jusemain.duckdns.org:8080/answers/1`, {
+      .delete(`https://jusemain.duckdns.org:8080/answers/${answerId}`, {
         headers: {
           Auth: token,
         },
@@ -200,6 +184,18 @@ export const apis = {
         },
       })
       .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  },
+
+  // 게시물 삭제
+  deleteBoard: async (token, boardId) => {
+    await axios
+      .delete(`https://jusemain.duckdns.org:8080/boards/${boardId}`, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res, '삭제됨'))
       .catch((err) => console.log(err));
   },
 

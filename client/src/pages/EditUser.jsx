@@ -11,6 +11,10 @@ const EditUser = () => {
   const [imageFile, setImageFile] = useState(null);
   const [stack, setStack] = useState([]);
   const [nickname, setNickname] = useState('');
+  const [origin, setOrigin] = useState('');
+  const [isValid, setIsValid] = useState(true);
+  const [isValid2, setIsValid2] = useState(false);
+  const [validMsg, setValidMsg] = useState('닉네임을 입력해주세요.');
   const [email, setEmail] = useState('');
   const [portfolio, setPortfolio] = useState('');
   const [introduction, setIntroduction] = useState('');
@@ -52,12 +56,43 @@ const EditUser = () => {
     setImageSrc('/icons/img/user-default.png');
   };
 
+  // 닉네임 유효성 검사
+  const validationMessage = (nickname) => {
+    const regex = /^[가-힣|a-z|A-Z|0-9|]+$/;
+    if (nickname.length === 0) {
+      setIsValid2(false);
+      setValidMsg('닉네임을 입력해주세요.');
+    } else if (nickname.length < 2) {
+      setIsValid2(false);
+      setValidMsg('닉네임은 2자 이상 입력해주세요.');
+    } else if (nickname.length > 10) {
+      setIsValid2(false);
+      setValidMsg('닉네임은 10자 이내로 입력해주세요.');
+    } else if (!regex.test(nickname)) {
+      setIsValid2(false);
+      setValidMsg('닉네임은 한글,영어,숫자만 가능합니다.');
+    } else {
+      setIsValid2(true);
+      setValidMsg('사용가능한 닉네임입니다.');
+    }
+    return;
+  };
+
+  // 중복확인
+  useEffect(() => {
+    apis.getNickname(nickname).then((data) => {
+      nickname === origin ? setIsValid(true) : setIsValid(data);
+    });
+    validationMessage(nickname);
+  }, [nickname, origin]);
+
   // 유저 정보 불러오기
   useEffect(() => {
     apis.getUsers(token).then((data) => {
       setImageSrc(data.img);
       setImageFile(data.img);
       setNickname(data.nickname);
+      setOrigin(data.nickname);
       setEmail(data.email);
       setPortfolio(data.portfolio);
       setStack(data.skillStackTags);
@@ -74,10 +109,14 @@ const EditUser = () => {
       introduction,
       img: imageFile ? null : '/icons/img/user-default.png',
     };
-    apis
-      .patchUser(token, user, imageFile)
-      .then(alert('정보 수정이 완료되었습니다.'))
-      .then(navigate('/users'));
+    if (!isValid || !isValid2) {
+      alert('닉네임을 확인해주세요.');
+    } else {
+      apis
+        .patchUser(token, user, imageFile)
+        .then(alert('정보 수정이 완료되었습니다.'))
+        .then(navigate('/users'));
+    }
   };
 
   return (
@@ -118,6 +157,9 @@ const EditUser = () => {
             type='text'
             value={nickname}
             onChange={nicknameHandler}></input>
+          <Validation className={isValid && isValid2 ? 'valid' : 'not-valid'}>
+            {isValid ? validMsg : '중복된 닉네임이 존재합니다.'}
+          </Validation>
           <p>이메일</p>
           <input type='text' value={email} disabled></input>
           <p>포트폴리오 링크 (깃헙, 노션, 블로그...)</p>
@@ -198,6 +240,17 @@ const JoinInput = styled.div`
     min-width: 400px;
     min-height: 100px;
     resize: none;
+  }
+`;
+
+const Validation = styled.p`
+  font-size: 13px;
+  margin-bottom: 15px;
+  &.valid {
+    color: blueviolet;
+  }
+  &.not-valid {
+    color: tomato;
   }
 `;
 
