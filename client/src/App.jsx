@@ -65,7 +65,6 @@ function App() {
 					<p>라이트 모드</p>
 				</LightThemeBtn>
 			)}
-			{/* </ThemeBtn> */}
 		</ThemeProvider>
 	);
 }

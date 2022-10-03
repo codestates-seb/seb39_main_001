@@ -12,6 +12,7 @@ import { ReactComponent as ToggleOn } from '../assets/icons/toggle-on.svg';
 import { ReactComponent as ToggleOff } from '../assets/icons/toggle-off.svg';
 import theme from '../assets/styles/Theme';
 import Select from 'react-select';
+import Carousel from '../components/Carousel';
 
 const Home = () => {
 	const [cookies] = useCookies();
@@ -80,9 +81,11 @@ const Home = () => {
 		}
 	};
 
+	console.log(isFetchingNextPage);
+
 	return (
 		<HomeContainer>
-			<StyledCarousel></StyledCarousel>
+			<Carousel />
 			<TechStack selected={techFilter} setSelected={setTechFilter} />
 			<PeriodContainer>
 				<Select
@@ -155,8 +158,17 @@ const Home = () => {
 						)}
 					</React.Fragment>
 				))}
+				{isFetchingNextPage ? (
+					<div>loading...</div>
+				) : (
+					<div className='end' ref={ref}></div>
+				)}
 			</BoardsContainer>
-			{isFetchingNextPage ? <div>loading</div> : <div ref={ref}></div>}
+			{status === 'loading' ? (
+				<NullBoards>서버 휴식 중.. (๑ᵕ⌓ᵕ̤)...zzZ</NullBoards>
+			) : (
+				''
+			)}
 			<ScrollToTop />
 		</HomeContainer>
 	);
@@ -167,15 +179,6 @@ const HomeContainer = styled.div`
 	margin: auto;
 	padding: 0 30px;
 	padding-bottom: 100px;
-`;
-
-const StyledCarousel = styled.div`
-	height: 350px;
-	background-color: ${({ theme }) => theme.colors.grey2};
-	background-image: url('치킨밀크티.png');
-	background-repeat: no-repeat;
-	background-size: contain;
-	background-position: center;
 `;
 
 const PeriodContainer = styled.div`
@@ -238,12 +241,16 @@ const BoardsContainer = styled.div`
 	flex-wrap: wrap;
 	justify-content: center;
 	gap: 40px 60px;
+	.end {
+		width: 370px;
+	}
 `;
 
 const NullBoards = styled.div`
 	padding: 100px 0 50px 0;
 	font-size: 24px;
 	color: ${({ theme }) => theme.colors.grey4};
+	text-align: center;
 `;
 
 export default Home;
