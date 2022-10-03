@@ -162,7 +162,7 @@ const Home = () => {
           </React.Fragment>
         ))}
       </BoardsContainer>
-      {isFetchingNextPage ? <div>loading...</div> : <div ref={ref}></div>}
+      {isFetchingNextPage ? '' : <div ref={ref}></div>}
       {status === 'loading' ? (
         <NullBoards>서버 휴식 중.. (๑ᵕ⌓ᵕ̤)...zzZ</NullBoards>
       ) : (
