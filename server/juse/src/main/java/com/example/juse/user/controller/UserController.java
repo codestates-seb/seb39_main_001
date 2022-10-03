@@ -44,8 +44,6 @@ public class UserController {
                                    @RequestPart @Valid UserRequestDto.Post userPostDto,
                                    @RequestPart(required = false) MultipartFile profileImg) {
 
-        long userId = principalDetails.getSocialUser().getId();
-        userPostDto.setUserId(userId);
         User mappedObj = userMapper.toEntityFrom(userPostDto);
         SocialUser socialUser = principalDetails.getSocialUser();
         mappedObj.setEmail(principalDetails.getSocialUser().getEmail());
@@ -91,7 +89,7 @@ public class UserController {
             @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
             @PathVariable("other-user-id") @Positive long userId
     ) {
-        long myId = principalDetails.getSocialUser().getId();
+        long myId = principalDetails.getSocialUser().getUser().getId();
         User userProfile = userService.getProfile(userId);
         UserResponseDto.Profile responseDto = userMapper.toProfileDtoFrom(userProfile);
 

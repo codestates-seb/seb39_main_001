@@ -1,6 +1,7 @@
 package com.example.juse.like.controller;
 
 import com.example.juse.dto.SingleResponseDto;
+import com.example.juse.exception.validator.NotEmptyToken;
 import com.example.juse.like.dto.LikeResponseDto;
 import com.example.juse.like.entity.Like;
 import com.example.juse.like.mapper.LikeMapper;
@@ -22,7 +23,7 @@ public class LikeController {
 
     @PostMapping("/{user-who-is-liked}")
     public ResponseEntity<SingleResponseDto<LikeResponseDto>> like(
-            @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
             @PathVariable("user-who-is-liked") long whoIsLiked
     ) {
         long whoLikes = principalDetails.getSocialUser().getUser().getId(); // 1
@@ -35,7 +36,7 @@ public class LikeController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{user-who-is-liked}")
     public void delete(
-            @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @AuthenticationPrincipal @NotEmptyToken PrincipalDetails principalDetails,
             @PathVariable("user-who-is-liked") long whoIsLiked
     ) {
         long whoLikes = principalDetails.getSocialUser().getUser().getId();
