@@ -76,22 +76,6 @@ export const apis = {
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   },
-  // patchImg: async (token, data, img) => {
-  //   const formData = new FormData();
-  //   formData.append(
-  //     'patchDto',
-  //     new Blob([JSON.stringify(data)], { type: 'application/json' })
-  //   );
-  //   formData.append('profileImg', img);
-  //   await axios
-  //     .patch(`https://jusemain.duckdns.org:8080/users`, formData, {
-  //       headers: {
-  //         Auth: token,
-  //       },
-  //     })
-  //     .then((res) => console.log(res))
-  //     .catch((err) => console.log(err));
-  // },
 
   // 게시물 상세
   getBoardDetail: async (token, boardId) => {
