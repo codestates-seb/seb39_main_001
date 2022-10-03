@@ -14,10 +14,10 @@ const Question = ({ data }) => {
   const token = cookies.user;
   const queryClient = useQueryClient();
 
-	// 수정 인풋 받기
-	const editChangeHandler = (e) => {
-		setEditContent(e.target.value);
-	};
+  // 수정 인풋 받기
+  const editChangeHandler = (e) => {
+    setEditContent(e.target.value);
+  };
 
   // 수정 submit
   const editClickMutation = useMutation(
@@ -72,7 +72,9 @@ const Question = ({ data }) => {
       <QuestionContent>
         <UserInfo>
           <Link to={`/users/${data.user.id}`}>
-            <img src={data.user.img} alt='profile' />
+            <UserImg>
+              <img src={data.user.img} alt='profile' />
+            </UserImg>
           </Link>
           <NameContainer>
             <Link to={`/users/${data.user.id}`}>
@@ -120,24 +122,37 @@ const QuestionContent = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-	margin-left: auto;
-	display: flex;
-	gap: 10px;
-	color: ${({ theme }) => theme.colors.grey4};
-	> svg {
-		cursor: pointer;
-	}
+  margin-left: auto;
+  display: flex;
+  gap: 10px;
+  color: ${({ theme }) => theme.colors.grey4};
+  > svg {
+    cursor: pointer;
+  }
 `;
 
 const UserInfo = styled.div`
   display: flex;
   gap: 10px;
-  img {
-    width: 40px;
-    height: 40px;
-    padding: 1px;
-    border: 1px solid ${({ theme }) => theme.colors.grey3};
-    border-radius: 50%;
+`;
+
+const UserImg = styled.div`
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 50%;
+  > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 999px;
+    margin: auto;
+    padding: 2px;
   }
 `;
 
@@ -167,21 +182,21 @@ const ContentContainer = styled.div`
 `;
 
 const QuestionEditor = styled.div`
-	display: flex;
-	align-items: center;
-	> textarea {
-		resize: none;
-		width: 100%;
-		min-height: 50px;
-		padding: 10px;
-		margin: 10px 0;
-		margin-right: 10px;
-		border: 2px solid ${({ theme }) => theme.colors.grey2};
-	}
-	> button {
-		padding: 10px;
-		flex-shrink: 0;
-	}
+  display: flex;
+  align-items: center;
+  > textarea {
+    resize: none;
+    width: 100%;
+    min-height: 50px;
+    padding: 10px;
+    margin: 10px 0;
+    margin-right: 10px;
+    border: 2px solid ${({ theme }) => theme.colors.grey2};
+  }
+  > button {
+    padding: 10px;
+    flex-shrink: 0;
+  }
 `;
 
 export default Question;

@@ -111,6 +111,8 @@ const EditUser = () => {
     };
     if (!isValid || !isValid2) {
       alert('닉네임을 확인해주세요.');
+    } else if (!user.introduction) {
+      alert('한 줄 소개를 입력하세요.');
     } else {
       apis
         .patchUser(token, user, imageFile)
