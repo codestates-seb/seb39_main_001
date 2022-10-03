@@ -51,7 +51,6 @@ const UserInfo = () => {
     isMe ? () => apis.getUsers(token) : () => apis.getOtherUsers(token, userId),
     {
       onSuccess: (data) => {
-        console.log(data);
         setUserData(data);
       },
       onError: (error) => {
@@ -62,33 +61,21 @@ const UserInfo = () => {
 
   // 좋아요
   const postLikeMutation = useMutation(() => apis.postLike(token, userId), {
-    onMutate: (variable) => {
-      console.log('onMutate', variable);
-    },
     onSuccess: (data, variable, context) => {
       queryClient.invalidateQueries('userInfo');
     },
     onError: (error) => {
       alert('자신에게 좋아요 할 수 없습니다.');
     },
-    onSettled: () => {
-      console.log('settled');
-    },
   });
 
   // 좋아요 취소
   const deleteLikeMutation = useMutation(() => apis.deleteLike(token, userId), {
-    onMutate: (variable) => {
-      console.log('onMutate', variable);
-    },
     onSuccess: (data, variable, context) => {
       queryClient.invalidateQueries('userInfo');
     },
     onError: (error) => {
       alert('에러났다');
-    },
-    onSettled: () => {
-      console.log('settled');
     },
   });
 
@@ -137,7 +124,7 @@ const UserInfo = () => {
               {myUserList.map((e, i) => (
                 <Link key={i} to={`/users/${e.id}`}>
                   <User>
-                    <div className='img'></div>
+                    <img src={e.img} alt='img' />
                     <span>{e.nickname}</span>
                   </User>
                 </Link>
@@ -261,11 +248,12 @@ const User = styled.div`
   flex-wrap: wrap;
   align-items: center;
   gap: 5px;
-  > .img {
-    width: 20px;
-    height: 20px;
+  > img {
+    width: 30px;
+    height: 30px;
+    padding: 1px;
+    border: 1px solid ${({ theme }) => theme.colors.grey3};
     border-radius: 50%;
-    background-color: ${({ theme }) => theme.colors.grey2};
   }
 `;
 

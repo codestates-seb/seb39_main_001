@@ -116,13 +116,9 @@ const Application = ({ data }) => {
 		const history = data.applicationList.filter((e) => e.userId === myId);
 		if (history.length) {
 			return el.value === history[0].position ? (
-				<ApplyButton className='closed'>지원 완료</ApplyButton>
+				<ApplyButton className='closed applied'>지원 완료</ApplyButton>
 			) : (
-				<ApplyButton
-					onClick={() => {
-						clickApply(el);
-					}}
-				>
+				<ApplyButton className='closed'>
 					지원
 				</ApplyButton>
 			);
@@ -269,22 +265,26 @@ const Position = styled.div`
 `;
 
 const ApplyButton = styled.button`
-	padding: 5px 10px;
-	background: #ffffff;
-	font-size: 14px;
-	color: ${({ theme }) => theme.colors.black1};
-	border: 1px solid ${({ theme }) => theme.colors.grey3};
-	border-radius: 4px;
-	cursor: pointer;
-	:hover {
-		color: #ffffff;
-		border: 1px solid ${({ theme }) => theme.colors.purple1};
-		background: ${({ theme }) => theme.colors.purple1};
-	}
-	&.closed {
-		background-color: ${({ theme }) => theme.colors.grey2};
-		pointer-events: none;
-	}
+  padding: 5px 10px;
+  background: #ffffff;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.black1};
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 4px;
+  cursor: pointer;
+  :hover {
+    color: #ffffff;
+    border: 1px solid ${({ theme }) => theme.colors.purple1};
+    background: ${({ theme }) => theme.colors.purple1};
+  }
+  &.closed {
+    background-color: ${({ theme }) => theme.colors.grey2};
+    pointer-events: none;
+  }
+  &.applied {
+    border: 1px solid ${({ theme }) => theme.colors.purple1};
+    color: ${({ theme }) => theme.colors.purple1};
+  }
 `;
 
 const AcceptedContainer = styled.div`

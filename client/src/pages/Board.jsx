@@ -21,9 +21,6 @@ const Board = () => {
 		'board',
 		() => apis.getBoardDetail(token, boardId),
 		{
-			onSuccess: (data) => {
-				console.log(data);
-			},
 			onError: (error) => {
 				console.log(error);
 			},
