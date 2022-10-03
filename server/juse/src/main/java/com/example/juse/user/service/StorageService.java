@@ -32,14 +32,16 @@ public class StorageService {
 
         try (InputStream inputStream = file.getInputStream()) {
 
-//            boolean isValid = validImgFile(inputStream);
+            InputStream inputStream1 = file.getInputStream();
+
+            boolean isValid = validImgFile(inputStream);
                 System.out.println("inputStream.toString() = " + file.getContentType());
 
-//                if(!isValid) {
-//                    throw new CustomRuntimeException(ExceptionCode.NOT_VALID_IMAGE_TYPE);
-//                }
+                if(!isValid) {
+                    throw new CustomRuntimeException(ExceptionCode.NOT_VALID_IMAGE_TYPE);
+                }
 
-                Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(inputStream1, destinationFile, StandardCopyOption.REPLACE_EXISTING);
 
             } catch (IOException e) {
             throw new RuntimeException("Failed to store file", e);
@@ -47,6 +49,9 @@ public class StorageService {
         return savedName;
     }
 
+    /*
+    * 파일 업로드 중복방지를 위한 파일 이름에 UUID 추가
+     */
     private String uploadFile(String originalName) {
         // uuid 생성
         UUID uuid = UUID.randomUUID();
@@ -56,6 +61,9 @@ public class StorageService {
         return savedName;
     }
 
+    /*
+    * 이미지파일만 업로드 가능하도록 파일 확장자 검사
+     */
     public boolean validImgFile(InputStream inputStream) {
 
         try {

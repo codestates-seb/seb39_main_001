@@ -23,4 +23,12 @@ public class GlobalExceptionAdvice {
 
         return ExceptionResponse.of(exception.getBindingResult());
     }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ExceptionResponse handlerConstraintViolationException(ConstraintViolationException exception) {
+
+        return ExceptionResponse.of(exception.getConstraintViolations());
+    }
+
 }
