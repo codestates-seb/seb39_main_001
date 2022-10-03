@@ -1,37 +1,77 @@
 import styled from 'styled-components';
 import { board1 } from '../mocks/db';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import QuestionAnswer from '../components/QuestionAnswer';
 import Application from '../components/Application';
 import { ReactComponent as Eye } from '../assets/icons/eye.svg';
-import { ReactComponent as Bookmark } from '../assets/icons/bookmark.svg';
-import { useEffect } from 'react';
+import { ReactComponent as BookmarkIcon } from '../assets/icons/bookmark.svg';
+import { ReactComponent as BookmarkCheckedIcon } from '../assets/icons/bookmark-check-fill.svg';
+import { useState } from 'react';
 import { apis } from '../apis/axios';
 import { useCookies } from 'react-cookie';
-import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 
 const Board = () => {
   const [cookies] = useCookies();
   const token = cookies.user;
-  const [data, setData] = useState(board1.data);
+  const [userData, setUserData] = useState(board1.data);
+  const param = useParams();
+  const boardId = param.boardId;
+  const queryClient = useQueryClient();
 
-  const boardId = useLocation().pathname.slice(-1);
+  const { data, isLoading, isError, error } = useQuery(
+    'board',
+    () => apis.getBoardDetail(token, boardId),
+    {
+      onSuccess: (data) => {
+        setUserData(data);
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    }
+  );
 
-  useEffect(() => {
-    apis.getBoardDetail(token, boardId).then((data) => {
-      if (data) {
-        setData(data);
-      } else return;
-    });
-  }, []);
+  const postBookmarkMutation = useMutation(
+    () => apis.postBookmark(token, boardId),
+    {
+      onMutate: (variable) => {
+        console.log('onMutate', variable);
+      },
+      onSuccess: (data, variables, context) => {
+        queryClient.invalidateQueries('board');
+      },
+      onError: (error) => {
+        alert('로그인이 필요한 기능입니다.');
+      },
+      onSettled: () => {
+        console.log('settled');
+      },
+    }
+  );
 
-  return (
+  const deleteBookmarkMutation = useMutation(
+    () => apis.deleteBookmark(token, boardId),
+    {
+      onMutate: (variable) => {
+        console.log('onMutate', variable);
+      },
+      onSuccess: (data, variables, context) => {
+        queryClient.invalidateQueries('board');
+      },
+      onSettled: () => {
+        console.log('settled');
+      },
+    }
+  );
+
+  return !isLoading ? (
     <BoardContainer>
       <HeaderInfo>
         <StatusType>
-          <div className='type'>{data.type}</div>
+          <div className='type'>{userData.type}</div>
           <div className='status'>
-            {data.status === 'OPENING' ? '모집 중' : '모집 완료'}
+            {userData.status === 'OPENING' ? '모집 중' : '모집 완료'}
           </div>
         </StatusType>
         <FlexContainer>
@@ -43,55 +83,77 @@ const Board = () => {
           </EditDelete>
           <ViewBookmark>
             <Eye />
-            {data.views}
-            <Bookmark />
-            {data.bookmarks}
+            {userData.views}
+            {userData.bookmarked ? (
+              <BookmarkCheckedIcon
+                width={'24px'}
+                height={'24px'}
+                className='bookmark-checked-icon'
+                onClick={() => deleteBookmarkMutation.mutate()}
+              />
+            ) : (
+              <BookmarkIcon
+                width={'24px'}
+                height={'24px'}
+                className='bookmark-icon'
+                onClick={() => postBookmarkMutation.mutate()}
+              />
+            )}
+            {userData.bookmarks}
           </ViewBookmark>
         </FlexContainer>
       </HeaderInfo>
-      <Title>{data.title}</Title>
+      <Title>{userData.title}</Title>
       <LeaderInfo>
         <SubTitle>팀장 정보</SubTitle>
         <FlexContainer>
-          <div className='img'>프사</div>
-          <div className='name'>{data.user.nickname}</div>
-          {data.user.skillStackTags.map((e, i) => (
+          <Link to={`/users/${userData.user.id}`}>
+            <ImgContainer>
+              <img src={userData.user.img} alt='팀장프로필' />
+            </ImgContainer>
+          </Link>
+          <Link to={`/users/${userData.user.id}`}>
+            <div className='name'>{userData.user.nickname}</div>
+          </Link>
+          {userData.user.skillStackTags.map((e, i) => (
             <Stack key={i} src={`/icons/stacks/${e}.png`} alt={`${e}`} />
           ))}
         </FlexContainer>
       </LeaderInfo>
-      <Application data={data} />
+      <Application data={userData} />
       <TopTemplate>
         <LeftInfo>
           <FlexContainer>
             <Category>모집 마감일</Category>
-            {data.dueDate}
+            {userData.dueDate}
           </FlexContainer>
           <FlexContainer>
             <Category>연락 방법</Category>
-            {data.contact}
+            {userData.contact}
           </FlexContainer>
           <FlexContainer>
             <Category>진행 방식</Category>
-            {data.onOffline === 'online' ? '온라인' : '오프라인'}
+            {userData.onOffline === 'online' ? '온라인' : '오프라인'}
           </FlexContainer>
         </LeftInfo>
         <RightInfo>
           <FlexContainer>
             <Category>예상 시작일</Category>
-            {data.startingDate}
+            {userData.startingDate}
           </FlexContainer>
           <Category>기술 스택</Category>
           <TagsContainer>
-            {data.tagList.map((e, i) => (
+            {userData.tagList.map((e, i) => (
               <Stack key={i} src={`/icons/stacks/${e}.png`} alt={`${e}`} />
             ))}
           </TagsContainer>
         </RightInfo>
       </TopTemplate>
-      <Main>{data.content}</Main>
-      <QuestionAnswer data={data} />
+      <Main>{userData.content}</Main>
+      <QuestionAnswer data={userData} />
     </BoardContainer>
+  ) : (
+    ''
   );
 };
 
@@ -136,6 +198,12 @@ const ViewBookmark = styled.div`
   align-items: center;
   gap: 10px;
   font-size: 24px;
+  > .bookmark-icon {
+    cursor: pointer;
+  }
+  > .bookmark-checked-icon {
+    cursor: pointer;
+  }
 `;
 
 const Title = styled.h2`
@@ -149,16 +217,30 @@ const Title = styled.h2`
 const LeaderInfo = styled.div`
   padding: 15px 0;
   border-bottom: 1px solid ${({ theme }) => theme.colors.grey2};
-  .img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: ${({ theme }) => theme.colors.grey3};
-  }
   .name {
     width: 150px;
     margin-left: 15px;
     font-weight: 700;
+  }
+`;
+
+const ImgContainer = styled.div`
+  position: relative;
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 999px;
+    margin: auto;
+    padding: 2px;
   }
 `;
 
