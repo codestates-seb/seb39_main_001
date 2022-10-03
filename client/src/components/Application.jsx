@@ -100,14 +100,9 @@ const Application = ({ data }) => {
     const history = data.applicationList.filter((e) => e.userId === myId);
     if (history.length) {
       return el.value === history[0].position ? (
-        <ApplyButton className='closed'>지원 완료</ApplyButton>
+        <ApplyButton className='closed applied'>지원 완료</ApplyButton>
       ) : (
-        <ApplyButton
-          onClick={() => {
-            clickApply(el);
-          }}>
-          지원
-        </ApplyButton>
+        <ApplyButton className='closed'>지원</ApplyButton>
       );
     } else {
       return (
@@ -266,6 +261,10 @@ const ApplyButton = styled.button`
   &.closed {
     background-color: ${({ theme }) => theme.colors.grey2};
     pointer-events: none;
+  }
+  &.applied {
+    border: 1px solid ${({ theme }) => theme.colors.purple1};
+    color: ${({ theme }) => theme.colors.purple1};
   }
 `;
 
