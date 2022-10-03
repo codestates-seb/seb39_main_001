@@ -141,9 +141,9 @@ export const apis = {
       })
       .catch((err) => console.log(err));
   },
-  deleteAnswer: async (token) => {
+  deleteAnswer: async (token, answerId) => {
     await axios
-      .delete(`https://jusemain.duckdns.org:8080/answers/1`, {
+      .delete(`https://jusemain.duckdns.org:8080/answers/${answerId}`, {
         headers: {
           Auth: token,
         },

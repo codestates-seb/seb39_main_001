@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { board1 } from '../mocks/db';
 import { Link, useParams } from 'react-router-dom';
 import QuestionAnswer from '../components/QuestionAnswer';
 import Application from '../components/Application';
@@ -14,7 +13,6 @@ import { useQuery, useMutation, useQueryClient } from 'react-query';
 const Board = () => {
   const [cookies] = useCookies();
   const token = cookies.user;
-  const [userData, setUserData] = useState(board1.data);
   const param = useParams();
   const boardId = param.boardId;
   const queryClient = useQueryClient();
@@ -23,9 +21,6 @@ const Board = () => {
     'board',
     () => apis.getBoardDetail(token, boardId),
     {
-      onSuccess: (data) => {
-        setUserData(data);
-      },
       onError: (error) => {
         console.log(error);
       },
@@ -69,9 +64,9 @@ const Board = () => {
     <BoardContainer>
       <HeaderInfo>
         <StatusType>
-          <div className='type'>{userData.type}</div>
+          <div className='type'>{data.type}</div>
           <div className='status'>
-            {userData.status === 'OPENING' ? '모집 중' : '모집 완료'}
+            {data.status === 'OPENING' ? '모집 중' : '모집 완료'}
           </div>
         </StatusType>
         <FlexContainer>
@@ -83,8 +78,8 @@ const Board = () => {
           </EditDelete>
           <ViewBookmark>
             <Eye />
-            {userData.views}
-            {userData.bookmarked ? (
+            {data.views}
+            {data.bookmarked ? (
               <BookmarkCheckedIcon
                 width={'24px'}
                 height={'24px'}
@@ -99,58 +94,58 @@ const Board = () => {
                 onClick={() => postBookmarkMutation.mutate()}
               />
             )}
-            {userData.bookmarks}
+            {data.bookmarks}
           </ViewBookmark>
         </FlexContainer>
       </HeaderInfo>
-      <Title>{userData.title}</Title>
+      <Title>{data.title}</Title>
       <LeaderInfo>
         <SubTitle>팀장 정보</SubTitle>
         <FlexContainer>
-          <Link to={`/users/${userData.user.id}`}>
+          <Link to={`/users/${data.user.id}`}>
             <ImgContainer>
-              <img src={userData.user.img} alt='팀장프로필' />
+              <img src={data.user.img} alt='팀장프로필' />
             </ImgContainer>
           </Link>
-          <Link to={`/users/${userData.user.id}`}>
-            <div className='name'>{userData.user.nickname}</div>
+          <Link to={`/users/${data.user.id}`}>
+            <div className='name'>{data.user.nickname}</div>
           </Link>
-          {userData.user.skillStackTags.map((e, i) => (
+          {data.user.skillStackTags.map((e, i) => (
             <Stack key={i} src={`/icons/stacks/${e}.png`} alt={`${e}`} />
           ))}
         </FlexContainer>
       </LeaderInfo>
-      <Application data={userData} />
+      <Application data={data} />
       <TopTemplate>
         <LeftInfo>
           <FlexContainer>
             <Category>모집 마감일</Category>
-            {userData.dueDate}
+            {data.dueDate}
           </FlexContainer>
           <FlexContainer>
             <Category>연락 방법</Category>
-            {userData.contact}
+            {data.contact}
           </FlexContainer>
           <FlexContainer>
             <Category>진행 방식</Category>
-            {userData.onOffline === 'online' ? '온라인' : '오프라인'}
+            {data.onOffline === 'online' ? '온라인' : '오프라인'}
           </FlexContainer>
         </LeftInfo>
         <RightInfo>
           <FlexContainer>
             <Category>예상 시작일</Category>
-            {userData.startingDate}
+            {data.startingDate}
           </FlexContainer>
           <Category>기술 스택</Category>
           <TagsContainer>
-            {userData.tagList.map((e, i) => (
+            {data.tagList.map((e, i) => (
               <Stack key={i} src={`/icons/stacks/${e}.png`} alt={`${e}`} />
             ))}
           </TagsContainer>
         </RightInfo>
       </TopTemplate>
-      <Main>{userData.content}</Main>
-      <QuestionAnswer data={userData} />
+      <Main>{data.content}</Main>
+      <QuestionAnswer data={data} />
     </BoardContainer>
   ) : (
     ''
