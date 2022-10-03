@@ -35,7 +35,7 @@ export const darkTheme = {
     grey2: '#495057',
     grey3: '#495057',
     grey4: '#e9ecef',
-    grey5: '#495057',
+    grey5: '#9c9c9c',
     // grey1: '#e9ecef',
     // grey2: '#dee2e6',
     // grey3: '#adb5bd',

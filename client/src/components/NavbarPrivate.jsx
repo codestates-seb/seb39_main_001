@@ -126,7 +126,7 @@ const Notification = styled.div`
 	align-items: center;
 	cursor: pointer;
 	:hover {
-		color: ${({ theme }) => theme.colors.black1};
+		color: ${({ theme }) => theme.colors.purple1};
 	}
 `;
 
@@ -149,10 +149,13 @@ const Profile = styled.div`
 		margin: auto;
 		padding: 2px;
 	}
+	:hover {
+		border: 1px solid ${({ theme }) => theme.colors.purple1};
+	}
 `;
 
 const DropdownNav = styled.nav`
-	background: #ffffff;
+	background: ${({ theme }) => theme.background};
 	border-radius: 8px;
 	position: absolute;
 	top: 60px;

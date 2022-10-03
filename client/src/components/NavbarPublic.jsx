@@ -99,7 +99,7 @@ export const DarkThemeBtn = styled.button`
 	justify-content: space-around;
 	align-items: center;
 	width: 120px;
-	height: 50px;
+	height: 40px;
 	border: none;
 	border-radius: 999px;
 	background: #ffffff;
@@ -119,7 +119,7 @@ export const LightThemeBtn = styled.button`
 	justify-content: space-around;
 	align-items: center;
 	width: 120px;
-	height: 50px;
+	height: 40px;
 	border: none;
 	border-radius: 999px;
 	background: #3a3b3c;
