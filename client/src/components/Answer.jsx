@@ -16,10 +16,10 @@ const Answer = ({ data, auth, questionId }) => {
   const [answer, setAnswer] = useState('');
   const queryClient = useQueryClient();
 
-  // 수정 인풋 받기
-  const editChangeHandler = (e) => {
-    setEditContent(e.target.value);
-  };
+	// 수정 인풋 받기
+	const editChangeHandler = (e) => {
+		setEditContent(e.target.value);
+	};
 
   // 수정 submit
   const editClickMutation = useMutation(
@@ -57,10 +57,10 @@ const Answer = ({ data, auth, questionId }) => {
     }
   };
 
-  // 답변 인풋 핸들러
-  const aInputHandler = (e) => {
-    setAnswer(e.target.value);
-  };
+	// 답변 인풋 핸들러
+	const aInputHandler = (e) => {
+		setAnswer(e.target.value);
+	};
 
   // 답변 등록 핸들러
   const qSubmitMutation = useMutation(
@@ -191,13 +191,13 @@ const ContentButton = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  margin-left: auto;
-  display: flex;
-  gap: 10px;
-  color: ${({ theme }) => theme.colors.grey4};
-  > svg {
-    cursor: pointer;
-  }
+	margin-left: auto;
+	display: flex;
+	gap: 10px;
+	color: ${({ theme }) => theme.colors.grey4};
+	> svg {
+		cursor: pointer;
+	}
 `;
 
 const UserInfo = styled.div`
@@ -213,21 +213,21 @@ const UserInfo = styled.div`
 `;
 
 const AnswerEditor = styled.div`
-  display: flex;
-  align-items: center;
-  > textarea {
-    resize: none;
-    width: 100%;
-    min-height: 50px;
-    padding: 10px;
-    margin: 10px 0;
-    margin-right: 10px;
-    border: 2px solid ${({ theme }) => theme.colors.grey2};
-  }
-  > button {
-    padding: 10px;
-    flex-shrink: 0;
-  }
+	display: flex;
+	align-items: center;
+	> textarea {
+		resize: none;
+		width: 100%;
+		min-height: 50px;
+		padding: 10px;
+		margin: 10px 0;
+		margin-right: 10px;
+		border: 2px solid ${({ theme }) => theme.colors.grey2};
+	}
+	> button {
+		padding: 10px;
+		flex-shrink: 0;
+	}
 `;
 
 const AnswerCreator = styled.div`
@@ -245,18 +245,18 @@ const AnswerCreator = styled.div`
 `;
 
 const SubmitButton = styled.button`
-  padding: 5px 10px;
-  background: #ffffff;
-  font-size: 14px;
-  color: ${({ theme }) => theme.colors.black1};
-  border: 1px solid ${({ theme }) => theme.colors.grey3};
-  border-radius: 4px;
-  cursor: pointer;
-  :hover {
-    color: #ffffff;
-    border: 1px solid ${({ theme }) => theme.colors.purple1};
-    background: ${({ theme }) => theme.colors.purple1};
-  }
+	padding: 5px 10px;
+	background: #ffffff;
+	font-size: 14px;
+	color: ${({ theme }) => theme.colors.black1};
+	border: 1px solid ${({ theme }) => theme.colors.grey3};
+	border-radius: 4px;
+	cursor: pointer;
+	:hover {
+		color: #ffffff;
+		border: 1px solid ${({ theme }) => theme.colors.purple1};
+		background: ${({ theme }) => theme.colors.purple1};
+	}
 `;
 
 export default Answer;

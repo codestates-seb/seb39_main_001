@@ -172,62 +172,62 @@ const Home = () => {
 };
 
 const HomeContainer = styled.div`
-  max-width: 1300px;
-  margin: auto;
-  padding: 0 30px;
-  padding-bottom: 100px;
+	max-width: 1300px;
+	margin: auto;
+	padding: 0 30px;
+	padding-bottom: 100px;
 `;
 
 const PeriodContainer = styled.div`
-  > .period-select {
-    width: 50%;
-    min-width: 300px;
-  }
+	> .period-select {
+		width: 50%;
+		min-width: 300px;
+	}
 `;
 
 const ListHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 `;
 
 const TypeSelector = styled.ul`
-  display: flex;
-  align-items: center;
-  margin: 15px 0;
-  font-size: 24px;
-  > li {
-    color: ${({ theme }) => theme.colors.grey3};
-    padding: 10px 0;
-    margin-right: 20px;
-    cursor: pointer;
-  }
-  > .is-active {
-    color: inherit;
-  }
+	display: flex;
+	align-items: center;
+	margin: 15px 0;
+	font-size: 24px;
+	> li {
+		color: ${({ theme }) => theme.colors.grey3};
+		padding: 10px 0;
+		margin-right: 20px;
+		cursor: pointer;
+	}
+	> .is-active {
+		color: inherit;
+	}
 `;
 
 const StatusSelector = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 18px;
-  color: ${({ theme }) => theme.colors.grey5};
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 18px;
+	color: ${({ theme }) => theme.colors.grey5};
 `;
 
 const CreateButton = styled.button`
-  padding: 10px 15px;
-  background: #ffffff;
-  font-size: 14px;
-  color: ${({ theme }) => theme.colors.black1};
-  border: 1px solid ${({ theme }) => theme.colors.grey3};
-  border-radius: 4px;
-  cursor: pointer;
-  :hover {
-    color: #ffffff;
-    border: 1px solid ${({ theme }) => theme.colors.purple1};
-    background: ${({ theme }) => theme.colors.purple1};
-  }
+	padding: 10px 15px;
+	background: #ffffff;
+	font-size: 14px;
+	color: ${({ theme }) => theme.colors.black1};
+	border: 1px solid ${({ theme }) => theme.colors.grey3};
+	border-radius: 4px;
+	cursor: pointer;
+	:hover {
+		color: #ffffff;
+		border: 1px solid ${({ theme }) => theme.colors.purple1};
+		background: ${({ theme }) => theme.colors.purple1};
+	}
 `;
 
 const BoardsContainer = styled.div`

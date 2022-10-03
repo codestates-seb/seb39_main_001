@@ -187,6 +187,18 @@ export const apis = {
       .catch((err) => console.log(err));
   },
 
+  // 게시물 삭제
+  deleteBoard: async (token, boardId) => {
+    await axios
+      .delete(`https://jusemain.duckdns.org:8080/boards/${boardId}`, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res, '삭제됨'))
+      .catch((err) => console.log(err));
+  },
+
   // 지원기능
   postApply: async (token, boardId, position) => {
     await axios
