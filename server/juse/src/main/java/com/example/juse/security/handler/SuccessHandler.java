@@ -36,7 +36,7 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler implem
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
-        System.out.println("#######request.toString() = " + request.toString());
+        System.out.println("#######request.toString() = " + request.getRequestURI());
         System.out.println("#######response.toString() = " + response.toString());
         System.out.println("#######authentication = " + authentication.toString());
 
@@ -55,6 +55,10 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler implem
                 .name((String) attributes.get("name"))
                 .email((String) attributes.get("email"))
                 .build();
+
+        if (request.getRequestURI().equals("/login/oauth2/code/github")) {
+            socialUser.setEmail(attributes.get("login") + "@github.com");
+        }
 
         System.out.println("socialUser.toString() = " + socialUser.toString());
 
