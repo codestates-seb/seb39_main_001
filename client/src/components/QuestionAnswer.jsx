@@ -20,14 +20,18 @@ const QuestionAnswer = ({ data }) => {
   // 질문 등록 핸들러
   const qSubmitMutation = useMutation(
     () => {
-      if (question) {
-        const boardId = data.id;
-        const content = { content: question };
-        apis.postQuestion(token, content, boardId);
+      if (token) {
+        if (question) {
+          const boardId = data.id;
+          const content = { content: question };
+          apis.postQuestion(token, content, boardId);
+        } else {
+          alert('질문 내용을 입력하세요.');
+        }
       } else {
-        alert('질문 내용을 입력하세요.');
-        return;
+        alert('로그인이 필요한 기능입니다.');
       }
+      return;
     },
     {
       onSuccess: () => {
