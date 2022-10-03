@@ -252,7 +252,7 @@ const AnswerCreator = styled.div`
     resize: none;
     margin-left: 50px;
     padding: 5px;
-    width: calc(100% - 90px);
+    width: calc(100% - 145px);
   }
   > button {
     width: 80px;
