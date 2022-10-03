@@ -15,16 +15,7 @@ import MyJuse from './pages/MyJuse';
 // 프록시: https://cors-jwy.herokuapp.com/
 function App() {
 	const [cookies, setCookie, removeCookie] = useCookies();
-	setCookie(
-		// 해리포터
-		'user',
-		'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYWlsaWVlamtpbUBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjY0NzYzOTA1LCJleHAiOjE2NzM3NjM5MDV9.qZKajUHnKwwxNjcntPBBluD1EBvZsBJkssw1Ww79vGQ'
-	);
-	// setCookie(
-	// 	// 볼드모트
-	// 	'user',
-	// 	'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYWlsaWVlamtpbTQ5QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE2NjQ3NjIxOTgsImV4cCI6MTY3Mzc2MjE5OH0.3x06cqOP7gEvlmfK-yqRCv2PogJU8ASQzSFpceXRTCo'
-	// );
+
 	return (
 		<>
 			{cookies.user ? (
