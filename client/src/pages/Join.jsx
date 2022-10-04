@@ -12,6 +12,8 @@ const Join = () => {
   const [portfolio, setPortfolio] = useState('');
   const [introduction, setIntroduction] = useState('');
   const [isValid, setIsValid] = useState(true);
+  const [isValid2, setIsValid2] = useState(false);
+  const [validMsg, setValidMsg] = useState('닉네임을 입력해주세요.');
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -44,13 +46,39 @@ const Join = () => {
     } else if (!user.introduction) {
       alert('한 줄 소개를 입력하세요.');
     } else {
-      apis
-        .postJoin(token, user, imageFile)
-        .then(alert('회원가입에 성공하였습니다. 다시 로그인해 주세요.'))
-        .then(() => {
-          navigate('/');
-        });
+      if (!isValid || !isValid2) {
+        alert('닉네임을 확인해주세요.');
+      } else {
+        apis
+          .postJoin(token, user, imageFile)
+          .then(alert('회원가입에 성공하였습니다. 다시 로그인해 주세요.'))
+          .then(() => {
+            navigate('/');
+          });
+      }
     }
+  };
+
+  // 닉네임 유효성 검사
+  const validationMessage = (nickname) => {
+    const regex = /^[가-힣|a-z|A-Z|0-9|]+$/;
+    if (nickname.length === 0) {
+      setIsValid2(false);
+      setValidMsg('닉네임을 입력해주세요.');
+    } else if (nickname.length < 2) {
+      setIsValid2(false);
+      setValidMsg('닉네임은 2자 이상 입력해주세요.');
+    } else if (nickname.length > 10) {
+      setIsValid2(false);
+      setValidMsg('닉네임은 10자 이내로 입력해주세요.');
+    } else if (!regex.test(nickname)) {
+      setIsValid2(false);
+      setValidMsg('닉네임은 한글,영어,숫자만 가능합니다.');
+    } else {
+      setIsValid2(true);
+      setValidMsg('사용가능한 닉네임입니다.');
+    }
+    return;
   };
 
   // 중복확인
@@ -59,6 +87,7 @@ const Join = () => {
       console.log(data);
       setIsValid(data);
     });
+    validationMessage(nickname);
   }, [nickname]);
 
   // 프로필 이미지 업로드
@@ -119,10 +148,8 @@ const Join = () => {
         <JoinInput>
           <p>닉네임</p>
           <input type='text' onChange={nicknameHandler}></input>
-          <Validation className={isValid ? 'valid' : 'not-valid'}>
-            {isValid
-              ? '사용가능한 닉네임입니다.'
-              : '중복된 닉네임이 존재합니다.'}
+          <Validation className={isValid && isValid2 ? 'valid' : 'not-valid'}>
+            {isValid ? validMsg : '중복된 닉네임이 존재합니다.'}
           </Validation>
           <p>포트폴리오 링크 (깃헙, 노션, 블로그...)</p>
           <input type='text' onChange={portfolioHandler}></input>
@@ -203,10 +230,10 @@ const Validation = styled.p`
   font-size: 13px;
   margin-bottom: 15px;
   &.valid {
-    color: blue;
+    color: blueviolet;
   }
   &.not-valid {
-    color: red;
+    color: tomato;
   }
 `;
 

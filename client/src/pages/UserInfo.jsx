@@ -51,7 +51,6 @@ const UserInfo = () => {
     isMe ? () => apis.getUsers(token) : () => apis.getOtherUsers(token, userId),
     {
       onSuccess: (data) => {
-        console.log(data);
         setUserData(data);
       },
       onError: (error) => {
@@ -62,33 +61,21 @@ const UserInfo = () => {
 
   // 좋아요
   const postLikeMutation = useMutation(() => apis.postLike(token, userId), {
-    onMutate: (variable) => {
-      console.log('onMutate', variable);
-    },
     onSuccess: (data, variable, context) => {
       queryClient.invalidateQueries('userInfo');
     },
     onError: (error) => {
       alert('자신에게 좋아요 할 수 없습니다.');
     },
-    onSettled: () => {
-      console.log('settled');
-    },
   });
 
   // 좋아요 취소
   const deleteLikeMutation = useMutation(() => apis.deleteLike(token, userId), {
-    onMutate: (variable) => {
-      console.log('onMutate', variable);
-    },
     onSuccess: (data, variable, context) => {
       queryClient.invalidateQueries('userInfo');
     },
     onError: (error) => {
-      alert('에러났다');
-    },
-    onSettled: () => {
-      console.log('settled');
+      alert('문제가 발생하였습니다. 다시 한 번 시도해 주세요.');
     },
   });
 
@@ -110,7 +97,7 @@ const UserInfo = () => {
   return (
     <UserInfoContainer>
       <BasicInfo>
-        <UserImg>
+        <UserImg width={'150px'}>
           <img src={img} alt={'프로필'}></img>
         </UserImg>
         <RoundButton>
@@ -133,39 +120,57 @@ const UserInfo = () => {
         {isMe ? (
           <div>
             <InfoLabel>내가 좋아하는 사용자</InfoLabel>
-            <LikedUsers>
-              {myUserList.map((e, i) => (
-                <Link key={i} to={`/users/${e.id}`}>
-                  <User>
-                    <div className='img'></div>
-                    <span>{e.nickname}</span>
-                  </User>
-                </Link>
-              ))}
-            </LikedUsers>
+            {myUserList.length ? (
+              <LikedUsers>
+                {myUserList.map((e, i) => (
+                  <Link key={i} to={`/users/${e.id}`}>
+                    <User>
+                      <UserImg width='40px'>
+                        <img src={e.img} alt='img' />
+                      </UserImg>
+                      <span>{e.nickname}</span>
+                    </User>
+                  </Link>
+                ))}
+              </LikedUsers>
+            ) : (
+              <NullMessage>마음에 드는 사용자를 추가해보세요!</NullMessage>
+            )}
           </div>
         ) : (
           ''
         )}
         <InfoLabel>기술 스택</InfoLabel>
-        <StacksContainer>
-          {skillStackTags.map((e, i) => (
-            <Stack key={i} src={`/icons/stacks/${e}.png`} alt={`${e}`} />
-          ))}
-        </StacksContainer>
+        {skillStackTags.length ? (
+          <StacksContainer>
+            {skillStackTags.map((e, i) => (
+              <Stack key={i} src={`/icons/stacks/${e}.png`} alt={`${e}`} />
+            ))}
+          </StacksContainer>
+        ) : (
+          <NullMessage>사용 가능한 기술 스택을 추가해보세요!</NullMessage>
+        )}
         <InfoLabel>연락처</InfoLabel>
         <a href={'mailto:' + email}>{email}</a>
-        <InfoLabel>포트폴리오</InfoLabel>
-        <a href={'http://' + portfolio}>{portfolio}</a>
+        <InfoLabel>포트폴리오 링크</InfoLabel>
+        {portfolio ? (
+          <a href={'http://' + portfolio}>{portfolio}</a>
+        ) : (
+          <NullMessage>
+            GitHub, 노션, 블로그 등 나를 표현할 수 있는 링크를 추가해보세요!
+          </NullMessage>
+        )}
         <InfoLabel>한 줄 소개</InfoLabel>
         <p>{introduction}</p>
       </MainInfo>
       {isMe ? (
         <ButtonContainer>
           <Link to='/users/edit'>
-            <StyledButton>정보 수정</StyledButton>
+            <StyledEditBtn>정보 수정</StyledEditBtn>
           </Link>
-          <StyledButton onClick={deleteHandler}>회원 탈퇴</StyledButton>
+          <StyledUnsubscribeBtn onClick={deleteHandler}>
+            회원 탈퇴
+          </StyledUnsubscribeBtn>
         </ButtonContainer>
       ) : (
         ''
@@ -192,8 +197,8 @@ const BasicInfo = styled.div`
 
 const UserImg = styled.div`
   position: relative;
-  width: 150px;
-  height: 150px;
+  width: ${({ width }) => width};
+  height: ${({ width }) => width};
   border: 1px solid ${({ theme }) => theme.colors.grey3};
   border-radius: 50%;
   > img {
@@ -235,6 +240,7 @@ const MiniBox = styled.div`
   margin-bottom: 10px;
   width: 100%;
   border: 1px solid ${({ theme }) => theme.colors.grey2};
+  border-radius: 4px;
 `;
 
 const MainInfo = styled.div`
@@ -261,12 +267,6 @@ const User = styled.div`
   flex-wrap: wrap;
   align-items: center;
   gap: 5px;
-  > .img {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: ${({ theme }) => theme.colors.grey2};
-  }
 `;
 
 const StacksContainer = styled.div`
@@ -295,19 +295,39 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const StyledButton = styled.button`
+const StyledEditBtn = styled.button`
   padding: 5px 10px;
-  background: #ffffff;
+  background: ${({ theme }) => theme.background};
   font-size: 14px;
-  color: ${({ theme }) => theme.colors.black1};
+  color: ${({ theme }) => theme.colors.purple1};
+  border: 1px solid ${({ theme }) => theme.colors.purple1};
+  border-radius: 4px;
+  cursor: pointer;
+  :hover {
+    color: #fafafa;
+    border: 1px solid ${({ theme }) => theme.colors.purple1};
+    background: ${({ theme }) => theme.colors.purple1};
+  }
+`;
+
+const StyledUnsubscribeBtn = styled.button`
+  padding: 5px 10px;
+  background: ${({ theme }) => theme.background};
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.grey3};
   border: 1px solid ${({ theme }) => theme.colors.grey3};
   border-radius: 4px;
   cursor: pointer;
   :hover {
-    color: #ffffff;
-    border: 1px solid ${({ theme }) => theme.colors.purple1};
-    background: ${({ theme }) => theme.colors.purple1};
+    color: ${({ theme }) => theme.colors.grey4};
+    background: ${({ theme }) => theme.background};
+    border: 1px solid ${({ theme }) => theme.colors.grey4};
   }
+`;
+
+const NullMessage = styled.p`
+  color: ${({ theme }) => theme.colors.grey3};
+  font-size: 20px;
 `;
 
 export default UserInfo;

@@ -108,8 +108,6 @@ const NewMeeting = () => {
 
 		// Post 요청
 		apis.postBoard(token, formData).then(navigate('/'));
-
-		console.log('formData:', formData);
 	};
 
 	return (
@@ -149,6 +147,8 @@ const NewMeetingPageContainer = styled.div`
 		border: 1px solid ${({ theme }) => theme.colors.grey3};
 		border-radius: 4px;
 		margin: 10px 0px 15px 0px;
+		background: ${({ theme }) => theme.background};
+		color: ${({ theme }) => theme.text};
 		:focus {
 			outline: 1px solid ${({ theme }) => theme.colors.purple1};
 		}
@@ -175,10 +175,10 @@ const Title = styled.div`
 const CancelButton = styled(Link)`
 	width: 100px;
 	padding: 10px 15px;
-	background: #ffffff;
+	background: ${({ theme }) => theme.background};
 	font-size: 14px;
 	text-align: center;
-	color: ${({ theme }) => theme.colors.black1};
+	color: ${({ theme }) => theme.text};
 	border: 1px solid ${({ theme }) => theme.colors.grey3};
 	border-radius: 4px;
 	cursor: pointer;
@@ -192,14 +192,14 @@ const CancelButton = styled(Link)`
 const SubmitButton = styled.button`
 	width: 100px;
 	padding: 10px 15px;
-	background: #ffffff;
+	background: ${({ theme }) => theme.background};
 	font-size: 14px;
 	color: ${({ theme }) => theme.colors.black1};
 	border: 1px solid ${({ theme }) => theme.colors.grey3};
 	border-radius: 4px;
 	cursor: pointer;
 	:hover {
-		color: #ffffff;
+		color: ${({ theme }) => theme.text};
 		border: 1px solid ${({ theme }) => theme.colors.purple1};
 		background: ${({ theme }) => theme.colors.purple1};
 	}

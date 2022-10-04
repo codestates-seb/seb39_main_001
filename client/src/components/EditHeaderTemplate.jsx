@@ -155,10 +155,29 @@ const EditHeaderTemplate = ({ formData, setFormData }) => {
 					<LocalizationProvider dateAdapter={AdapterDayjs}>
 						<DesktopDatePicker
 							views={['day']}
-							value={formData.dueDate}
+							value={formData.dueDate || null}
 							onChange={dueDateHandler}
 							inputFormat='YYYY-MM-DD'
-							renderInput={(params) => <TextField {...params} />}
+							renderInput={(params) => (
+								<TextField
+									{...params}
+									sx={{
+										svg: { color: '#7e858d' },
+										input: { color: '#7e858d' },
+										'& .MuiOutlinedInput-root': {
+											'& fieldset': {
+												borderColor: '#7e858d',
+											},
+											'&:hover fieldset': {
+												borderColor: '#be99ff',
+											},
+											'&.Mui-focused fieldset': {
+												borderColor: '#be99ff',
+											},
+										},
+									}}
+								/>
+							)}
 						/>
 					</LocalizationProvider>
 				</SelectType>
@@ -167,10 +186,29 @@ const EditHeaderTemplate = ({ formData, setFormData }) => {
 					<LocalizationProvider dateAdapter={AdapterDayjs}>
 						<DesktopDatePicker
 							views={['day']}
-							value={formData.startingDate}
+							value={formData.startingDate || null}
 							onChange={startingDateHandler}
 							inputFormat='YYYY-MM-DD'
-							renderInput={(params) => <TextField {...params} />}
+							renderInput={(params) => (
+								<TextField
+									{...params}
+									sx={{
+										svg: { color: '#7e858d' },
+										input: { color: '#7e858d' },
+										'& .MuiOutlinedInput-root': {
+											'& fieldset': {
+												borderColor: '#7e858d',
+											},
+											'&:hover fieldset': {
+												borderColor: '#be99ff',
+											},
+											'&.Mui-focused fieldset': {
+												borderColor: '#be99ff',
+											},
+										},
+									}}
+								/>
+							)}
 						/>
 					</LocalizationProvider>
 				</SelectType>
@@ -190,6 +228,16 @@ const EditHeaderTemplate = ({ formData, setFormData }) => {
 						})}
 						defaultValue={period[0]}
 						onChange={periodHandler}
+						theme={(theme) => ({
+							...theme,
+							colors: {
+								...theme.colors,
+								primary25: '#f0e7fe',
+								primary: '#be99ff',
+								background: `${({ theme }) => theme.background}`,
+								text: `${({ theme }) => theme.text}`,
+							},
+						})}
 					/>
 				</SelectType>
 				<SelectButton>
@@ -232,7 +280,6 @@ const HeaderTemplateContainer = styled.div`
 	color: ${({ theme }) => theme.colors.black1};
 	border: 1px solid ${({ theme }) => theme.colors.grey2};
 	border-radius: 4px;
-	box-shadow: 0 1px 8px ${({ theme }) => theme.colors.grey2};
 	> .group-selection {
 		display: flex;
 		flex-direction: row;
@@ -265,7 +312,7 @@ const SelectDisable = styled.div`
 			justify-content: space-around;
 			align-items: center;
 			width: 180px;
-			color: ${({ theme }) => theme.colors.grey4};
+			color: ${({ theme }) => theme.text};
 		}
 	}
 `;
@@ -292,7 +339,7 @@ const SelectButton = styled.div`
 		cursor: pointer;
 		:hover {
 			border: 1px solid ${({ theme }) => theme.colors.purple1};
-			background: #ffffff;
+			background: ${({ theme }) => theme.background};
 			color: ${({ theme }) => theme.colors.purple1};
 		}
 		&.active {
@@ -306,6 +353,8 @@ const SelectButton = styled.div`
 		padding: 10px 15px;
 		border: 1px solid ${({ theme }) => theme.colors.grey3};
 		border-radius: inherit;
+		background: ${({ theme }) => theme.background};
+		color: ${({ theme }) => theme.text};
 		:focus {
 			outline: 1px solid ${({ theme }) => theme.colors.purple1};
 		}
@@ -323,6 +372,17 @@ const SelectType = styled.div`
 		font-size: 16px;
 		font-weight: 700;
 		padding: 10px;
+	}
+	> .css-1s2u09g-control {
+		background-color: ${({ theme }) => theme.background};
+		> .css-6j8wv5-Input {
+			input {
+				color: ${({ theme }) => theme.text};
+			}
+		}
+	}
+	> .css-26l3qy-menu {
+		background-color: ${({ theme }) => theme.background};
 	}
 `;
 
@@ -349,7 +409,7 @@ const SelectSingle = styled.div`
 		cursor: pointer;
 		:hover {
 			border: 1px solid ${({ theme }) => theme.colors.purple1};
-			background: #ffffff;
+			background: ${({ theme }) => theme.background};
 			color: ${({ theme }) => theme.colors.purple1};
 		}
 		&.active {
@@ -387,7 +447,7 @@ const SelectPositionContainer = styled.div`
 			justify-content: space-around;
 			align-items: center;
 			width: 220px;
-			color: ${({ theme }) => theme.colors.grey4};
+			color: ${({ theme }) => theme.text};
 		}
 	}
 `;

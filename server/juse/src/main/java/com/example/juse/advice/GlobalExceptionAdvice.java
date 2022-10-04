@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolationException;
+
 @RestControllerAdvice
 public class GlobalExceptionAdvice {
 
@@ -22,5 +24,12 @@ public class GlobalExceptionAdvice {
     public ExceptionResponse handlerMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
 
         return ExceptionResponse.of(exception.getBindingResult());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ExceptionResponse handlerConstraintViolationException(ConstraintViolationException exception) {
+
+        return ExceptionResponse.of(exception.getConstraintViolations());
     }
 }

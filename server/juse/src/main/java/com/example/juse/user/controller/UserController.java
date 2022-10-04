@@ -67,6 +67,14 @@ public class UserController {
         User foundUser = userService.getJuse(userId);
         UserResponseDto.MyJuse responseDto = userMapper.toMyJuseDtoFrom(foundUser);
 
+        responseDto.getMyBookmarkList().forEach(
+                dto -> dto.setBookmarked(true)
+        );
+
+        userMapper.updateDtoFromEntity(responseDto.getMyApplicationList(), foundUser);
+        userMapper.updateDtoFromEntity(responseDto.getMyParticipationList(), foundUser);
+        userMapper.updateDtoFromEntity(responseDto.getMyBoards(), foundUser);
+
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
 
