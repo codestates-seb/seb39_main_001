@@ -56,7 +56,10 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler implem
                 .email((String) attributes.get("email"))
                 .build();
 
-        if (request.getRequestURI().equals("/login/oauth2/code/github")) {
+        // Github 로그인일 경우
+        SocialUser githubUser = findByEmailGithub((String) attributes.get("email"));
+
+        if (request.getRequestURI().equals("/login/oauth2/code/github") && githubUser.getEmail() == null) {
             socialUser.setEmail(attributes.get("login") + "@github.com");
         }
 
@@ -82,5 +85,9 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler implem
             response.sendRedirect("http://localhost:3000/oauth2/redirect?isUser=1&token=" + tokenDto.getAccessToken());
 //            response.sendRedirect("https://junior-to-senior.netlify.app/oauth2/redirect?isUser=1&token=" + tokenDto.getAccessToken());
         }
+    }
+
+    public SocialUser findByEmailGithub(String email) {
+        return socialUserRepository.findGitByEmail(email).orElseGet(SocialUser::new);
     }
 }
