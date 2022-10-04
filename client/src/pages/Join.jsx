@@ -273,6 +273,9 @@ export const Label = styled.p`
 		color: tomato;
 		font-size: 10px;
 		margin-left: 5px;
+		&.email-edit-msg {
+			color: ${({ theme }) => theme.colors.grey3};
+		}
 	}
 	&.tech-stack {
 		margin-bottom: -15px;

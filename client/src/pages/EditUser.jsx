@@ -178,7 +178,12 @@ const EditUser = () => {
 					<Validation className={isValid && isValid2 ? 'valid' : 'not-valid'}>
 						{isValid ? validMsg : '중복된 닉네임이 존재합니다.'}
 					</Validation>
-					<Label>이메일</Label>
+					<Label>
+						이메일
+						<span className='email-edit-msg'>
+							(이메일은 수정할 수 없습니다.)
+						</span>
+					</Label>
 					<input
 						type='text'
 						value={email}
