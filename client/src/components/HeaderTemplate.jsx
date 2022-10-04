@@ -8,6 +8,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import TextField from '@mui/material/TextField';
 import dayjs from 'dayjs';
+import theme from '../assets/styles/Theme';
 
 const HeaderTemplate = ({
 	formData,
@@ -37,12 +38,12 @@ const HeaderTemplate = ({
 	];
 
 	// const customStyles = {
-	// 	option: (base, { data, isDisabled, isFocused, isSelected }) => {
+	// 	option: (base, provided) => {
 	// 		return {
 	// 			...base,
-	// 			backgroundColor: isFocused
-	// 				? `${({ theme }) => theme.colors.purple1}`
-	// 				: `${({ theme }) => theme.background}`,
+	// 			...provided,
+	// 			background: theme.background,
+	// 			color: 'white',
 	// 		};
 	// 	},
 	// };
@@ -315,6 +316,7 @@ const HeaderTemplate = ({
 								text: `${({ theme }) => theme.text}`,
 							},
 						})}
+						// styles={customStyles}
 					/>
 				</SelectType>
 				<SelectButton>
@@ -486,6 +488,17 @@ const SelectType = styled.div`
 				border: none;
 			}
 		}
+	}
+	> .css-1s2u09g-control {
+		background-color: ${({ theme }) => theme.background};
+		> .css-6j8wv5-Input {
+			input {
+				color: ${({ theme }) => theme.text};
+			}
+		}
+	}
+	> .css-26l3qy-menu {
+		background: ${({ theme }) => theme.background};
 	}
 `;
 

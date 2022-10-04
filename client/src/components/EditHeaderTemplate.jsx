@@ -373,6 +373,17 @@ const SelectType = styled.div`
 		font-weight: 700;
 		padding: 10px;
 	}
+	> .css-1s2u09g-control {
+		background-color: ${({ theme }) => theme.background};
+		> .css-6j8wv5-Input {
+			input {
+				color: ${({ theme }) => theme.text};
+			}
+		}
+	}
+	> .css-26l3qy-menu {
+		background-color: ${({ theme }) => theme.background};
+	}
 `;
 
 const SelectSingle = styled.div`

@@ -81,8 +81,6 @@ const Home = () => {
 		}
 	};
 
-	console.log(isFetchingNextPage);
-
 	return (
 		<HomeContainer>
 			<Carousel />
@@ -103,6 +101,16 @@ const Home = () => {
 					onChange={(e) => {
 						dropDownHandler(e);
 					}}
+					theme={(theme) => ({
+						...theme,
+						colors: {
+							...theme.colors,
+							primary25: '#f0e7fe',
+							primary: '#be99ff',
+							background: `${({ theme }) => theme.background}`,
+							text: `${({ theme }) => theme.text}`,
+						},
+					})}
 				/>
 			</PeriodContainer>
 			<ListHeader>
@@ -185,6 +193,9 @@ const PeriodContainer = styled.div`
 	> .period-select {
 		width: 50%;
 		min-width: 300px;
+	}
+	> .css-1s2u09g-control {
+		background-color: ${({ theme }) => theme.background};
 	}
 `;
 
