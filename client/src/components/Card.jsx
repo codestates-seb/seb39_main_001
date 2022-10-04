@@ -6,11 +6,13 @@ import { ReactComponent as BookmarkCheckedIcon } from '../assets/icons/bookmark-
 import { ReactComponent as Eye } from '../assets/icons/eye.svg';
 import { apis } from '../apis/axios';
 import { useQueryClient, useMutation } from 'react-query';
+import { useState } from 'react';
 
 const Card = ({ data }) => {
   const [cookies] = useCookies();
   const token = cookies.user;
-  const queryClient = useQueryClient();
+  const [bookmarked, setBookmarked] = useState(data.bookmarked);
+  const [bookCount, setBookCount] = useState(data.bookmarks);
 
   // 프로젝트 기간 text 변환
   const periodNaming = (e) => {
@@ -26,17 +28,9 @@ const Card = ({ data }) => {
   const postBookmarkMutation = useMutation(
     () => apis.postBookmark(token, data.id),
     {
-      onMutate: (variable) => {
-        console.log('onMutate', variable);
-      },
       onSuccess: (data, variables, context) => {
-        queryClient.invalidateQueries('board');
-      },
-      onError: (error) => {
-        alert('로그인이 필요한 기능입니다.');
-      },
-      onSettled: () => {
-        console.log('settled');
+        setBookmarked(true);
+        setBookCount((prev) => prev + 1);
       },
     }
   );
@@ -44,14 +38,9 @@ const Card = ({ data }) => {
   const deleteBookmarkMutation = useMutation(
     () => apis.deleteBookmark(token, data.id),
     {
-      onMutate: (variable) => {
-        console.log('onMutate', variable);
-      },
       onSuccess: (data, variables, context) => {
-        queryClient.invalidateQueries('board');
-      },
-      onSettled: () => {
-        console.log('settled');
+        setBookmarked(false);
+        setBookCount((prev) => prev - 1);
       },
     }
   );
@@ -62,7 +51,7 @@ const Card = ({ data }) => {
       <CardHeader>
         <CardType>{data.type}</CardType>
         <Bookmark>
-          {data.bookmarked ? (
+          {bookmarked ? (
             <BookmarkCheckedIcon
               width={'24px'}
               height={'24px'}
@@ -74,10 +63,14 @@ const Card = ({ data }) => {
               width={'24px'}
               height={'24px'}
               className='bookmark-icon'
-              onClick={() => postBookmarkMutation.mutate()}
+              onClick={() => {
+                token
+                  ? postBookmarkMutation.mutate()
+                  : alert('로그인이 필요한 기능입니다.');
+              }}
             />
           )}
-          {data.bookmarks}
+          {bookCount}
         </Bookmark>
       </CardHeader>
       <Link to={`/boards/${data.id}`}>

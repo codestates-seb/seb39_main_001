@@ -1,16 +1,16 @@
 import styled from 'styled-components';
-import { ReactComponent as Edit } from '../assets/icons/edit.svg';
-import { ReactComponent as Delete } from '../assets/icons/delete.svg';
 import Question from './Question';
 import Answer from './Answer';
 import { useState } from 'react';
 import { apis } from '../apis/axios';
 import { useCookies } from 'react-cookie';
+import { useMutation, useQueryClient } from 'react-query';
 
 const QuestionAnswer = ({ data }) => {
   const [cookies] = useCookies();
   const token = cookies.user;
   const [question, setQuestion] = useState('');
+  const queryClient = useQueryClient();
 
   // 질문 인풋 핸들러
   const qInputHandler = (e) => {
@@ -18,16 +18,33 @@ const QuestionAnswer = ({ data }) => {
   };
 
   // 질문 등록 핸들러
-  const qSubmitHandler = () => {
-    if (question) {
-      const boardId = data.id;
-      const content = { content: question };
-      apis.postQuestion(token, content, boardId);
-    } else {
-      alert('질문 내용을 입력하세요.');
+  const qSubmitMutation = useMutation(
+    () => {
+      if (token) {
+        if (question) {
+          const boardId = data.id;
+          const content = { content: question };
+          apis.postQuestion(token, content, boardId);
+        } else {
+          alert('질문 내용을 입력하세요.');
+        }
+      } else {
+        alert('로그인이 필요한 기능입니다.');
+      }
       return;
+    },
+    {
+      onSuccess: () => {
+        setTimeout(() => {
+          queryClient.invalidateQueries('board');
+        }, 200);
+        setQuestion('');
+      },
+      onError: () => {
+        alert('질문 작성에 실패하였습니다.');
+      },
     }
-  };
+  );
 
   return (
     <QuestionContainer>
@@ -44,7 +61,9 @@ const QuestionAnswer = ({ data }) => {
           value={question}
           onChange={qInputHandler}
         />
-        <SubmitButton onClick={qSubmitHandler}>문의 등록</SubmitButton>
+        <SubmitButton onClick={() => qSubmitMutation.mutate()}>
+          문의 등록
+        </SubmitButton>
       </QuestionCreator>
     </QuestionContainer>
   );

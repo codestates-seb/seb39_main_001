@@ -16,6 +16,10 @@ import java.util.List;
 @Profile({"test"})
 @Service
 public class BoardServiceStub implements BoardService {
+    @Override
+    public void addViewCount(Board board) {
+
+    }
 
     private final StubService stubService;
 

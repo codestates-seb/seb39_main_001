@@ -9,11 +9,12 @@
 
 ## 🔗 배포 링크
 
-- 클라이언트: [netlify](https://junior-to-senior-private.netlify.app/)
+- 클라이언트: [netlify](https://junior-to-senior.netlify.app/)
 
 
 ## ✅ 기능 및 배포 내역
-- v1 (2022-09-23) https://github.com/codestates-seb/seb39_main_001/wiki/deployment
+- v1 (2022-09-23) https://github.com/codestates-seb/seb39_main_001/wiki/V1
+- v2 (2022-09-30) https://github.com/codestates-seb/seb39_main_001/wiki/V2
 
 
 ## 📕 문서
