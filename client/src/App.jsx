@@ -18,12 +18,6 @@ import useDarkMode from './hooks/useDarkMode';
 
 // 프록시: https://cors-jwy.herokuapp.com/
 function App() {
-	const [cookies, setCookie, removeCookie] = useCookies();
-	// setCookie(
-	// 	'user',
-	// 	'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYWlsaWVlamtpbUBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjY0ODA0MjYzLCJleHAiOjE2NzM4MDQyNjN9.SNtLmB5NTfhNO2lvq15b0WM8cxP8GtwuFWBCZA6esGQ'
-	// );
-
 	const [theme, toggleTheme, mountedComponent] = useDarkMode();
 	const themeMode = theme === 'light' ? lightTheme : darkTheme;
 

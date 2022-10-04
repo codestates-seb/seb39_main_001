@@ -93,74 +93,88 @@ const UserInfo = () => {
 			return;
 		}
 	};
-
-	return (
-		<UserInfoContainer>
-			<BasicInfo>
-				<UserImg>
-					<img src={img} alt={'프로필'}></img>
-				</UserImg>
-				<RoundButton>
-					{likedByMe ? (
-						<HeartFill
-							fill='tomato'
-							onClick={() => deleteLikeMutation.mutate()}
-						/>
-					) : (
-						<Heart onClick={() => postLikeMutation.mutate()} />
-					)}
-				</RoundButton>
-				<MiniBox>{nickname}</MiniBox>
-				<MiniBox>
-					<HeartFill fill='tomato' />
-					{liked}
-				</MiniBox>
-			</BasicInfo>
-			<MainInfo>
-				{isMe ? (
-					<div>
-						<InfoLabel>내가 좋아하는 사용자</InfoLabel>
-						<LikedUsers>
-							{myUserList.map((e, i) => (
-								<Link key={i} to={`/users/${e.id}`}>
-									<User>
-										<img src={e.img} alt='img' />
-										<span>{e.nickname}</span>
-									</User>
-								</Link>
-							))}
-						</LikedUsers>
-					</div>
-				) : (
-					''
-				)}
-				<InfoLabel>기술 스택</InfoLabel>
-				<StacksContainer>
-					{skillStackTags.map((e, i) => (
-						<Stack key={i} src={`/icons/stacks/${e}.png`} alt={`${e}`} />
-					))}
-				</StacksContainer>
-				<InfoLabel>연락처</InfoLabel>
-				<a href={'mailto:' + email}>{email}</a>
-				<InfoLabel>포트폴리오</InfoLabel>
-				<a href={'http://' + portfolio}>{portfolio}</a>
-				<InfoLabel>한 줄 소개</InfoLabel>
-				<p>{introduction}</p>
-			</MainInfo>
-			{isMe ? (
-				<ButtonContainer>
-					<Link to='/users/edit'>
-						<StyledEditBtn>정보 수정</StyledEditBtn>
-					</Link>
-					<StyledUnsubscribeBtn onClick={deleteHandler}>
-						회원 탈퇴
-					</StyledUnsubscribeBtn>
-				</ButtonContainer>
-			) : (
-				''
-			)}
-		</UserInfoContainer>
-	);
+  
+  return (
+    <UserInfoContainer>
+      <BasicInfo>
+        <UserImg width={'150px'}>
+          <img src={img} alt={'프로필'}></img>
+        </UserImg>
+        <RoundButton>
+          {likedByMe ? (
+            <HeartFill
+              fill='tomato'
+              onClick={() => deleteLikeMutation.mutate()}
+            />
+          ) : (
+            <Heart onClick={() => postLikeMutation.mutate()} />
+          )}
+        </RoundButton>
+        <MiniBox>{nickname}</MiniBox>
+        <MiniBox>
+          <HeartFill fill='tomato' />
+          {liked}
+        </MiniBox>
+      </BasicInfo>
+      <MainInfo>
+        {isMe ? (
+          <div>
+            <InfoLabel>내가 좋아하는 사용자</InfoLabel>
+            {myUserList.length ? (
+              <LikedUsers>
+                {myUserList.map((e, i) => (
+                  <Link key={i} to={`/users/${e.id}`}>
+                    <User>
+                      <UserImg width='40px'>
+                        <img src={e.img} alt='img' />
+                      </UserImg>
+                      <span>{e.nickname}</span>
+                    </User>
+                  </Link>
+                ))}
+              </LikedUsers>
+            ) : (
+              <NullMessage>마음에 드는 사용자를 추가해보세요!</NullMessage>
+            )}
+          </div>
+        ) : (
+          ''
+        )}
+        <InfoLabel>기술 스택</InfoLabel>
+        {skillStackTags.length ? (
+          <StacksContainer>
+            {skillStackTags.map((e, i) => (
+              <Stack key={i} src={`/icons/stacks/${e}.png`} alt={`${e}`} />
+            ))}
+          </StacksContainer>
+        ) : (
+          <NullMessage>사용 가능한 기술 스택을 추가해보세요!</NullMessage>
+        )}
+        <InfoLabel>연락처</InfoLabel>
+        <a href={'mailto:' + email}>{email}</a>
+        <InfoLabel>포트폴리오 링크</InfoLabel>
+        {portfolio ? (
+          <a href={'http://' + portfolio}>{portfolio}</a>
+        ) : (
+          <NullMessage>
+            GitHub, 노션, 블로그 등 나를 표현할 수 있는 링크를 추가해보세요!
+          </NullMessage>
+        )}
+        <InfoLabel>한 줄 소개</InfoLabel>
+        <p>{introduction}</p>
+      </MainInfo>
+      {isMe ? (
+        <ButtonContainer>
+          <Link to='/users/edit'>
+            <StyledButton>정보 수정</StyledButton>
+          </Link>
+          <StyledButton onClick={deleteHandler}>회원 탈퇴</StyledButton>
+        </ButtonContainer>
+      ) : (
+        ''
+      )}
+    </UserInfoContainer>
+  );
 };
 
 const UserInfoContainer = styled.div`
@@ -180,23 +194,23 @@ const BasicInfo = styled.div`
 `;
 
 const UserImg = styled.div`
-	position: relative;
-	width: 150px;
-	height: 150px;
-	border: 1px solid ${({ theme }) => theme.colors.grey3};
-	border-radius: 50%;
-	> img {
-		position: absolute;
-		top: 0;
-		left: 0;
-		transform: translate(50, 50);
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		border-radius: 999px;
-		margin: auto;
-		padding: 2px;
-	}
+  position: relative;
+  width: ${({ width }) => width};
+  height: ${({ width }) => width};
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 50%;
+  > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 999px;
+    margin: auto;
+    padding: 2px;
+  }
 `;
 
 const RoundButton = styled.button`
@@ -250,17 +264,10 @@ const LikedUsers = styled.div`
 `;
 
 const User = styled.div`
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: 5px;
-	> img {
-		width: 30px;
-		height: 30px;
-		padding: 1px;
-		border: 1px solid ${({ theme }) => theme.colors.grey3};
-		border-radius: 50%;
-	}
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
 `;
 
 const StacksContainer = styled.div`
@@ -317,6 +324,11 @@ const StyledUnsubscribeBtn = styled.button`
 		background: ${({ theme }) => theme.background};
 		border: 1px solid ${({ theme }) => theme.colors.grey4};
 	}
+`;
+
+const NullMessage = styled.p`
+  color: ${({ theme }) => theme.colors.grey4};
+  font-size: 20px;
 `;
 
 export default UserInfo;
