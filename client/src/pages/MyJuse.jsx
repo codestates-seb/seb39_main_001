@@ -79,7 +79,7 @@ const CardContainer = styled.div`
 `;
 
 const NullMessage = styled.p`
-	color: ${({ theme }) => theme.colors.grey4};
+	color: ${({ theme }) => theme.colors.grey3};
 `;
 
 export default MyJuse;

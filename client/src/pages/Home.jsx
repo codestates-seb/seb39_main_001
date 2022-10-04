@@ -111,6 +111,16 @@ const Home = () => {
           onChange={(e) => {
             dropDownHandler(e);
           }}
+          theme={(theme) => ({
+						...theme,
+						colors: {
+							...theme.colors,
+							primary25: '#f0e7fe',
+							primary: '#be99ff',
+							background: `${({ theme }) => theme.background}`,
+							text: `${({ theme }) => theme.text}`,
+						},
+					})}
         />
       </PeriodContainer>
       <ListHeader>

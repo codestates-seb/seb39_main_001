@@ -1,7 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { NavbarContainer, NavbarSubContainer, Logo } from './NavbarPublic';
+import {
+	NavbarContainer,
+	NavbarSubContainer,
+	Logo,
+	NavButtons,
+	DarkThemeBtn,
+	LightThemeBtn,
+} from './NavbarPublic';
 import { ReactComponent as NotificationIcon } from '../assets/icons/notification.svg';
 import { ReactComponent as UserIcon } from '../assets/icons/user.svg';
 import { ReactComponent as BookmarkIcon } from '../assets/icons/bookmark.svg';
@@ -9,8 +16,10 @@ import { ReactComponent as LogoutIcon } from '../assets/icons/logout.svg';
 import { useCookies } from 'react-cookie';
 import { apis } from '../apis/axios';
 import useDetectClose from '../hooks/useDetectClose';
+import { ReactComponent as Sun } from '../assets/icons/sun.svg';
+import { ReactComponent as Moon } from '../assets/icons/moon.svg';
 
-const NavbarPrivate = ({ removeCookie }) => {
+const NavbarPrivate = ({ removeCookie, theme, toggleTheme }) => {
 	const [cookies] = useCookies();
 	const token = cookies.user;
 	const [imageSrc, setImageSrc] = useState('/icons/img/user-default.png');
@@ -58,6 +67,17 @@ const NavbarPrivate = ({ removeCookie }) => {
 			<NavbarSubContainer>
 				<Logo />
 				<NavButtons>
+					{theme === 'light' ? (
+						<DarkThemeBtn className='theme-btn' onClick={toggleTheme}>
+							<Moon width='13' fill='#ffea00' />
+							<p>다크 모드</p>
+						</DarkThemeBtn>
+					) : (
+						<LightThemeBtn className='theme-btn' onClick={toggleTheme}>
+							<Sun width='13' fill='#00e676' />
+							<p>라이트 모드</p>
+						</LightThemeBtn>
+					)}
 					<Notification>
 						<NotificationIcon
 							width='18px'
@@ -99,12 +119,6 @@ const NavbarPrivate = ({ removeCookie }) => {
 	);
 };
 
-const NavButtons = styled.div`
-	display: flex;
-	justify-content: space-between;
-	width: 80px;
-`;
-
 const Notification = styled.div`
 	font-size: 18px;
 	color: ${({ theme }) => theme.colors.grey4};
@@ -112,7 +126,7 @@ const Notification = styled.div`
 	align-items: center;
 	cursor: pointer;
 	:hover {
-		color: ${({ theme }) => theme.colors.black1};
+		color: ${({ theme }) => theme.colors.purple1};
 	}
 `;
 
@@ -135,10 +149,13 @@ const Profile = styled.div`
 		margin: auto;
 		padding: 2px;
 	}
+	:hover {
+		border: 1px solid ${({ theme }) => theme.colors.purple1};
+	}
 `;
 
 const DropdownNav = styled.nav`
-	background: #ffffff;
+	background: ${({ theme }) => theme.background};
 	border-radius: 8px;
 	position: absolute;
 	top: 60px;

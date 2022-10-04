@@ -180,8 +180,15 @@ const HeaderInfo = styled.div`
 const StatusType = styled.div`
 	display: flex;
 	gap: 15px;
-	> div {
-		background-color: ${({ theme }) => theme.colors.grey5};
+	> .status {
+		background-color: ${({ theme }) => theme.colors.grey3};
+		border-radius: 4px;
+		color: #fff;
+		padding: 10px;
+	}
+	> .type {
+		background: ${({ theme }) => theme.colors.purple1};
+		border-radius: 4px;
 		color: #fff;
 		padding: 10px;
 	}
