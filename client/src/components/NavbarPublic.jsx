@@ -72,7 +72,7 @@ const LogoLink = styled(Link)`
   font-weight: 900;
   color: ${({ theme }) => theme.colors.purple1};
   > p {
-    font-size: 10px;
+    font-size: 11px;
   }
 `;
 
