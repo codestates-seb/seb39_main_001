@@ -156,6 +156,7 @@ const Bookmark = styled.div`
 	text-align: center;
 	> .bookmark-icon {
 		cursor: pointer;
+		color: ${({ theme }) => theme.text};
 	}
 	> .bookmark-checked-icon {
 		cursor: pointer;
