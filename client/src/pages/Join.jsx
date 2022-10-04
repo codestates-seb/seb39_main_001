@@ -18,7 +18,7 @@ const Join = () => {
   const location = useLocation();
 
   // OAuth 페이지에서 넘겨준 토큰
-  const token = '';
+  const token = location.state.token;
 
   //유저 데이터
   const user = {
