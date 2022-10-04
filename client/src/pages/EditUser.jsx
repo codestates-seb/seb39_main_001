@@ -194,6 +194,7 @@ const EditUser = () => {
 					<input
 						type='text'
 						value={portfolio}
+						className='portfolio-input'
 						placeholder='GitHub, Notion, Blog...'
 						onChange={portfolioHandler}
 					></input>
