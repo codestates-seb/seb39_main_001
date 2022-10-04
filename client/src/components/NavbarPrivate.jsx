@@ -36,27 +36,27 @@ const NavbarPrivate = ({ removeCookie, theme, toggleTheme }) => {
   };
 
   // 글 한번에 여러번 쓰기 이스터에그
-  const handleIteration = (iter) => {
-    for (let i = 0; i < iter; i++) {
-      const data = {
-        title: `${i}번째 글`,
-        backend: 2,
-        frontend: 2,
-        designer: 0,
-        etc: 0,
-        people: 0,
-        contact: 'chicken@milk.tea',
-        dueDate: '2022-09-14',
-        startingDate: '2022-10-05',
-        period: '3',
-        onOffline: 'online',
-        content: `자동으로 작성된 ${i}번째 글입니다.`,
-        type: 'PROJECT',
-        tagList: ['java', 'react'],
-      };
-      apis.postBoard(token, data);
-    }
-  };
+  // const handleIteration = (iter) => {
+  //   for (let i = 0; i < iter; i++) {
+  //     const data = {
+  //       title: `${i}번째 글`,
+  //       backend: 2,
+  //       frontend: 2,
+  //       designer: 0,
+  //       etc: 0,
+  //       people: 0,
+  //       contact: 'chicken@milk.tea',
+  //       dueDate: '2022-09-14',
+  //       startingDate: '2022-10-05',
+  //       period: '3',
+  //       onOffline: 'online',
+  //       content: `자동으로 작성된 ${i}번째 글입니다.`,
+  //       type: 'PROJECT',
+  //       tagList: ['java', 'react'],
+  //     };
+  //     apis.postBoard(token, data);
+  //   }
+  // };
 
   useEffect(() => {
     apis.getUsers(token).then((data) => setImageSrc(data.img));
@@ -80,9 +80,9 @@ const NavbarPrivate = ({ removeCookie, theme, toggleTheme }) => {
             <NotificationIcon
               width='18px'
               height='18px'
-              onClick={() => {
-                handleIteration(10);
-              }}
+              // onClick={() => {
+              //   handleIteration(10);
+              // }}
             />
           </Notification>
           <Profile
