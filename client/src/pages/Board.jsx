@@ -72,7 +72,11 @@ const Board = () => {
 		<BoardContainer>
 			<HeaderInfo>
 				<StatusType>
-					<div className='type'>{data.type}</div>
+					<div
+						className={data.type === 'PROJECT' ? 'project-card' : 'study-card'}
+					>
+						{data.type}
+					</div>
 					<div className='status'>
 						{data.status === 'OPENING' ? '모집 중' : '모집 완료'}
 					</div>
@@ -186,8 +190,14 @@ const StatusType = styled.div`
 		color: #fff;
 		padding: 10px;
 	}
-	> .type {
+	> .project-card {
 		background: ${({ theme }) => theme.colors.purple1};
+		border-radius: 4px;
+		color: #fff;
+		padding: 10px;
+	}
+	> .study-card {
+		background: #64b5f6;
 		border-radius: 4px;
 		color: #fff;
 		padding: 10px;

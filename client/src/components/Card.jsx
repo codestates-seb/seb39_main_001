@@ -49,7 +49,11 @@ const Card = ({ data }) => {
 		<CardContainer status={data.status}>
 			{data.status === 'CLOSED' ? <Closed>모집 완료</Closed> : ''}
 			<CardHeader>
-				<CardType>{data.type}</CardType>
+				<CardType
+					className={data.type === 'PROJECT' ? 'project-card' : 'study-card'}
+				>
+					{data.type}
+				</CardType>
 				<Bookmark>
 					{bookmarked ? (
 						<BookmarkCheckedIcon
@@ -134,20 +138,20 @@ const CardType = styled.div`
 	font-size: 13px;
 	padding: 7px 10px;
 	border-radius: 4px;
-	/* > .project-card {
+	&.project-card {
 		background-color: ${({ theme }) => theme.colors.purple1};
 		color: white;
 		font-size: 13px;
 		padding: 7px 10px;
 		border-radius: 4px;
 	}
-	> .study-card {
-		background-color: #bbdefb;
+	&.study-card {
+		background-color: #64b5f6;
 		color: white;
 		font-size: 13px;
 		padding: 7px 10px;
 		border-radius: 4px;
-	} */
+	}
 `;
 
 const Bookmark = styled.div`
@@ -156,6 +160,7 @@ const Bookmark = styled.div`
 	text-align: center;
 	> .bookmark-icon {
 		cursor: pointer;
+		color: ${({ theme }) => theme.text};
 	}
 	> .bookmark-checked-icon {
 		cursor: pointer;
