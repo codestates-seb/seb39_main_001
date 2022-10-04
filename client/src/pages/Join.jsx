@@ -18,7 +18,7 @@ const Join = () => {
   const location = useLocation();
 
   // OAuth 페이지에서 넘겨준 토큰
-  const token = location.state.token;
+  const token = '';
 
   //유저 데이터
   const user = {
@@ -120,7 +120,7 @@ const Join = () => {
           <h2>회원가입</h2>
         </JoinHeader>
         <ProfileUpload>
-          <p>프로필 사진</p>
+          <Label>프로필 사진</Label>
           <div className='uploader'>
             <ImageContainer>
               <img
@@ -150,23 +150,24 @@ const Join = () => {
           </div>
         </ProfileUpload>
         <JoinInput>
-          <p>
+          <Label>
             닉네임<span>(필수)</span>
-          </p>
+          </Label>
           <input type='text' onChange={nicknameHandler}></input>
           <Validation className={isValid && isValid2 ? 'valid' : 'not-valid'}>
             {isValid ? validMsg : '중복된 닉네임이 존재합니다.'}
           </Validation>
-          <p>포트폴리오 링크</p>
+          <Label>포트폴리오 링크</Label>
           <input
+            className='portfolio-input'
             type='text'
             placeholder='GitHub, Notion, Blog...'
             onChange={portfolioHandler}></input>
-          <p>기술 스택</p>
+          <Label className='tech-stack'>기술 스택</Label>
           <TechStack selected={stack} setSelected={setStack} />
-          <p>
+          <Label className='introduction-label'>
             한 줄 소개<span>(필수)</span>
-          </p>
+          </Label>
           <textarea
             type='text'
             placeholder='나를 소개해 주세요!'
@@ -249,19 +250,29 @@ const JoinInput = styled.div`
     min-height: 100px;
     resize: none;
   }
-  > p {
-    /* margin: 10px 0px; */
-    > span {
-      color: tomato;
-      font-size: 10px;
-      margin-left: 5px;
-    }
+  .portfolio-input {
+    min-width: 400px;
+  }
+`;
+const Label = styled.p`
+  font-weight: 700;
+  margin-top: 25px;
+  font-size: 18px;
+  > span {
+    color: tomato;
+    font-size: 10px;
+    margin-left: 5px;
+  }
+  &.tech-stack {
+    margin-bottom: -15px;
+  }
+  &.introduction-label {
+    margin-top: 35px;
   }
 `;
 
 const Validation = styled.p`
   font-size: 13px;
-  margin-bottom: 15px;
   &.valid {
     color: blueviolet;
   }
