@@ -248,9 +248,6 @@ const MainInfo = styled.div`
   > a {
     text-decoration: underline;
   }
-  > p {
-    color: ${({ theme }) => theme.text};
-  }
 `;
 
 const InfoLabel = styled.div`
@@ -329,7 +326,7 @@ const StyledUnsubscribeBtn = styled.button`
 `;
 
 const NullMessage = styled.p`
-  color: ${({ theme }) => theme.colors.grey4};
+  color: ${({ theme }) => theme.colors.grey3};
   font-size: 20px;
 `;
 

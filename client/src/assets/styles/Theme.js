@@ -30,7 +30,7 @@ export const darkTheme = {
     // 콘텐츠 최대 width: 1180px
   },
   colors: {
-    black1: '#E4E6EB',
+    black1: '#FAFAFA',
     grey1: '#7e858d',
     grey2: '#495057',
     grey3: '#495057',
