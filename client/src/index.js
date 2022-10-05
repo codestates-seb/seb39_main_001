@@ -19,17 +19,17 @@ const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-	<React.StrictMode>
-		<CookiesProvider>
-			<BrowserRouter>
-				<QueryClientProvider client={queryClient}>
-					{/* <ThemeProvider theme={theme}>
+  <React.StrictMode>
+    <CookiesProvider>
+      <BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          {/* <ThemeProvider theme={theme}>
 						<GlobalStyles />
 						<ReactQueryDevtools initialIsOpen={false} /> */}
-					<App />
-					{/* </ThemeProvider> */}
-				</QueryClientProvider>
-			</BrowserRouter>
-		</CookiesProvider>
-	</React.StrictMode>
+          <App />
+          {/* </ThemeProvider> */}
+        </QueryClientProvider>
+      </BrowserRouter>
+    </CookiesProvider>
+  </React.StrictMode>
 );
