@@ -51,6 +51,7 @@ public class UserResponseDto {
         private int liked;
         @Setter
         private String img;
+        private String myImg;
 
     }
 
@@ -69,6 +70,7 @@ public class UserResponseDto {
         private int liked;
         @Setter
         private String img;
+        private String myImg;
 
         @Setter
         private boolean isLikedByMe;
