@@ -18,6 +18,7 @@ public class UserResponseDto {
     private String nickname;
     @Setter
     private String img;
+    private String myImg;
 
     private List<String> skillStackTags;
 
