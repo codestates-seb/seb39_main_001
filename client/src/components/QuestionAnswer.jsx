@@ -17,34 +17,34 @@ const QuestionAnswer = ({ data }) => {
 		setQuestion(e.target.value);
 	};
 
-  // 질문 등록 핸들러
-  const qSubmitMutation = useMutation(
-    () => {
-      if (token) {
-        if (question) {
-          const boardId = data.id;
-          const content = { content: question };
-          apis.postQuestion(token, content, boardId);
-        } else {
-          alert('질문 내용을 입력하세요.');
-        }
-      } else {
-        alert('로그인이 필요한 기능입니다.');
-      }
-      return;
-    },
-    {
-      onSuccess: () => {
-        setTimeout(() => {
-          queryClient.invalidateQueries('board');
-        }, 200);
-        setQuestion('');
-      },
-      onError: () => {
-        alert('질문 작성에 실패하였습니다.');
-      },
-    }
-  );
+	// 질문 등록 핸들러
+	const qSubmitMutation = useMutation(
+		() => {
+			if (token) {
+				if (question) {
+					const boardId = data.id;
+					const content = { content: question };
+					apis.postQuestion(token, content, boardId);
+				} else {
+					alert('질문 내용을 입력하세요.');
+				}
+			} else {
+				alert('로그인이 필요한 기능입니다.');
+			}
+			return;
+		},
+		{
+			onSuccess: () => {
+				setTimeout(() => {
+					queryClient.invalidateQueries('board');
+				}, 200);
+				setQuestion('');
+			},
+			onError: () => {
+				alert('질문 작성에 실패하였습니다.');
+			},
+		}
+	);
 
 	return (
 		<QuestionContainer>
@@ -98,6 +98,12 @@ const QuestionCreator = styled.div`
 		border-radius: 4px;
 		background: ${({ theme }) => theme.background};
 		color: ${({ theme }) => theme.text};
+		:focus {
+			outline-color: ${({ theme }) => theme.colors.purple1};
+		}
+		:focus::-webkit-input-placeholder {
+			color: transparent;
+		}
 	}
 	> button {
 		margin-left: auto;

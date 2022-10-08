@@ -14,10 +14,10 @@ const Question = ({ data }) => {
 	const token = cookies.user;
 	const queryClient = useQueryClient();
 
-  // 수정 인풋 받기
-  const editChangeHandler = (e) => {
-    setEditContent(e.target.value);
-  };
+	// 수정 인풋 받기
+	const editChangeHandler = (e) => {
+		setEditContent(e.target.value);
+	};
 
 	// 수정 submit
 	const editClickMutation = useMutation(
@@ -67,51 +67,51 @@ const Question = ({ data }) => {
 		}
 	);
 
-  return (
-    <>
-      <QuestionContent>
-        <UserInfo>
-          <Link to={`/users/${data.user.id}`}>
-            <UserImg>
-              <img src={data.user.img} alt='profile' />
-            </UserImg>
-          </Link>
-          <NameContainer>
-            <Link to={`/users/${data.user.id}`}>
-              <p className='name'>{data.user.nickname}</p>
-            </Link>
-            <p className='date'>{`${
-              data.createdAt.split('T')[0]
-            } ${data.createdAt.split('T')[1].slice(0, 5)}`}</p>
-          </NameContainer>
-        </UserInfo>
-        <ContentButton>
-          <ContentContainer>{data.content}</ContentContainer>
-          {data.auth ? (
-            <ButtonContainer>
-              <Edit
-                onClick={() => {
-                  setEditContent(data.content);
-                  setIsEdit(!isEdit);
-                }}
-              />
-              <Delete onClick={() => deleteClickMutation.mutate()} />
-            </ButtonContainer>
-          ) : (
-            ''
-          )}
-        </ContentButton>
-      </QuestionContent>
-      {isEdit ? (
-        <QuestionEditor>
-          <textarea value={editContent} onChange={editChangeHandler}></textarea>
-          <button onClick={() => editClickMutation.mutate()}>문의 수정</button>
-        </QuestionEditor>
-      ) : (
-        ''
-      )}
-    </>
-  );
+	return (
+		<>
+			<QuestionContent>
+				<UserInfo>
+					<Link to={`/users/${data.user.id}`}>
+						<UserImg>
+							<img src={data.user.img} alt='profile' />
+						</UserImg>
+					</Link>
+					<NameContainer>
+						<Link to={`/users/${data.user.id}`}>
+							<p className='name'>{data.user.nickname}</p>
+						</Link>
+						<p className='date'>{`${
+							data.createdAt.split('T')[0]
+						} ${data.createdAt.split('T')[1].slice(0, 5)}`}</p>
+					</NameContainer>
+				</UserInfo>
+				<ContentButton>
+					<ContentContainer>{data.content}</ContentContainer>
+					{data.auth ? (
+						<ButtonContainer>
+							<Edit
+								onClick={() => {
+									setEditContent(data.content);
+									setIsEdit(!isEdit);
+								}}
+							/>
+							<Delete onClick={() => deleteClickMutation.mutate()} />
+						</ButtonContainer>
+					) : (
+						''
+					)}
+				</ContentButton>
+			</QuestionContent>
+			{isEdit ? (
+				<QuestionEditor>
+					<textarea value={editContent} onChange={editChangeHandler}></textarea>
+					<button onClick={() => editClickMutation.mutate()}>문의 수정</button>
+				</QuestionEditor>
+			) : (
+				''
+			)}
+		</>
+	);
 };
 
 const QuestionContent = styled.div`
@@ -135,28 +135,28 @@ const ButtonContainer = styled.div`
 `;
 
 const UserInfo = styled.div`
-  display: flex;
-  gap: 10px;
+	display: flex;
+	gap: 10px;
 `;
 
 const UserImg = styled.div`
-  position: relative;
-  width: 40px;
-  height: 40px;
-  border: 1px solid ${({ theme }) => theme.colors.grey3};
-  border-radius: 50%;
-  > img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: translate(50, 50);
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 999px;
-    margin: auto;
-    padding: 2px;
-  }
+	position: relative;
+	width: 40px;
+	height: 40px;
+	border: 1px solid ${({ theme }) => theme.colors.grey3};
+	border-radius: 50%;
+	> img {
+		position: absolute;
+		top: 0;
+		left: 0;
+		transform: translate(50, 50);
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		border-radius: 999px;
+		margin: auto;
+		padding: 2px;
+	}
 `;
 
 const NameContainer = styled.div`
@@ -169,6 +169,7 @@ const NameContainer = styled.div`
 	.date {
 		color: ${({ theme }) => theme.colors.grey4};
 		font-weight: 200;
+		font-size: 14px;
 	}
 `;
 
@@ -198,6 +199,9 @@ const QuestionEditor = styled.div`
 		border-radius: 4px;
 		background: ${({ theme }) => theme.background};
 		color: ${({ theme }) => theme.text};
+		:focus {
+			outline-color: ${({ theme }) => theme.colors.purple1};
+		}
 	}
 	> button {
 		padding: 10px;
