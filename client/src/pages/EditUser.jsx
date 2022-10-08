@@ -48,9 +48,17 @@ const EditUser = () => {
 	const imageButtonHandler = () => {
 		fileInput.current.click();
 	};
+	// const imageChangeHandler = (e) => {
+	// 	if (e.target.files[0]) {
+	// 		setImageFile(e.target.files[0]);
+	// 	}
+	// 이미지 용량 체크
 	const imageChangeHandler = (e) => {
-		if (e.target.files[0]) {
+		if (e.target.files[0].size <= 1024 * 1024) {
 			setImageFile(e.target.files[0]);
+		} else {
+			alert('1MB 이하의 이미지만 업로드가 가능합니다.');
+			throw Error('1MB 이하의 이미지만 업로드가 가능합니다.');
 		}
 		//바뀐 이미지 렌더
 		const reader = new FileReader();
@@ -153,7 +161,8 @@ const EditUser = () => {
 						<input
 							type='file'
 							style={{ display: 'none' }}
-							accept='image/*'
+							// accept='image/*'
+							accept='image/png, image/jpeg, image/jpg'
 							onChange={imageChangeHandler}
 							ref={fileInput}
 						/>
