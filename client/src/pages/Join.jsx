@@ -18,7 +18,8 @@ const Join = () => {
 	const location = useLocation();
 
 	// OAuth 페이지에서 넘겨준 토큰
-	const token = location.state.token;
+	// const token = location.state.token;
+	const token = '';
 
 	//유저 데이터
 	const user = {
@@ -96,10 +97,10 @@ const Join = () => {
 		fileInput.current.click();
 	};
 
-	// const imageChangeHandler = (e) => {
-	// 	if (e.target.files[0]) {
-	// 		setImageFile(e.target.files[0]);
-	// 	}
+	// 업로드 된 파일 확장자 체크
+	// const fileTypeCheck = () => {
+	//   const fileLength =
+	// };
 
 	// 이미지 용량 체크
 	const imageChangeHandler = (e) => {
@@ -145,7 +146,8 @@ const Join = () => {
 						<input
 							type='file'
 							style={{ display: 'none' }}
-							accept='image/*'
+							// accept='image/*'
+							accept='image/png, image/jpeg, image/jpg'
 							onChange={imageChangeHandler}
 							ref={fileInput}
 						/>

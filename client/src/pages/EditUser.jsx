@@ -161,7 +161,8 @@ const EditUser = () => {
 						<input
 							type='file'
 							style={{ display: 'none' }}
-							accept='image/*'
+							// accept='image/*'
+							accept='image/png, image/jpeg, image/jpg'
 							onChange={imageChangeHandler}
 							ref={fileInput}
 						/>
