@@ -140,16 +140,6 @@ const UserInfo = () => {
 				) : (
 					''
 				)}
-				<InfoLabel>기술 스택</InfoLabel>
-				{skillStackTags.length ? (
-					<StacksContainer>
-						{skillStackTags.map((e, i) => (
-							<Stack key={i} src={`/icons/stacks/${e}.png`} alt={`${e}`} />
-						))}
-					</StacksContainer>
-				) : (
-					<NullMessage>사용 가능한 기술 스택을 추가해보세요!</NullMessage>
-				)}
 				<InfoLabel>연락처</InfoLabel>
 				<a href={'mailto:' + email}>{email}</a>
 				<InfoLabel>포트폴리오 링크</InfoLabel>
@@ -159,6 +149,16 @@ const UserInfo = () => {
 					<NullMessage>
 						GitHub, 노션, 블로그 등 나를 표현할 수 있는 링크를 추가해보세요!
 					</NullMessage>
+				)}
+				<InfoLabel>기술 스택</InfoLabel>
+				{skillStackTags.length ? (
+					<StacksContainer>
+						{skillStackTags.map((e, i) => (
+							<Stack key={i} src={`/icons/stacks/${e}.png`} alt={`${e}`} />
+						))}
+					</StacksContainer>
+				) : (
+					<NullMessage>사용 가능한 기술 스택을 추가해보세요!</NullMessage>
 				)}
 				<InfoLabel>한 줄 소개</InfoLabel>
 				<p>{introduction}</p>
