@@ -58,7 +58,6 @@ const UserInfo = () => {
 			},
 		}
 	);
-	console.log(data);
 
 	// 좋아요
 	const postLikeMutation = useMutation(() => apis.postLike(token, userId), {
