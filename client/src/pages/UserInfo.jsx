@@ -183,6 +183,10 @@ const UserInfoContainer = styled.div`
 	max-width: 1300px;
 	margin: auto;
 	padding: 50px 30px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 `;
 
 const BasicInfo = styled.div`
@@ -245,6 +249,7 @@ const MiniBox = styled.div`
 
 const MainInfo = styled.div`
 	padding-bottom: 30px;
+	width: 800px;
 	> a {
 		text-decoration: underline;
 	}
@@ -290,6 +295,7 @@ const ButtonContainer = styled.div`
 	align-items: center;
 	gap: 15px;
 	margin-top: 30px;
+	width: 800px;
 	button {
 		padding: 10px;
 	}
@@ -327,7 +333,7 @@ const StyledUnsubscribeBtn = styled.button`
 
 const NullMessage = styled.p`
 	color: ${({ theme }) => theme.colors.grey3};
-	font-size: 20px;
+	font-size: 16px;
 `;
 
 export default UserInfo;
