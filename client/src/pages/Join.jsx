@@ -18,8 +18,7 @@ const Join = () => {
 	const location = useLocation();
 
 	// OAuth 페이지에서 넘겨준 토큰
-	// const token = location.state.token;
-	const token = '';
+	const token = location.state.token;
 
 	//유저 데이터
 	const user = {
@@ -96,11 +95,6 @@ const Join = () => {
 	const imageButtonHandler = () => {
 		fileInput.current.click();
 	};
-
-	// 업로드 된 파일 확장자 체크
-	// const fileTypeCheck = () => {
-	//   const fileLength =
-	// };
 
 	// 이미지 용량 체크
 	const imageChangeHandler = (e) => {
