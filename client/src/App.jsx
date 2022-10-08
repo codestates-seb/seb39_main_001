@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Router } from 'react-router-dom';
 import NavbarPrivate from './components/NavbarPrivate';
 import NavbarPublic from './components/NavbarPublic';
 import Home from './pages/Home';
@@ -21,7 +21,10 @@ function App() {
 	const [cookies, setCookie, removeCookie] = useCookies();
 	const [theme, toggleTheme, mountedComponent] = useDarkMode();
 	const themeMode = theme === 'light' ? lightTheme : darkTheme;
-
+	// setCookie(
+	// 	'user',
+	// 	'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYWlsaWVlamtpbUBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjY1MTkzNTAxLCJleHAiOjE2NzQxOTM1MDF9.vFZVMHD9GZm5F_Ebft-fD-hg1V2_msUFcErLRdBzJks'
+	// );
 	if (!mountedComponent) return <div />;
 
 	return (

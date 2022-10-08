@@ -5,6 +5,7 @@ import { QueryClientProvider, QueryClient } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 // import { ThemeProvider } from 'styled-components';
 import App from './App';
+import AutoScrollTop from './hooks/AutoScrollTop';
 // import GlobalStyles from './assets/styles/GlobalStyle';
 // import theme from './assets/styles/Theme';
 // import { lightTheme, darkTheme } from './assets/styles/Theme';
@@ -22,6 +23,7 @@ root.render(
   <React.StrictMode>
     <CookiesProvider>
       <BrowserRouter>
+      <AutoScrollTop />
         <QueryClientProvider client={queryClient}>
           {/* <ThemeProvider theme={theme}>
 						<GlobalStyles />
