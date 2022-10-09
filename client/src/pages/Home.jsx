@@ -7,12 +7,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { apis } from '../apis/axios';
 import { useInView } from 'react-intersection-observer';
-import { useInfiniteQuery, useQueryClient } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 import { ReactComponent as ToggleOn } from '../assets/icons/toggle-on.svg';
 import { ReactComponent as ToggleOff } from '../assets/icons/toggle-off.svg';
 import theme from '../assets/styles/Theme';
 import Select from 'react-select';
 import Carousel from '../components/Carousel';
+import * as LottiePlayer from '@lottiefiles/lottie-player';
 
 const Home = () => {
   const [cookies] = useCookies();
@@ -51,9 +52,6 @@ const Home = () => {
     const periodArr = e.map((obj) => obj.value);
     setPeriodFilter(periodArr);
   };
-
-  const queryClient = useQueryClient();
-  console.log(queryClient);
 
   const periodOptions = [
     { value: 'short', label: '1개월 미만' },
@@ -175,25 +173,36 @@ const Home = () => {
         </TypeSelector>
         <CreateButton onClick={linkToCreate}>모집 글 작성</CreateButton>
       </ListHeader>
-      <BoardsContainer>
-        {data?.pages.map((page, index) => (
-          <React.Fragment key={index}>
-            {page.data.length ? (
-              page.data.map((e, i) => (
-                <Card key={e.id} data={e} refetch={refetch} />
-              ))
-            ) : (
-              <NullBoards>조건에 맞는 글이 없습니다. T^T</NullBoards>
-            )}
-          </React.Fragment>
-        ))}
-      </BoardsContainer>
-      {isFetchingNextPage ? '' : <div ref={ref}></div>}
       {status === 'loading' ? (
-        <NullBoards>서버 휴식 중.. (๑ᵕ⌓ᵕ̤)...zzZ</NullBoards>
+        <>
+          <lottie-player
+            src='https://assets5.lottiefiles.com/packages/lf20_8szgr2ma.json'
+            background='transparent'
+            speed='1'
+            style={{ width: '300px', height: '300px', margin: 'auto' }}
+            loop
+            autoplay
+          />
+          <NullBoards style={{ paddingTop: '0', marginTop: '-50px' }}>
+            로딩 중입니다..
+          </NullBoards>
+        </>
       ) : (
-        ''
+        <BoardsContainer>
+          {data?.pages.map((page, index) => (
+            <React.Fragment key={index}>
+              {page.data.length ? (
+                page.data.map((e, i) => (
+                  <Card key={e.id} data={e} refetch={refetch} />
+                ))
+              ) : (
+                <NullBoards>조건에 맞는 글이 없습니다. T^T</NullBoards>
+              )}
+            </React.Fragment>
+          ))}
+        </BoardsContainer>
       )}
+      {isFetchingNextPage ? '' : <div ref={ref}></div>}
       <ScrollToTop />
     </HomeContainer>
   );
@@ -273,7 +282,7 @@ const BoardsContainer = styled.div`
   gap: 40px 60px;
 `;
 
-const NullBoards = styled.div`
+export const NullBoards = styled.div`
   padding: 100px 0 50px 0;
   font-size: 24px;
   color: ${({ theme }) => theme.colors.grey4};

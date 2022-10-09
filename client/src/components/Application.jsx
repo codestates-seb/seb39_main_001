@@ -100,8 +100,8 @@ const Application = ({ data }) => {
     }
   );
 
-  const denyMutation = useMutation(
-    (applicationId) => apis.deleteDeny(token, applicationId),
+  const declineMutation = useMutation(
+    (applicationId) => apis.deleteDecline(token, applicationId),
     {
       onSuccess: (data, variable, context) => {
         setTimeout(() => {
@@ -172,7 +172,7 @@ const Application = ({ data }) => {
                             <Decline
                               fill={theme.colors.grey4}
                               onClick={() => {
-                                denyMutation.mutate(apply.id);
+                                declineMutation.mutate(apply.id);
                               }}
                             />
                           </PendingBubble>
@@ -209,13 +209,15 @@ const Application = ({ data }) => {
                       <Decline
                         fill={theme.colors.grey4}
                         onClick={() => {
-                          denyMutation.mutate(apply.id);
+                          declineMutation.mutate(apply.id);
                         }}
                       />
                     </PendingBubble>
                   ))
                 ) : (
-                  <p className='null-message'>모집된 팀원이 없습니다.</p>
+                  <p key={i} className='null-message'>
+                    모집된 팀원이 없습니다.
+                  </p>
                 )}
               </AcceptedContainer>
             ) : (
