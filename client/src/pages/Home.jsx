@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { apis } from '../apis/axios';
 import { useInView } from 'react-intersection-observer';
-import { useInfiniteQuery } from 'react-query';
+import { useInfiniteQuery, useQueryClient } from 'react-query';
 import { ReactComponent as ToggleOn } from '../assets/icons/toggle-on.svg';
 import { ReactComponent as ToggleOff } from '../assets/icons/toggle-off.svg';
 import theme from '../assets/styles/Theme';
@@ -25,22 +25,23 @@ const Home = () => {
   const [statusFilter, setStatusFilter] = useState('opening');
   // infinite scroll
   const { ref, inView } = useInView();
-  const { data, status, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    [techFilter, periodFilter, currentTab, statusFilter, token],
-    ({ pageParam = 1 }) =>
-      apis.getBoards(
-        token,
-        currentTab,
-        techFilter,
-        periodFilter,
-        statusFilter,
-        pageParam
-      ),
-    {
-      getNextPageParam: (lastPage) =>
-        !lastPage.isLast ? lastPage.nextPage : undefined,
-    }
-  );
+  const { data, status, fetchNextPage, isFetchingNextPage, refetch } =
+    useInfiniteQuery(
+      [techFilter, periodFilter, currentTab, statusFilter, token],
+      ({ pageParam = 1 }) =>
+        apis.getBoards(
+          token,
+          currentTab,
+          techFilter,
+          periodFilter,
+          statusFilter,
+          pageParam
+        ),
+      {
+        getNextPageParam: (lastPage) =>
+          !lastPage.isLast ? lastPage.nextPage : undefined,
+      }
+    );
   useEffect(() => {
     if (inView) fetchNextPage();
   }, [inView, fetchNextPage]);
@@ -50,6 +51,9 @@ const Home = () => {
     const periodArr = e.map((obj) => obj.value);
     setPeriodFilter(periodArr);
   };
+
+  const queryClient = useQueryClient();
+  console.log(queryClient);
 
   const periodOptions = [
     { value: 'short', label: '1개월 미만' },
@@ -175,7 +179,9 @@ const Home = () => {
         {data?.pages.map((page, index) => (
           <React.Fragment key={index}>
             {page.data.length ? (
-              page.data.map((e, i) => <Card key={e.id} data={e} />)
+              page.data.map((e, i) => (
+                <Card key={e.id} data={e} refetch={refetch} />
+              ))
             ) : (
               <NullBoards>조건에 맞는 글이 없습니다. T^T</NullBoards>
             )}
