@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { apis } from '../apis/axios';
 import { ReactComponent as Accept } from '../assets/icons/check-circle.svg';
-import { ReactComponent as Deny } from '../assets/icons/x-circle.svg';
+import { ReactComponent as Decline } from '../assets/icons/x-circle.svg';
 import theme from '../assets/styles/Theme';
 import { useMutation, useQueryClient } from 'react-query';
 
@@ -157,25 +157,29 @@ const Application = ({ data }) => {
                   <PendingContainer>
                     <span>지원자</span>
                     {el.pending.length ? (
-                      el.pending.map((apply, i) => (
-                        <PendingBubble key={i} isAccepted={false}>
-                          <Link to={`/users/${apply.userId}`}>
-                            {apply.nickname}
-                          </Link>
-                          <Accept
-                            fill={theme.colors.purple1}
-                            onClick={() => {
-                              acceptMutation.mutate(apply.id);
-                            }}
-                          />
-                          <Deny
-                            fill={theme.colors.grey4}
-                            onClick={() => {
-                              denyMutation.mutate(apply.id);
-                            }}
-                          />
-                        </PendingBubble>
-                      ))
+                      el.accepted.length !== el.count ? (
+                        el.pending.map((apply, i) => (
+                          <PendingBubble key={i} isAccepted={false}>
+                            <Link to={`/users/${apply.userId}`}>
+                              {apply.nickname}
+                            </Link>
+                            <Accept
+                              fill={theme.colors.purple1}
+                              onClick={() => {
+                                acceptMutation.mutate(apply.id);
+                              }}
+                            />
+                            <Decline
+                              fill={theme.colors.grey4}
+                              onClick={() => {
+                                denyMutation.mutate(apply.id);
+                              }}
+                            />
+                          </PendingBubble>
+                        ))
+                      ) : (
+                        <p className='null-message'>정원이 다 찼습니다.</p>
+                      )
                     ) : (
                       <p className='null-message'>지원자가 없습니다.</p>
                     )}
@@ -202,7 +206,7 @@ const Application = ({ data }) => {
                       <Link to={`/users/${apply.userId}`}>
                         {apply.nickname}
                       </Link>
-                      <Deny
+                      <Decline
                         fill={theme.colors.grey4}
                         onClick={() => {
                           denyMutation.mutate(apply.id);

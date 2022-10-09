@@ -22,13 +22,14 @@ export const handlers = [
   }),
 
   // 글쓰기 수정
-  rest.patch('/board1', (req, res, ctx) => {
+    rest.patch('/board1', (req, res, ctx) => {
     boards.data(req.json);
     return res(ctx.status(201), ctx.json('수정성공!'));
   }),
 
   // 단일 게시글 불러오기 (board1)
-  rest.get('/boards/2', (req, res, ctx) => {
+  rest.get('/board1', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(board1));
-  }),
+  })
 ];
+
