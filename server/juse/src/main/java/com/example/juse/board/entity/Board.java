@@ -3,6 +3,7 @@ package com.example.juse.board.entity;
 import com.example.juse.application.entity.Application;
 import com.example.juse.audit.Auditing;
 import com.example.juse.bookmark.entity.Bookmark;
+import com.example.juse.notification.entity.Notification;
 import com.example.juse.question.entity.Question;
 import com.example.juse.tag.entity.BoardTag;
 import com.example.juse.user.entity.User;
@@ -95,6 +96,10 @@ public class Board extends Auditing {
     @Builder.Default
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     private List<Application> applicationList = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
+    private List<Notification> notificationList = new ArrayList<>();
 
     public List<String> getTagNames() {
         return this.boardTagList.stream().map(boardTag -> boardTag.getTag().getName()).collect(Collectors.toList());

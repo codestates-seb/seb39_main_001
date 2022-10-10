@@ -3,10 +3,13 @@ package com.example.juse.question.entity;
 import com.example.juse.answer.entity.Answer;
 import com.example.juse.audit.Auditing;
 import com.example.juse.board.entity.Board;
+import com.example.juse.notification.entity.Notification;
 import com.example.juse.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -35,6 +38,10 @@ public class Question extends Auditing {
     @Setter
     @OneToOne(mappedBy = "question", cascade = {CascadeType.REMOVE})
     private Answer answer;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+    private List<Notification> notificationList = new ArrayList<>();
 
     public void addBoard(Board board) {
         this.board = board;

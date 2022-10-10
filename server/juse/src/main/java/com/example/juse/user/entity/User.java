@@ -6,6 +6,7 @@ import com.example.juse.audit.Auditing;
 import com.example.juse.board.entity.Board;
 import com.example.juse.bookmark.entity.Bookmark;
 import com.example.juse.like.entity.Like;
+import com.example.juse.notification.entity.Notification;
 import com.example.juse.question.entity.Question;
 import com.example.juse.social.entity.SocialUser;
 import com.example.juse.tag.entity.UserTag;
@@ -15,7 +16,6 @@ import net.minidev.json.annotate.JsonIgnore;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
@@ -90,6 +90,10 @@ public class User extends Auditing {
     @JoinColumn(name = "SOCIAL_USER_ID")
     @JsonIgnore
     private SocialUser socialUser;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    private List<Notification> notificationList = new ArrayList<>();
 
     public List<Board> getMyBookmarkList() {
         return this.bookmarkList.stream().map(Bookmark::getBoard).collect(Collectors.toList());

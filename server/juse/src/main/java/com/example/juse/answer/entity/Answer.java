@@ -1,11 +1,14 @@
 package com.example.juse.answer.entity;
 
 import com.example.juse.audit.Auditing;
+import com.example.juse.notification.entity.Notification;
 import com.example.juse.question.entity.Question;
 import com.example.juse.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -30,6 +33,11 @@ public class Answer extends Auditing {
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
+
+
+    @Builder.Default
+    @OneToMany(mappedBy = "answer", fetch = FetchType.LAZY)
+    private List<Notification> notificationList = new ArrayList<>();
 
     public void addQuestion(Question question) {
         this.question = question;
