@@ -8,42 +8,42 @@ import { ReactComponent as HeartFill } from '../assets/icons/heart-fill.svg';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 
 const UserInfo = () => {
-	const [cookies, setCookies, removeCookie] = useCookies();
-	const token = cookies.user;
-	const myId = +cookies.userId;
-	const param = useParams();
-	const userId = param.userId;
-	const queryClient = useQueryClient();
+  const [cookies, setCookies, removeCookie] = useCookies();
+  const token = cookies.user;
+  const myId = +cookies.userId;
+  const param = useParams();
+  const userId = param.userId;
+  const queryClient = useQueryClient();
 
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
-	const [userData, setUserData] = useState({
-		img: '',
-		id: '',
-		nickname: '',
-		like: 0,
-		myUserList: [],
-		skillStackTags: [],
-		introduction: '',
-		email: '',
-		portfolio: '',
-		likedByMe: false,
-	});
+  const [userData, setUserData] = useState({
+    img: '',
+    id: '',
+    nickname: '',
+    like: 0,
+    myUserList: [],
+    skillStackTags: [],
+    introduction: '',
+    email: '',
+    portfolio: '',
+    likedByMe: false,
+  });
 
-	const {
-		img,
-		nickname,
-		liked,
-		myUserList,
-		skillStackTags,
-		introduction,
-		email,
-		portfolio,
-		likedByMe,
-	} = userData;
+  const {
+    img,
+    nickname,
+    liked,
+    myUserList,
+    skillStackTags,
+    introduction,
+    email,
+    portfolio,
+    likedByMe,
+  } = userData;
 
-	const location = useLocation().pathname;
-	const isMe = location === '/users' ? true : false;
+  const location = useLocation().pathname;
+  const isMe = location === '/users' ? true : false;
 
 	// 나의 마이페이지인지, 남의 마이페이지인지 구분하여 api 호출
 	const { data, isLoading, isError, error } = useQuery(
@@ -59,40 +59,40 @@ const UserInfo = () => {
 		}
 	);
 
-	// 좋아요
-	const postLikeMutation = useMutation(() => apis.postLike(token, userId), {
-		onSuccess: (data, variable, context) => {
-			queryClient.invalidateQueries('userInfo');
-		},
-		onError: (error) => {
-			alert('자신에게 좋아요 할 수 없습니다.');
-		},
-	});
+  // 좋아요
+  const postLikeMutation = useMutation(() => apis.postLike(token, userId), {
+    onSuccess: (data, variable, context) => {
+      queryClient.invalidateQueries('userInfo');
+    },
+    onError: (error) => {
+      alert('자신에게 좋아요 할 수 없습니다.');
+    },
+  });
 
-	// 좋아요 취소
-	const deleteLikeMutation = useMutation(() => apis.deleteLike(token, userId), {
-		onSuccess: (data, variable, context) => {
-			queryClient.invalidateQueries('userInfo');
-		},
-		onError: (error) => {
-			alert('문제가 발생하였습니다. 다시 한 번 시도해 주세요.');
-		},
-	});
+  // 좋아요 취소
+  const deleteLikeMutation = useMutation(() => apis.deleteLike(token, userId), {
+    onSuccess: (data, variable, context) => {
+      queryClient.invalidateQueries('userInfo');
+    },
+    onError: (error) => {
+      alert('문제가 발생하였습니다. 다시 한 번 시도해 주세요.');
+    },
+  });
 
-	// 회원 탈퇴
-	const deleteHandler = () => {
-		if (window.confirm('정말 탈퇴하시겠습니까?')) {
-			apis
-				.deleteUser(token)
-				.then(() => {
-					removeCookie('user', { path: '/' });
-					removeCookie('userId', { path: '/' });
-				})
-				.then(navigate('/'));
-		} else {
-			return;
-		}
-	};
+  // 회원 탈퇴
+  const deleteHandler = () => {
+    if (window.confirm('정말 탈퇴하시겠습니까?')) {
+      apis
+        .deleteUser(token)
+        .then(() => {
+          removeCookie('user', { path: '/' });
+          removeCookie('userId', { path: '/' });
+        })
+        .then(navigate('/'));
+    } else {
+      return;
+    }
+  };
 
 	return (
 		<UserInfoContainer>
@@ -190,33 +190,33 @@ const UserInfoContainer = styled.div`
 `;
 
 const BasicInfo = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	width: 150px;
-	margin: auto;
-	margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  margin: auto;
+  margin-bottom: 20px;
 `;
 
 const UserImg = styled.div`
-	position: relative;
-	width: ${({ width }) => width};
-	height: ${({ width }) => width};
-	border: 1px solid ${({ theme }) => theme.colors.grey3};
-	border-radius: 50%;
-	> img {
-		position: absolute;
-		top: 0;
-		left: 0;
-		transform: translate(50, 50);
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		border-radius: 999px;
-		margin: auto;
-		padding: 2px;
-	}
+  position: relative;
+  width: ${({ width }) => width};
+  height: ${({ width }) => width};
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 50%;
+  > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 999px;
+    margin: auto;
+    padding: 2px;
+  }
 `;
 
 const RoundButton = styled.button`
@@ -237,15 +237,15 @@ const RoundButton = styled.button`
 `;
 
 const MiniBox = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	gap: 5px;
-	padding: 10px;
-	margin-bottom: 10px;
-	width: 100%;
-	border: 1px solid ${({ theme }) => theme.colors.grey2};
-	border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  border: 1px solid ${({ theme }) => theme.colors.grey2};
+  border-radius: 4px;
 `;
 
 const MainInfo = styled.div`
@@ -257,37 +257,37 @@ const MainInfo = styled.div`
 `;
 
 const InfoLabel = styled.div`
-	font-size: 20px;
-	font-weight: 700;
-	color: ${({ theme }) => theme.colors.grey5};
-	padding: 40px 0 30px 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.grey5};
+  padding: 40px 0 30px 0;
 `;
 
 const LikedUsers = styled.div`
-	display: flex;
-	gap: 20px;
+  display: flex;
+  gap: 20px;
 `;
 
 const User = styled.div`
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
 `;
 
 const StacksContainer = styled.div`
-	display: flex;
-	flex-wrap: wrap;
-	gap: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
 `;
 
 const Stack = styled.img`
-	border: 1px solid ${({ theme }) => theme.colors.grey2};
-	border-radius: 50%;
-	width: 60px;
-	height: 60px;
-	padding: 5px;
-	margin-right: 20px;
+  border: 1px solid ${({ theme }) => theme.colors.grey2};
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  padding: 5px;
+  margin-right: 20px;
 `;
 
 const ButtonContainer = styled.div`
@@ -303,33 +303,33 @@ const ButtonContainer = styled.div`
 `;
 
 const StyledEditBtn = styled.button`
-	padding: 5px 10px;
-	background: ${({ theme }) => theme.background};
-	font-size: 14px;
-	color: ${({ theme }) => theme.colors.purple1};
-	border: 1px solid ${({ theme }) => theme.colors.purple1};
-	border-radius: 4px;
-	cursor: pointer;
-	:hover {
-		color: #fafafa;
-		border: 1px solid ${({ theme }) => theme.colors.purple1};
-		background: ${({ theme }) => theme.colors.purple1};
-	}
+  padding: 5px 10px;
+  background: ${({ theme }) => theme.background};
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.purple1};
+  border: 1px solid ${({ theme }) => theme.colors.purple1};
+  border-radius: 4px;
+  cursor: pointer;
+  :hover {
+    color: #fafafa;
+    border: 1px solid ${({ theme }) => theme.colors.purple1};
+    background: ${({ theme }) => theme.colors.purple1};
+  }
 `;
 
 const StyledUnsubscribeBtn = styled.button`
-	padding: 5px 10px;
-	background: ${({ theme }) => theme.background};
-	font-size: 14px;
-	color: ${({ theme }) => theme.colors.grey3};
-	border: 1px solid ${({ theme }) => theme.colors.grey3};
-	border-radius: 4px;
-	cursor: pointer;
-	:hover {
-		color: ${({ theme }) => theme.colors.grey4};
-		background: ${({ theme }) => theme.background};
-		border: 1px solid ${({ theme }) => theme.colors.grey4};
-	}
+  padding: 5px 10px;
+  background: ${({ theme }) => theme.background};
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.grey3};
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 4px;
+  cursor: pointer;
+  :hover {
+    color: ${({ theme }) => theme.colors.grey4};
+    background: ${({ theme }) => theme.background};
+    border: 1px solid ${({ theme }) => theme.colors.grey4};
+  }
 `;
 
 const NullMessage = styled.p`

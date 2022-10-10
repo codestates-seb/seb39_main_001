@@ -10,7 +10,6 @@ import AutoScrollTop from './hooks/AutoScrollTop';
 // import theme from './assets/styles/Theme';
 // import { lightTheme, darkTheme } from './assets/styles/Theme';
 // import { worker } from './mocks/worker';
-// import { ReactQueryDevtools } from 'react-query/devtools';
 
 // if (process.env.NODE_ENV === 'development') {
 //   worker.start();
@@ -23,7 +22,7 @@ root.render(
   <React.StrictMode>
     <CookiesProvider>
       <BrowserRouter>
-      <AutoScrollTop />
+        <AutoScrollTop />
         <QueryClientProvider client={queryClient}>
           {/* <ThemeProvider theme={theme}>
 						<GlobalStyles />
