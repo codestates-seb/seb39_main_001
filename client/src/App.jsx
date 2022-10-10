@@ -16,7 +16,7 @@ import GlobalStyles from './assets/styles/GlobalStyle';
 import { lightTheme, darkTheme } from './assets/styles/Theme';
 import useDarkMode from './hooks/useDarkMode';
 
-// 프록시: https://cors-jwy.herokuapp.com/
+// 프록시:https://cors-jwy.herokuapp.com/
 function App() {
   const [cookies, setCookie, removeCookie] = useCookies();
   const [theme, toggleTheme, mountedComponent] = useDarkMode();
