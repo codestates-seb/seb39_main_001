@@ -72,6 +72,6 @@ public class ApplicationController {
             @PathVariable("application-id") @Positive long applicationId
     ) {
         long userId = principalDetails.getSocialUser().getUser().getId();
-        applicationService.deny(applicationId, userId);
+        applicationService.decline(applicationId, userId);
     }
 }

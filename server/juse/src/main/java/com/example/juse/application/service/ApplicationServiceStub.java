@@ -35,7 +35,7 @@ public class ApplicationServiceStub implements ApplicationService {
     }
 
     @Override
-    public void deny(long applicationId, long userId) {
+    public void decline(long applicationId, long userId) {
 
     }
 }

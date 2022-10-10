@@ -53,9 +53,6 @@ public class ApplicationServiceImpl implements ApplicationService{
 
         Board board = boardService.verifyBoardById(findApply.getBoard().getId());
 
-        System.out.println("board = " + board.toString());
-        System.out.println("findApply = " + findApply.getPosition());
-
         findApply.checkApplicationWriter(userId);
         checkPositionAvailability(board, findApply.getPosition());
         findApply.setAccepted(true);
@@ -81,16 +78,17 @@ public class ApplicationServiceImpl implements ApplicationService{
                 break;
         }
 
-        System.out.println("board.toString = " + board.toString());
-
         boardRepository.save(board);
 
-        return applicationRepository.save(findApply);
+        Application createdApplication = applicationRepository.save(findApply);
+        notificationService.notifyApplicationAccepted(board, createdApplication);
+
+        return createdApplication;
     }
 
     @Override
     @Transactional
-    public void deny(long applicationId, long userId) {
+    public void decline(long applicationId, long userId) {
         Application findApply = findVerifiedApplication(applicationId);
         Board board = boardService.verifyBoardById(findApply.getBoard().getId());
         findApply.checkApplicationWriter(userId);

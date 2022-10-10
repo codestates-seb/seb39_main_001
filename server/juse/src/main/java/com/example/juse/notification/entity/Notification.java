@@ -2,6 +2,7 @@ package com.example.juse.notification.entity;
 
 import com.example.juse.answer.entity.Answer;
 import com.example.juse.application.entity.Application;
+import com.example.juse.audit.Auditing;
 import com.example.juse.board.entity.Board;
 import com.example.juse.question.entity.Question;
 import com.example.juse.user.entity.User;
@@ -16,7 +17,7 @@ import javax.persistence.*;
 @Builder
 @Table(name = "NOTIFICATIONS")
 @Entity
-public class Notification {
+public class Notification extends Auditing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

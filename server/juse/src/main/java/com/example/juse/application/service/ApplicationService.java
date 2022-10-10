@@ -12,6 +12,6 @@ public interface ApplicationService {
 
     Application accept(long applicationId, long userId);
 
-    void deny(long applicationId, long userId);
+    void decline(long applicationId, long userId);
 
 }

@@ -26,18 +26,37 @@ public class NotificationService {
         Long writerId = board.getUser().getId();
         User writer = userService.verifyUserById(writerId);
 
-        Long applicantId = application.getUser().getId();
-        User applicant = userService.verifyUserById(applicantId);
+        User applicant = application.getUser();
 
         Notification notification = new Notification();
         notification.setApplication(application);
+        notification.setBoard(board);
         notification.setType(Notification.Type.APPLICATION);
         notification.addUsers(applicant, writer);
 
         notificationRepository.save(notification);
 
         log.info("{}번 사용자가 {}번 사용자가 작성한 {}번 게시글의 포지션 {} 에 {}에 지원했음",
-                applicantId, writerId, board.getId(), application.getPosition(), application.getCreatedAt());
+                applicant.getId(), writerId, board.getId(), application.getPosition(), application.getCreatedAt());
+
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void notifyApplicationAccepted(Board board, Application application) {
+
+        User writer = board.getUser();
+        User accepted = application.getUser();
+
+        Notification notification = new Notification();
+        notification.setType(Notification.Type.ACCEPT);
+        notification.addUsers(writer, accepted);
+        notification.setApplication(application);
+        notification.setBoard(board);
+
+        notificationRepository.save(notification);
+
+        log.info("{}번 게시글 {} 포지션에 지원한 {}번 사용자의 지원이 수락되었습니다",
+                board.getId(), application.getPosition(),accepted.getId());
 
     }
 }

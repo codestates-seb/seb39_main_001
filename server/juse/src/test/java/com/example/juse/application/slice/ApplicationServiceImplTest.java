@@ -1,8 +1,7 @@
-package com.example.juse.notification;
+package com.example.juse.application.slice;
 
 import com.example.juse.application.entity.Application;
 import com.example.juse.application.repository.ApplicationRepository;
-import com.example.juse.application.service.ApplicationService;
 import com.example.juse.application.service.ApplicationServiceImpl;
 import com.example.juse.board.entity.Board;
 import com.example.juse.board.service.BoardService;
@@ -16,12 +15,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Optional;
-
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class NotificationServiceTest {
+public class ApplicationServiceImplTest {
 
     @InjectMocks
     ApplicationServiceImpl applicationService;
@@ -59,4 +56,6 @@ public class NotificationServiceTest {
         verify(notificationService).notifyNewApplication(mockedBoard, mockedApplication);
 
     }
+
+
 }
