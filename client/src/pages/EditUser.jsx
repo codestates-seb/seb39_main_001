@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-// import styled from 'styled-components';
 import TechStack from '../components/TechStack';
 import { apis } from '../apis/axios';
 import { useCookies } from 'react-cookie';

@@ -14,18 +14,23 @@ import com.example.juse.tag.service.TagService;
 import com.example.juse.user.entity.User;
 import com.example.juse.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Profile("plain")
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
@@ -67,10 +72,38 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void addViewCount(Board board) {
+    public void addViewCount(Board board, HttpServletRequest request, HttpServletResponse response, Long boardId) {
 
-        board.setViews(board.getViews() + 1);
-        boardRepository.save(board);
+        /*
+        * Cookie 로 시간 제한을 걸어 조회수 증가
+         */
+        Cookie oldCookie = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("Visit_cookie")) {
+                    oldCookie = cookie;
+                }
+            }
+        }
+
+        if (oldCookie != null) {
+            if (!oldCookie.getValue().contains("[boardId]:[" + boardId.toString() + "]")) {
+                board.setViews(board.getViews() + 1);
+                boardRepository.save(board);
+                oldCookie.setValue(oldCookie.getValue() + "_[boardId]:[" + boardId + "]");
+                oldCookie.setPath("/");
+                oldCookie.setMaxAge(60 * 60 * 24);
+                response.addCookie(oldCookie);
+            }
+        } else {
+            board.setViews(board.getViews() + 1);
+            boardRepository.save(board);
+            Cookie newCookie = new Cookie("Visit_cookie", "[boardId]:[" + boardId + "]");
+            newCookie.setPath("/");
+            newCookie.setMaxAge(60 * 60 * 24);
+            response.addCookie(newCookie);
+        }
     }
 
     @Override
