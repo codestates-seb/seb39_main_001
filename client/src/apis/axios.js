@@ -228,7 +228,7 @@ export const apis = {
       .then((res) => console.log(res.data.data))
       .catch((err) => console.log(err));
   },
-  deleteDeny: async (token, applicationId) => {
+  deleteDecline: async (token, applicationId) => {
     await axios
       .delete(
         `https://jusemain.duckdns.org:8080/applications/${applicationId}`,
