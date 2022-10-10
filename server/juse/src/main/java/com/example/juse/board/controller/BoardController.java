@@ -67,6 +67,8 @@ public class BoardController {
             Long userId = principalDetails.getSocialUser().getUser().getId();
             log.info("userId " + userId);
 
+            boardService.addViewCount(foundEntity);
+
             if (userId != null && foundEntity.isCreatedBy(userId)) {
                 responseDto.setAuth(true);
                 log.info("responseDto.getAuth " + responseDto.isAuth());

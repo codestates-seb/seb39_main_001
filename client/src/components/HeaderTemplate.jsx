@@ -233,8 +233,10 @@ const HeaderTemplate = ({
               inputFormat='YYYY-MM-DD'
               renderInput={(params) => (
                 <TextField
+                  size='small'
                   {...params}
                   sx={{
+                    width: 245,
                     svg: { color: '#7e858d' },
                     input: { color: '#7e858d' },
                     '& .MuiOutlinedInput-root': {
@@ -264,8 +266,10 @@ const HeaderTemplate = ({
               inputFormat='YYYY-MM-DD'
               renderInput={(params) => (
                 <TextField
+                  size='small'
                   {...params}
                   sx={{
+                    width: 245,
                     svg: { color: '#7e858d' },
                     input: { color: '#7e858d' },
                     '& .MuiOutlinedInput-root': {
@@ -438,7 +442,7 @@ const SelectButton = styled.div`
     display: block;
     font-size: 16px;
     font-weight: 700;
-    padding: 10px;
+    padding: 10px 10px 10px 0px;
   }
   > div {
     font-size: 14px;
@@ -472,6 +476,9 @@ const SelectButton = styled.div`
     :focus {
       outline: 1px solid ${({ theme }) => theme.colors.purple1};
     }
+    :focus::-webkit-input-placeholder {
+      color: transparent;
+    }
     :hover {
       border: 1px solid ${({ theme }) => theme.colors.purple1};
     }
@@ -485,7 +492,7 @@ const SelectType = styled.div`
     display: block;
     font-size: 16px;
     font-weight: 700;
-    padding: 10px;
+    padding: 10px 10px 10px 0px;
   }
   > .count-button-group {
     display: flex;
@@ -534,7 +541,10 @@ const SelectSingle = styled.div`
     display: block;
     font-size: 16px;
     font-weight: 700;
-    padding: 10px;
+    padding: 10px 10px 10px 0px;
+    &.individual-selection {
+      padding-bottom: 0;
+    }
   }
 
   .select-btn {
@@ -570,7 +580,7 @@ const SelectPositionContainer = styled.div`
     > label {
       font-size: 16px;
       font-weight: 700;
-      padding: 10px;
+      padding: 10px 10px 10px 0px;
       width: 250px;
     }
   }
@@ -625,13 +635,15 @@ const AddButton = styled.button`
   padding: 5px 10px;
   margin: 0px 0px 30px 63px;
   text-align: center;
+  font-size: 14px;
   background: ${({ theme }) => theme.background};
   color: ${({ theme }) => theme.text};
   border: 1px solid ${({ theme }) => theme.colors.grey3};
   border-radius: 4px;
   :hover {
-    background: ${({ theme }) => theme.colors.purple1};
-    border: none;
+    color: ${({ theme }) => theme.colors.purple1};
+    background: ${({ theme }) => theme.background};
+    border: 1px solid ${({ theme }) => theme.colors.purple1};
   }
 `;
 
