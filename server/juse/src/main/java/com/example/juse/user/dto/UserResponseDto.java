@@ -18,6 +18,7 @@ public class UserResponseDto {
     private String nickname;
     @Setter
     private String img;
+    private String myImg;
 
     private List<String> skillStackTags;
 
@@ -51,6 +52,7 @@ public class UserResponseDto {
         private int liked;
         @Setter
         private String img;
+        private String myImg;
 
     }
 
@@ -69,6 +71,7 @@ public class UserResponseDto {
         private int liked;
         @Setter
         private String img;
+        private String myImg;
 
         @Setter
         private boolean isLikedByMe;

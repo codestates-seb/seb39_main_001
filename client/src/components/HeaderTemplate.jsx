@@ -8,6 +8,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import TextField from '@mui/material/TextField';
 import dayjs from 'dayjs';
+import theme from '../assets/styles/Theme';
 
 const HeaderTemplate = ({
   formData,
@@ -36,6 +37,17 @@ const HeaderTemplate = ({
     { value: 'etc', label: '기타' },
   ];
 
+  // const customStyles = {
+  // 	option: (base, provided) => {
+  // 		return {
+  // 			...base,
+  // 			...provided,
+  // 			background: theme.background,
+  // 			color: 'white',
+  // 		};
+  // 	},
+  // };
+
   // 클릭된 버튼 스타일링 (default: 모집 중 버튼)
   const [defaultBtnActive, setDefaultBtnActive] = useState('OPENING');
   const [typeBtnActive, setTypeBtnActive] = useState('PROJECT');
@@ -46,9 +58,6 @@ const HeaderTemplate = ({
 
   // 선택된 기술스택
   const [stack, setStack] = useState([]);
-
-  // 스터디 인원 수
-  // const [count, setCount] = useState(0);
 
   // stack 이 바뀔때마다 formdata update 해주는 useEffect
   useEffect(() => {
@@ -219,10 +228,29 @@ const HeaderTemplate = ({
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DesktopDatePicker
               views={['day']}
-              value={formData.dueDate}
+              value={formData.dueDate || null}
               onChange={dueDateHandler}
               inputFormat='YYYY-MM-DD'
-              renderInput={(params) => <TextField {...params} />}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  sx={{
+                    svg: { color: '#7e858d' },
+                    input: { color: '#7e858d' },
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#7e858d',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#be99ff',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#be99ff',
+                      },
+                    },
+                  }}
+                />
+              )}
             />
           </LocalizationProvider>
         </SelectType>
@@ -231,10 +259,29 @@ const HeaderTemplate = ({
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DesktopDatePicker
               views={['day']}
-              value={formData.startingDate}
+              value={formData.startingDate || null}
               onChange={startingDateHandler}
               inputFormat='YYYY-MM-DD'
-              renderInput={(params) => <TextField {...params} />}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  sx={{
+                    svg: { color: '#7e858d' },
+                    input: { color: '#7e858d' },
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#7e858d',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#be99ff',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#be99ff',
+                      },
+                    },
+                  }}
+                />
+              )}
             />
           </LocalizationProvider>
         </SelectType>
@@ -253,6 +300,29 @@ const HeaderTemplate = ({
             })}
             defaultValue={period[0]}
             onChange={periodHandler}
+            theme={(theme) => ({
+              ...theme,
+              colors: {
+                ...theme.colors,
+                primary25: '#f0e7fe',
+                primary: '#be99ff',
+                background: `${({ theme }) => theme.background}`,
+                text: `${({ theme }) => theme.text}`,
+              },
+            })}
+            styles={{
+              singleValue: (provided) => ({
+                ...provided,
+                color: theme.colors.text,
+              }),
+              option: (provided) => ({
+                ...provided,
+                ':hover': {
+                  color: theme.colors.black1,
+                },
+              }),
+            }}
+            // styles={customStyles}
           />
         </SelectType>
         <SelectButton>
@@ -282,6 +352,26 @@ const HeaderTemplate = ({
                   value={e.value}
                   defaultValue={position[0]}
                   onChange={(e) => positionChangeHandler(e, i)}
+                  theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      primary25: '#f0e7fe',
+                      primary: '#be99ff',
+                    },
+                  })}
+                  styles={{
+                    singleValue: (provided) => ({
+                      ...provided,
+                      color: theme.colors.text,
+                    }),
+                    option: (provided) => ({
+                      ...provided,
+                      ':hover': {
+                        color: theme.colors.black1,
+                      },
+                    }),
+                  }}
                 />
               </PositionSelectBox>
               <PositionCountBtn>
@@ -333,7 +423,6 @@ const HeaderTemplateContainer = styled.div`
   color: ${({ theme }) => theme.colors.black1};
   border: 1px solid ${({ theme }) => theme.colors.grey2};
   border-radius: 4px;
-  box-shadow: 0 1px 8px ${({ theme }) => theme.colors.grey2};
   > .group-selection {
     display: flex;
     flex-direction: row;
@@ -364,7 +453,7 @@ const SelectButton = styled.div`
     cursor: pointer;
     :hover {
       border: 1px solid ${({ theme }) => theme.colors.purple1};
-      background: #ffffff;
+      background: ${({ theme }) => theme.background};
       color: ${({ theme }) => theme.colors.purple1};
     }
     &.active {
@@ -378,6 +467,8 @@ const SelectButton = styled.div`
     padding: 10px 15px;
     border: 1px solid ${({ theme }) => theme.colors.grey3};
     border-radius: inherit;
+    background: ${({ theme }) => theme.background};
+    color: ${({ theme }) => theme.text};
     :focus {
       outline: 1px solid ${({ theme }) => theme.colors.purple1};
     }
@@ -416,6 +507,24 @@ const SelectType = styled.div`
       }
     }
   }
+  /* > .css-1s2u09g-control {
+    background-color: ${({ theme }) => theme.background};
+    > .css-6j8wv5-Input {
+      input {
+        color: ${({ theme }) => theme.text};
+      }
+    }
+  }
+  > .css-26l3qy-menu {
+    background: ${({ theme }) => theme.background};
+  } */
+  #period {
+    > div {
+      background-color: ${({ theme }) => theme.background};
+      color: ${({ theme }) => theme.text};
+      border-color: ${({ theme }) => theme.colors.grey3};
+    }
+  }
 `;
 
 const SelectSingle = styled.div`
@@ -441,7 +550,7 @@ const SelectSingle = styled.div`
     cursor: pointer;
     :hover {
       border: 1px solid ${({ theme }) => theme.colors.purple1};
-      background: #ffffff;
+      background: ${({ theme }) => theme.background};
       color: ${({ theme }) => theme.colors.purple1};
     }
     &.active {
@@ -476,6 +585,13 @@ const SelectPositionContainer = styled.div`
 
 const PositionSelectBox = styled.div`
   width: 250px;
+  #position {
+    > div {
+      background-color: ${({ theme }) => theme.background};
+      color: ${({ theme }) => theme.text};
+      border-color: ${({ theme }) => theme.colors.grey3};
+    }
+  }
 `;
 
 const PositionCountBtn = styled.div`
@@ -491,7 +607,8 @@ const PositionCountBtn = styled.div`
       height: 25px;
       border: 1px solid ${({ theme }) => theme.colors.grey3};
       border-radius: 90px;
-      background: #ffffff;
+      background: ${({ theme }) => theme.background};
+      color: ${({ theme }) => theme.text};
       cursor: pointer;
       :hover {
         background: ${({ theme }) => theme.colors.purple1};
@@ -508,12 +625,12 @@ const AddButton = styled.button`
   padding: 5px 10px;
   margin: 0px 0px 30px 63px;
   text-align: center;
-  background-color: #ffffff;
+  background: ${({ theme }) => theme.background};
+  color: ${({ theme }) => theme.text};
   border: 1px solid ${({ theme }) => theme.colors.grey3};
   border-radius: 4px;
   :hover {
     background: ${({ theme }) => theme.colors.purple1};
-    color: #ffffff;
     border: none;
   }
 `;

@@ -32,7 +32,11 @@ public class User extends Auditing {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Lob
     private String img;
+
+    @Lob
+    private String myImg;
 
 
     @Column(nullable = false)

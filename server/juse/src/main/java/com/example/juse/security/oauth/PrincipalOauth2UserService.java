@@ -13,6 +13,12 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
+    String provider;
+    String providerId;
+    String email;
+    String img;
+    String role;
+    String name;
 
     @Autowired
     private SocialUserRepository socialUserRepository;
@@ -21,12 +27,32 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        String provider = userRequest.getClientRegistration().getClientId();
-        String providerId = oAuth2User.getAttribute("sub");
-        String email = oAuth2User.getAttribute("email");
-        String img = oAuth2User.getAttribute("picture");
-        String role = "ROLE_USER";
+        System.out.println("userRequest = " + userRequest.getClientRegistration());
+        log.info("user info : {}", oAuth2User.getAttributes().toString());
+        log.info("user Authorities : {}", oAuth2User.getAuthorities());
 
+        if(userRequest.getClientRegistration().getRegistrationId().equals("google")) {
+            provider = userRequest.getClientRegistration().getClientId();
+            providerId = oAuth2User.getAttribute("sub");
+            email = oAuth2User.getAttribute("email");
+            img = oAuth2User.getAttribute("picture");
+            role = "ROLE_USER";
+            name = oAuth2User.getAttribute("name");
+        }
+
+        if(userRequest.getClientRegistration().getRegistrationId().equals("github")) {
+            provider =  userRequest.getClientRegistration().getClientId();
+            providerId = oAuth2User.getAttribute("id").toString();
+            email = oAuth2User.getAttribute("email");
+            img = oAuth2User.getAttribute("avatar_url");
+            role = "ROLE_USER";
+            name = oAuth2User.getAttribute("login");
+            if (email == null) {
+                email = oAuth2User.getAttribute("login") + "@github.com";
+            }
+        }
+
+        log.info("email check : {} ", (Object) oAuth2User.getAttribute("email"));
         SocialUser socialuser = socialUserRepository.findByEmail(email);
 
         if (socialuser == null) {
@@ -35,11 +61,11 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                     .role(role)
                     .provider(provider)
                     .providerId(providerId)
-                    .name(oAuth2User.getAttribute("name"))
+                    .name(name)
                     .img(img)
                     .build();
 
-            System.out.println("##########socialuser.toString() = " + socialuser.toString());
+//            System.out.println("##########socialuser.toString() = " + socialuser.toString());
             socialUserRepository.save(socialuser);
         }
 

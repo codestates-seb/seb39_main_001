@@ -56,6 +56,6 @@ const PositionContainer = styled.div`
   color: ${({ theme }) => theme.colors.purple1};
   border-radius: 50%;
   border: 3px solid ${({ theme }) => theme.colors.purple1};
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: ${({ theme }) => theme.background};
   cursor: pointer;
 `;
