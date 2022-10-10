@@ -17,6 +17,7 @@ const GlobalStyles = createGlobalStyle`
       color: ${({ theme }) => theme.colors.black1};
       background: ${({theme}) => theme.body};
       transition: all 0.25s linear;
+      /* transition: all 0.3s ease-in-out; */
   }
 `;
 

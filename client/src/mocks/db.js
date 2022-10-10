@@ -164,6 +164,8 @@ export const board1 = {
             img: null,
           },
           content: '없습니다',
+          createdAt: '2022-09-21T16:17:07.067981',
+          modifiedAt: '2022-09-21T16:17:25.052494',
         },
         createdAt: '2022-09-21T16:17:07.067981',
         modifiedAt: '2022-09-21T16:17:25.052494',

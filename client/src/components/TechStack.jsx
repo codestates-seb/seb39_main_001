@@ -174,7 +174,6 @@ const SelectedStack = styled.div`
 	gap: 7px;
 	padding: 10px;
 	background-color: ${({ theme }) => theme.colors.grey1};
-	border-radius: 4px;
 	> svg {
 		color: ${({ theme }) => theme.colors.grey4};
 		cursor: pointer;

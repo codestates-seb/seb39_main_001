@@ -75,7 +75,7 @@ const UserInfo = () => {
       queryClient.invalidateQueries('userInfo');
     },
     onError: (error) => {
-      alert('에러났다');
+      alert('문제가 발생하였습니다. 다시 한 번 시도해 주세요.');
     },
   });
 
@@ -166,9 +166,11 @@ const UserInfo = () => {
       {isMe ? (
         <ButtonContainer>
           <Link to='/users/edit'>
-            <StyledButton>정보 수정</StyledButton>
+            <StyledEditBtn>정보 수정</StyledEditBtn>
           </Link>
-          <StyledButton onClick={deleteHandler}>회원 탈퇴</StyledButton>
+          <StyledUnsubscribeBtn onClick={deleteHandler}>
+            회원 탈퇴
+          </StyledUnsubscribeBtn>
         </ButtonContainer>
       ) : (
         ''
@@ -238,6 +240,7 @@ const MiniBox = styled.div`
   margin-bottom: 10px;
   width: 100%;
   border: 1px solid ${({ theme }) => theme.colors.grey2};
+  border-radius: 4px;
 `;
 
 const MainInfo = styled.div`
@@ -292,23 +295,38 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const StyledButton = styled.button`
+const StyledEditBtn = styled.button`
   padding: 5px 10px;
-  background: #ffffff;
+  background: ${({ theme }) => theme.background};
   font-size: 14px;
-  color: ${({ theme }) => theme.colors.black1};
-  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  color: ${({ theme }) => theme.colors.purple1};
+  border: 1px solid ${({ theme }) => theme.colors.purple1};
   border-radius: 4px;
   cursor: pointer;
   :hover {
-    color: #ffffff;
+    color: #fafafa;
     border: 1px solid ${({ theme }) => theme.colors.purple1};
     background: ${({ theme }) => theme.colors.purple1};
   }
 `;
 
+const StyledUnsubscribeBtn = styled.button`
+  padding: 5px 10px;
+  background: ${({ theme }) => theme.background};
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.grey3};
+  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  border-radius: 4px;
+  cursor: pointer;
+  :hover {
+    color: ${({ theme }) => theme.colors.grey4};
+    background: ${({ theme }) => theme.background};
+    border: 1px solid ${({ theme }) => theme.colors.grey4};
+  }
+`;
+
 const NullMessage = styled.p`
-  color: ${({ theme }) => theme.colors.grey4};
+  color: ${({ theme }) => theme.colors.grey3};
   font-size: 20px;
 `;
 

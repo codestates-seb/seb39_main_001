@@ -193,13 +193,16 @@ const ContentButton = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  margin-left: auto;
-  display: flex;
-  gap: 10px;
-  color: ${({ theme }) => theme.colors.grey4};
-  > svg {
-    cursor: pointer;
-  }
+	margin-left: auto;
+	display: flex;
+	gap: 10px;
+	color: ${({ theme }) => theme.colors.grey4};
+	> svg {
+		cursor: pointer;
+		:hover {
+			color: ${({ theme }) => theme.colors.purple1};
+		}
+	}
 `;
 
 const UserInfo = styled.div`
@@ -228,50 +231,57 @@ const UserImg = styled.div`
 `;
 
 const AnswerEditor = styled.div`
-  display: flex;
-  align-items: center;
-  > textarea {
-    resize: none;
-    width: 100%;
-    min-height: 50px;
-    padding: 10px;
-    margin: 10px 0;
-    margin-right: 10px;
-    border: 2px solid ${({ theme }) => theme.colors.grey2};
-  }
-  > button {
-    padding: 10px;
-    flex-shrink: 0;
-  }
+	display: flex;
+	align-items: center;
+	> textarea {
+		resize: none;
+		width: 100%;
+		min-height: 50px;
+		padding: 10px;
+		margin: 10px 0;
+		margin-right: 10px;
+		border: 2px solid ${({ theme }) => theme.colors.grey2};
+		border-radius: 4px;
+		background: ${({ theme }) => theme.background};
+		color: ${({ theme }) => theme.text};
+	}
+	> button {
+		padding: 10px;
+		flex-shrink: 0;
+	}
 `;
 
 const AnswerCreator = styled.div`
-  display: flex;
-  gap: 10px;
-  > textarea {
-    resize: none;
-    margin-left: 50px;
-    padding: 5px;
-    width: calc(100% - 155px);
-  }
-  > button {
-    width: auto;
-  }
+	display: flex;
+	gap: 10px;
+	> textarea {
+		resize: none;
+		margin-left: 50px;
+		padding: 5px;
+		width: calc(100% - 90px);
+		border: 2px solid ${({ theme }) => theme.colors.grey2};
+		border-radius: 4px;
+		background: ${({ theme }) => theme.background};
+		color: ${({ theme }) => theme.text};
+	}
+	> button {
+		width: 80px;
+	}
 `;
 
 const SubmitButton = styled.button`
-  padding: 5px 10px;
-  background: #ffffff;
-  font-size: 14px;
-  color: ${({ theme }) => theme.colors.black1};
-  border: 1px solid ${({ theme }) => theme.colors.grey3};
-  border-radius: 4px;
-  cursor: pointer;
-  :hover {
-    color: #ffffff;
-    border: 1px solid ${({ theme }) => theme.colors.purple1};
-    background: ${({ theme }) => theme.colors.purple1};
-  }
+	padding: 5px 10px;
+	background: #ffffff;
+	font-size: 14px;
+	color: ${({ theme }) => theme.colors.grey4};
+	border: 1px solid ${({ theme }) => theme.colors.grey4};
+	background: ${({ theme }) => theme.background};
+	border-radius: 4px;
+	cursor: pointer;
+	:hover {
+		color: ${({ theme }) => theme.colors.purple1};
+		border: 1px solid ${({ theme }) => theme.colors.purple1};
+	}
 `;
 
 export default Answer;

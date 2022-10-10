@@ -45,11 +45,23 @@ const Card = ({ data }) => {
     }
   );
 
+  // 로그인 여부
+  const isLogin = (e) => {
+    if (!token) {
+      e.preventDefault();
+      alert('로그인이 필요한 기능입니다.');
+    }
+    return;
+  };
+
   return (
     <CardContainer status={data.status}>
       {data.status === 'CLOSED' ? <Closed>모집 완료</Closed> : ''}
       <CardHeader>
-        <CardType>{data.type}</CardType>
+        <CardType
+          className={data.type === 'PROJECT' ? 'project-card' : 'study-card'}>
+          {data.type}
+        </CardType>
         <Bookmark>
           {bookmarked ? (
             <BookmarkCheckedIcon
@@ -93,7 +105,7 @@ const Card = ({ data }) => {
         </CardSummary>
       </Link>
       <CardInfo>
-        <Link to={`/users/${data.user.id}`}>
+        <Link to={`/users/${data.user.id}`} onClick={isLogin}>
           <AuthorInfo>
             <ImgContainer>
               <img src={data.user.img} alt='프로필' />
@@ -113,9 +125,13 @@ const Card = ({ data }) => {
 const CardContainer = styled.div`
   position: relative;
   border: 2px solid ${({ theme }) => theme.colors.grey1};
+  border-radius: 8px;
   width: 370px;
   padding: 20px 30px;
   opacity: ${({ status }) => (status === 'CLOSED' ? 0.5 : 1)};
+  :hover {
+    border: 2px solid ${({ theme }) => theme.colors.purple1};
+  }
 `;
 
 const CardHeader = styled.div`
@@ -125,10 +141,25 @@ const CardHeader = styled.div`
 `;
 
 const CardType = styled.div`
-  background-color: ${({ theme }) => theme.colors.grey5};
+  background-color: ${({ theme }) => theme.colors.purple1};
   color: white;
   font-size: 13px;
   padding: 7px 10px;
+  border-radius: 4px;
+  &.project-card {
+    background-color: ${({ theme }) => theme.colors.purple1};
+    color: white;
+    font-size: 13px;
+    padding: 7px 10px;
+    border-radius: 4px;
+  }
+  &.study-card {
+    background-color: #64b5f6;
+    color: white;
+    font-size: 13px;
+    padding: 7px 10px;
+    border-radius: 4px;
+  }
 `;
 
 const Bookmark = styled.div`
@@ -137,6 +168,7 @@ const Bookmark = styled.div`
   text-align: center;
   > .bookmark-icon {
     cursor: pointer;
+    color: ${({ theme }) => theme.text};
   }
   > .bookmark-checked-icon {
     cursor: pointer;
