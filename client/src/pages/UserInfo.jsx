@@ -224,7 +224,8 @@ const RoundButton = styled.button`
 	height: 40px;
 	border-radius: 50%;
 	border: 1px solid ${({ theme }) => theme.colors.grey3};
-	background-color: #fff;
+	background-color: ${({ theme }) => theme.background};
+	color: ${({ theme }) => theme.text};
 	margin-left: auto;
 	font-size: 20px;
 	padding-top: 5px;
