@@ -152,6 +152,9 @@ const NewMeetingPageContainer = styled.div`
 		:focus {
 			outline: 1px solid ${({ theme }) => theme.colors.purple1};
 		}
+		:focus::-webkit-input-placeholder {
+			color: transparent;
+		}
 		:hover {
 			border: 1px solid ${({ theme }) => theme.colors.purple1};
 		}
@@ -168,7 +171,7 @@ const Title = styled.div`
 	width: 800px;
 	font-size: 18px;
 	font-weight: 700;
-	padding: 10px;
+	padding: 10px 10px 10px 0px;
 	color: ${({ theme }) => theme.colors.black1};
 `;
 
@@ -183,9 +186,9 @@ const CancelButton = styled(Link)`
 	border-radius: 4px;
 	cursor: pointer;
 	:hover {
-		color: ${({ theme }) => theme.colors.black1};
+		color: #fafafa;
 		border: 1px solid ${({ theme }) => theme.colors.grey3};
-		background: ${({ theme }) => theme.colors.grey2};
+		background: ${({ theme }) => theme.colors.grey3};
 	}
 `;
 
@@ -199,7 +202,7 @@ const SubmitButton = styled.button`
 	border-radius: 4px;
 	cursor: pointer;
 	:hover {
-		color: ${({ theme }) => theme.text};
+		color: #fafafa;
 		border: 1px solid ${({ theme }) => theme.colors.purple1};
 		background: ${({ theme }) => theme.colors.purple1};
 	}

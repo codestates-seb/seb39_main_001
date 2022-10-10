@@ -58,7 +58,6 @@ const UserInfo = () => {
 			},
 		}
 	);
-	console.log(data);
 
 	// 좋아요
 	const postLikeMutation = useMutation(() => apis.postLike(token, userId), {
@@ -141,16 +140,6 @@ const UserInfo = () => {
 				) : (
 					''
 				)}
-				<InfoLabel>기술 스택</InfoLabel>
-				{skillStackTags.length ? (
-					<StacksContainer>
-						{skillStackTags.map((e, i) => (
-							<Stack key={i} src={`/icons/stacks/${e}.png`} alt={`${e}`} />
-						))}
-					</StacksContainer>
-				) : (
-					<NullMessage>사용 가능한 기술 스택을 추가해보세요!</NullMessage>
-				)}
 				<InfoLabel>연락처</InfoLabel>
 				<a href={'mailto:' + email}>{email}</a>
 				<InfoLabel>포트폴리오 링크</InfoLabel>
@@ -160,6 +149,16 @@ const UserInfo = () => {
 					<NullMessage>
 						GitHub, 노션, 블로그 등 나를 표현할 수 있는 링크를 추가해보세요!
 					</NullMessage>
+				)}
+				<InfoLabel>기술 스택</InfoLabel>
+				{skillStackTags.length ? (
+					<StacksContainer>
+						{skillStackTags.map((e, i) => (
+							<Stack key={i} src={`/icons/stacks/${e}.png`} alt={`${e}`} />
+						))}
+					</StacksContainer>
+				) : (
+					<NullMessage>사용 가능한 기술 스택을 추가해보세요!</NullMessage>
 				)}
 				<InfoLabel>한 줄 소개</InfoLabel>
 				<p>{introduction}</p>
@@ -184,6 +183,10 @@ const UserInfoContainer = styled.div`
 	max-width: 1300px;
 	margin: auto;
 	padding: 50px 30px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 `;
 
 const BasicInfo = styled.div`
@@ -221,7 +224,8 @@ const RoundButton = styled.button`
 	height: 40px;
 	border-radius: 50%;
 	border: 1px solid ${({ theme }) => theme.colors.grey3};
-	background-color: #fff;
+	background-color: ${({ theme }) => theme.background};
+	color: ${({ theme }) => theme.text};
 	margin-left: auto;
 	font-size: 20px;
 	padding-top: 5px;
@@ -246,6 +250,7 @@ const MiniBox = styled.div`
 
 const MainInfo = styled.div`
 	padding-bottom: 30px;
+	width: 800px;
 	> a {
 		text-decoration: underline;
 	}
@@ -291,6 +296,7 @@ const ButtonContainer = styled.div`
 	align-items: center;
 	gap: 15px;
 	margin-top: 30px;
+	width: 800px;
 	button {
 		padding: 10px;
 	}
@@ -328,7 +334,7 @@ const StyledUnsubscribeBtn = styled.button`
 
 const NullMessage = styled.p`
 	color: ${({ theme }) => theme.colors.grey3};
-	font-size: 20px;
+	font-size: 16px;
 `;
 
 export default UserInfo;
