@@ -1,16 +1,17 @@
 import { useCookies } from 'react-cookie';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { apis } from '../apis/axios';
 import { ReactComponent as Accept } from '../assets/icons/check-circle.svg';
 import { ReactComponent as Deny } from '../assets/icons/x-circle.svg';
 import theme from '../assets/styles/Theme';
+import { useMutation, useQueryClient } from 'react-query';
 
 const Application = ({ data }) => {
   const [cookies] = useCookies();
   const token = cookies.user;
   const myId = +cookies.userId;
-  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   // 포지션 별 지원 현황 정리
   // count : 포지션 별 TO , accepted: 확정된 인원 , pending: 보류 중 인원
@@ -88,26 +89,36 @@ const Application = ({ data }) => {
   };
 
   // 지원 관리
-  const acceptHandler = (applicationId) => {
-    apis.patchAccept(token, applicationId);
-  };
-  const denyHandler = (applicationId) => {
-    apis.deleteDeny(token, applicationId);
-  };
+  const acceptMutation = useMutation(
+    (applicationId) => apis.patchAccept(token, applicationId),
+    {
+      onSuccess: (data, variable, context) => {
+        setTimeout(() => {
+          queryClient.invalidateQueries('board');
+        }, 200);
+      },
+    }
+  );
+
+  const denyMutation = useMutation(
+    (applicationId) => apis.deleteDeny(token, applicationId),
+    {
+      onSuccess: (data, variable, context) => {
+        setTimeout(() => {
+          queryClient.invalidateQueries('board');
+        }, 200);
+      },
+    }
+  );
 
   // 지원 하기, 지원 완료 버튼 교체
   const buttonSwitch = (el) => {
     const history = data.applicationList.filter((e) => e.userId === myId);
     if (history.length) {
       return el.value === history[0].position ? (
-        <ApplyButton className='closed'>지원 완료</ApplyButton>
+        <ApplyButton className='closed applied'>지원 완료</ApplyButton>
       ) : (
-        <ApplyButton
-          onClick={() => {
-            clickApply(el);
-          }}>
-          지원
-        </ApplyButton>
+        <ApplyButton className='closed'>지원</ApplyButton>
       );
     } else {
       return (
@@ -154,19 +165,19 @@ const Application = ({ data }) => {
                           <Accept
                             fill={theme.colors.purple1}
                             onClick={() => {
-                              acceptHandler(apply.id);
+                              acceptMutation.mutate(apply.id);
                             }}
                           />
                           <Deny
                             fill={theme.colors.grey4}
                             onClick={() => {
-                              denyHandler(apply.id);
+                              denyMutation.mutate(apply.id);
                             }}
                           />
                         </PendingBubble>
                       ))
                     ) : (
-                      <p className='null-message'>지원자가 없습니다... ;_;</p>
+                      <p className='null-message'>지원자가 없습니다.</p>
                     )}
                   </PendingContainer>
                 ) : (
@@ -194,13 +205,13 @@ const Application = ({ data }) => {
                       <Deny
                         fill={theme.colors.grey4}
                         onClick={() => {
-                          denyHandler(apply.id);
+                          denyMutation.mutate(apply.id);
                         }}
                       />
                     </PendingBubble>
                   ))
                 ) : (
-                  <p className='null-message'>모집된 팀원이 없습니다... ;_;</p>
+                  <p className='null-message'>모집된 팀원이 없습니다.</p>
                 )}
               </AcceptedContainer>
             ) : (
@@ -252,10 +263,10 @@ const Position = styled.div`
 
 const ApplyButton = styled.button`
   padding: 5px 10px;
-  background: #ffffff;
+  background: ${({ theme }) => theme.background};
   font-size: 14px;
-  color: ${({ theme }) => theme.colors.black1};
-  border: 1px solid ${({ theme }) => theme.colors.grey3};
+  color: ${({ theme }) => theme.colors.purple1};
+  border: 1px solid ${({ theme }) => theme.colors.purple1};
   border-radius: 4px;
   cursor: pointer;
   :hover {
@@ -266,6 +277,10 @@ const ApplyButton = styled.button`
   &.closed {
     background-color: ${({ theme }) => theme.colors.grey2};
     pointer-events: none;
+  }
+  &.applied {
+    border: 1px solid ${({ theme }) => theme.colors.purple1};
+    color: ${({ theme }) => theme.colors.purple1};
   }
 `;
 

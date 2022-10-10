@@ -31,4 +31,5 @@ public class GlobalExceptionAdvice {
     public ExceptionResponse handlerConstraintViolationException(ConstraintViolationException exception) {
 
         return ExceptionResponse.of(exception.getConstraintViolations());
+    }
 }

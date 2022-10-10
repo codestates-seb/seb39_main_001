@@ -37,6 +37,7 @@ public enum ExceptionCode {
     APPLICATION_NOT_FOUND(-1200, "지원 정보가 없습니다"),
     APPLICATION_DUPLICATED(-1201, "중복 지원할 수 없습니다"),
     APPLICATION_INVALID_REQUEST(-1202, "모집자만 지원 정보를 수정 또는 삭제 할 수 있습니다"),
+    APPLICATION_POSITION_UNAVAILABLE(-1203, "지원하려는 포지션의 모집 정원이 찼습니다"),
 
     LIKE_NOT_FOUND(-1300, "좋아요한 정보를 찾을 수 없습니다"),
     LIKE_DUPLICATED(-1301, "이미 좋아요를 눌렀습니다"),

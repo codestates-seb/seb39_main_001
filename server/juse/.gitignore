@@ -45,5 +45,5 @@ resources/ssl/
 application-oauth.yaml
 application-local.yaml
 application-plain.yaml
-
+client/
 

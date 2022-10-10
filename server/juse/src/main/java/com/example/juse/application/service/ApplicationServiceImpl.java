@@ -27,6 +27,11 @@ public class ApplicationServiceImpl implements ApplicationService{
 
         long boardId = mappedObj.getBoard().getId();
 
+        Board board = boardService.verifyBoardById(boardId);
+
+        String position = mappedObj.getPosition();
+
+        checkPositionAvailability(board, position);
         checkDuplicatedByUserIdAndBoardId(userId, boardId);
 
         Application findApply = findUserIdApplication(userId);
@@ -55,6 +60,7 @@ public class ApplicationServiceImpl implements ApplicationService{
         System.out.println("findApply = " + findApply.getPosition());
 
         findApply.checkApplicationWriter(userId);
+        checkPositionAvailability(board, findApply.getPosition());
         findApply.setAccepted(true);
 
         // 수락을 눌렀을 때, 지원자의 각 포지션 카운트 증가 후 Board 테이블에 저장.
@@ -124,6 +130,12 @@ public class ApplicationServiceImpl implements ApplicationService{
     public void checkDuplicatedByUserIdAndBoardId(long userId, long boardId) {
         if (applicationRepository.findByUserIdAndBoardId(userId, boardId).isPresent()) {
             throw new CustomRuntimeException(ExceptionCode.APPLICATION_DUPLICATED);
+        }
+    }
+
+    public void checkPositionAvailability(Board board, String position) {
+        if (!board.isPositionAvailable(position)) {
+            throw new CustomRuntimeException(ExceptionCode.APPLICATION_POSITION_UNAVAILABLE);
         }
     }
 }

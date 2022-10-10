@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import google from '../assets/images/google.svg';
 import { ReactComponent as CloseBtnIcon } from '../assets/icons/close.svg';
+import { ReactComponent as Github } from '../assets/images/github.svg';
 import theme from '../assets/styles/Theme';
 
 const LoginModal = ({ showModal, setShowModal }) => {
@@ -17,9 +18,17 @@ const LoginModal = ({ showModal, setShowModal }) => {
               <CloseBtnIcon />
             </CloseBtn>
             <p>환영합니다</p>
-            <GoogleLoginBtn href='https://jusemain.duckdns.org:8080/oauth2/authorization/google?redirect_uri=http://localhost:3000/oauth2/redirect'>
+            <GoogleLoginBtn href='https://jusemain.duckdns.org:8080/oauth2/authorization/google'>
               <GoogleLogo />
               <p>Google 계정으로 로그인</p>
+            </GoogleLoginBtn>
+            <GoogleLoginBtn href='https://jusemain.duckdns.org:8080/oauth2/authorization/github'>
+              <Github
+                width={'18px'}
+                height={'18px'}
+                style={{ 'margin-right': '10px' }}
+              />
+              <p>Github 계정으로 로그인</p>
             </GoogleLoginBtn>
           </LoginModalContainer>
         </Background>
@@ -50,13 +59,13 @@ const LoginModalContainer = styled.div`
   position: relative;
   width: 500px;
   height: 300px;
-  background: white;
+  background: ${({ theme }) => theme.background};
   border-radius: 4px;
   box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.1);
   > p {
     font-size: 20px;
     font-weight: 600;
-    color: ${({ theme }) => theme.colors.grey4};
+    color: ${({ theme }) => theme.text};
   }
 `;
 
@@ -67,7 +76,7 @@ const CloseBtn = styled.div`
   color: ${({ theme }) => theme.colors.grey2};
   cursor: pointer;
   :hover {
-    color: ${({ theme }) => theme.colors.grey3};
+    color: ${({ theme }) => theme.colors.purple1};
   }
 `;
 
@@ -89,7 +98,7 @@ const GoogleLoginBtn = styled.a`
   border-radius: 4px;
   cursor: pointer;
   :hover {
-    border: 1px solid ${({ theme }) => theme.colors.grey3};
+    border: 1px solid ${({ theme }) => theme.colors.purple1};
   }
   > p {
     color: ${({ theme }) => theme.colors.black1};

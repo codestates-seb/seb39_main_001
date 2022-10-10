@@ -18,4 +18,6 @@ public interface BoardService {
     Page<Board> getBoards(Pageable pageable, FilterOptions filterOptions);
 
     Board verifyBoardById(long boardId);
+
+    void addViewCount(Board board);
 }

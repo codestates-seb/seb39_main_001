@@ -36,7 +36,7 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler implem
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
-        System.out.println("#######request.toString() = " + request.toString());
+        System.out.println("#######request.toString() = " + request.getRequestURI());
         System.out.println("#######response.toString() = " + response.toString());
         System.out.println("#######authentication = " + authentication.toString());
 
@@ -55,6 +55,13 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler implem
                 .name((String) attributes.get("name"))
                 .email((String) attributes.get("email"))
                 .build();
+
+        // Github 로그인일 경우
+        SocialUser githubUser = findByEmailGithub((String) attributes.get("email"));
+
+        if (request.getRequestURI().equals("/login/oauth2/code/github") && githubUser.getEmail() == null) {
+            socialUser.setEmail(attributes.get("login") + "@github.com");
+        }
 
         System.out.println("socialUser.toString() = " + socialUser.toString());
 
@@ -78,5 +85,9 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler implem
             response.sendRedirect("http://localhost:3000/oauth2/redirect?isUser=1&token=" + tokenDto.getAccessToken());
 //            response.sendRedirect("https://junior-to-senior.netlify.app/oauth2/redirect?isUser=1&token=" + tokenDto.getAccessToken());
         }
+    }
+
+    public SocialUser findByEmailGithub(String email) {
+        return socialUserRepository.findGitByEmail(email).orElseGet(SocialUser::new);
     }
 }

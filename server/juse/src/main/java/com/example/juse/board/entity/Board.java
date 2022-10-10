@@ -43,6 +43,7 @@ public class Board extends Auditing {
     private int curEtc;
     private int bookmarks;
     private int views;
+    private int curPeople;
 
     @Column(nullable = false)
     private int people;
@@ -139,4 +140,31 @@ public class Board extends Auditing {
         return this.user.isLikedBy(userId);
     }
 
+    public boolean isPositionAvailable(String position) {
+
+        if (this.type == Type.PROJECT) {
+            if (position.equals("backend")) {
+                return backend > curBackend;
+            }
+
+            if (position.equals("front")) {
+                return frontend > curFrontend;
+            }
+
+            if (position.equals("designer")) {
+                return designer > curDesigner;
+            }
+
+            if (position.equals("etc")) {
+                return etc > curEtc;
+            }
+
+        } else {
+
+            return people > curPeople;
+        }
+
+        return false;
+
+    }
 }
