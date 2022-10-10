@@ -107,20 +107,30 @@ const Home = () => {
               backgroundColor: theme.colors.grey1,
               padding: '3px',
             }),
+            multiValueRemove: (provided) => ({
+              ...provided,
+              color: theme.colors.black1,
+            }),
+            option: (provided, state) => ({
+              ...provided,
+              ':hover': {
+                color: theme.colors.black1,
+              },
+            }),
           }}
           onChange={(e) => {
             dropDownHandler(e);
           }}
           theme={(theme) => ({
-						...theme,
-						colors: {
-							...theme.colors,
-							primary25: '#f0e7fe',
-							primary: '#be99ff',
-							background: `${({ theme }) => theme.background}`,
-							text: `${({ theme }) => theme.text}`,
-						},
-					})}
+            ...theme,
+            colors: {
+              ...theme.colors,
+              primary25: '#f0e7fe',
+              primary: '#be99ff',
+              background: `${({ theme }) => theme.background}`,
+              text: `${({ theme }) => theme.text}`,
+            },
+          })}
         />
       </PeriodContainer>
       <ListHeader>
@@ -194,6 +204,11 @@ const PeriodContainer = styled.div`
   > .period-select {
     width: 50%;
     min-width: 300px;
+    > div {
+      background-color: ${({ theme }) => theme.background};
+      color: ${({ theme }) => theme.text};
+      border-color: ${({ theme }) => theme.colors.grey3};
+    }
   }
 `;
 
