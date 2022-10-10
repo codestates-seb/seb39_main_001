@@ -339,9 +339,10 @@ const RightInfo = styled.div`
 `;
 
 const Category = styled.div`
-  color: ${({ theme }) => theme.colors.grey4};
-  font-size: 18px;
-  width: 150px;
+	color: ${({ theme }) => theme.text};
+	font-size: 18px;
+	font-weight: 500;
+	width: 150px;
 `;
 
 const TagsContainer = styled.div`
