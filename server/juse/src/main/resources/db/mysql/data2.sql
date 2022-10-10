@@ -103,40 +103,40 @@ VALUES(2, 'img2', 'user2', 'gatzby3645@gmail.com', 'test2', 0,'nickname2', 2);
 
 
 INSERT INTO BOARDS
-(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id)
-VALUES(1, current_timestamp, current_timestamp, 0, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, '1', '2022-10-10', 'OPENING', '', 'STUDY', 0, 1);
+(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id, cur_people)
+VALUES(1, current_timestamp, current_timestamp, 2, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, '1', '2022-10-10', 'OPENING', '', 'STUDY', 0, 1, 0);
 
 INSERT INTO BOARDS
-(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id)
-VALUES(2, current_timestamp, current_timestamp, 0, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, '2', '2022-10-10', 'OPENING', '', 'PROJECT', 0, 1);
+(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id, cur_people)
+VALUES(2, current_timestamp, current_timestamp, 2, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, '2', '2022-10-10', 'OPENING', '', 'PROJECT', 0, 1, 0);
 
 INSERT INTO BOARDS
-(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id)
-VALUES(3, current_timestamp, current_timestamp, 0, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, '1', '2022-10-10', 'OPENING', '', 'STUDY', 0, 1);
+(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id, cur_people)
+VALUES(3, current_timestamp, current_timestamp, 2, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, '1', '2022-10-10', 'OPENING', '', 'STUDY', 0, 1, 0);
 
 INSERT INTO BOARDS
-(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id)
-VALUES(4, current_timestamp, current_timestamp, 0, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, '3', '2022-10-10', 'OPENING', '', 'PROJECT', 0, 1);
+(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id, cur_people)
+VALUES(4, current_timestamp, current_timestamp, 2, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, '3', '2022-10-10', 'OPENING', '', 'PROJECT', 0, 1, 0);
 
 INSERT INTO BOARDS
-(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id)
-VALUES(5, current_timestamp, current_timestamp, 0, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, '5', '2022-10-10', 'OPENING', '', 'STUDY', 0, 2);
+(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id, cur_people)
+VALUES(5, current_timestamp, current_timestamp, 1, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, '5', '2022-10-10', 'OPENING', '', 'STUDY', 0, 2, 0);
 
 INSERT INTO BOARDS
-(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id)
-VALUES(6, current_timestamp, current_timestamp, 0, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, 'short', '2022-10-10', 'OPENING', '', 'PROJECT', 0, 2);
+(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id, cur_people)
+VALUES(6, current_timestamp, current_timestamp, 2, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, 'short', '2022-10-10', 'OPENING', '', 'PROJECT', 0, 2, 0);
 
 INSERT INTO BOARDS
-(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id)
-VALUES(7, current_timestamp, current_timestamp, 0, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, 'short', '2022-10-10', 'OPENING', '', 'PROJECT', 0, 2);
+(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id, cur_people)
+VALUES(7, current_timestamp, current_timestamp, 1, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, 'short', '2022-10-10', 'OPENING', '', 'PROJECT', 0, 2, 0);
 
 INSERT INTO BOARDS
-(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id)
-VALUES(8, current_timestamp, current_timestamp, 0, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, 'long', '2022-10-10', 'CLOSED', '', 'STUDY', 0, 2);
+(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id, cur_people)
+VALUES(8, current_timestamp, current_timestamp, 1, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, 'long', '2022-10-10', 'CLOSED', '', 'STUDY', 0, 2, 0);
 
 INSERT INTO BOARDS
-(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id)
-VALUES(9, current_timestamp, current_timestamp, 0, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, '6', '2022-10-10', 'CLOSED', '', 'STUDY', 0, 2);
+(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id, cur_people)
+VALUES(9, current_timestamp, current_timestamp, 2, 0, '', '', 0, 0, 0, 0, 0, '2022-10-10', 0, 0, '', 0, '6', '2022-10-10', 'CLOSED', '', 'STUDY', 0, 2, 0);
 
 --INSERT INTO BOARDS
 --(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id)

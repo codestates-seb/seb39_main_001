@@ -23,8 +23,12 @@ public class Notification {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID")
-    private User user;
+    @JoinColumn(name = "SENDER_ID")
+    private User sender;
+
+    @ManyToOne
+    @JoinColumn(name = "RECEIVER_ID")
+    private User receiver;
 
     @ManyToOne
     @JoinColumn(name = "BOARD_ID")
@@ -32,27 +36,43 @@ public class Notification {
 
     @ManyToOne
     @JoinColumn(name = "QUESTION_ID")
-    @Column(nullable = true)
     private Question question;
 
     @ManyToOne
     @JoinColumn(name = "ANSWER_ID")
-    @Column(nullable = true)
     private Answer answer;
 
     @ManyToOne
     @JoinColumn(name = "APPLICATION_ID")
-    @Column(nullable = true)
     private Application application;
 
-    @Setter
     private boolean isRead;
 
+    @Enumerated(EnumType.STRING)
+    private Notification.Type type;
 
-    public void addUser(User user) {
-        this.user = user;
-        if (this.user.getNotificationList().contains(this)) {
-            this.user.getNotificationList().add(this);
+    public void addUsers(User sender, User receiver) {
+        this.sender = sender;
+        if (this.sender.getSentNotificationList().contains(this)) {
+            this.sender.getSentNotificationList().add(this);
+        }
+
+        this.receiver = receiver;
+        if (this.receiver.getReceivedNotificationList().contains(this)) {
+            this.receiver.getReceivedNotificationList().add(this);
         }
     }
+
+    @Getter
+    public enum Type {
+        APPLICATION,
+        ACCEPT,
+        DECLINE,
+        CLOSE,
+        QUESTION,
+        ANSWER,
+        UPCOMING,
+        LIKE
+    }
+
 }

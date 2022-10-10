@@ -7,6 +7,7 @@ import com.example.juse.board.repository.BoardRepository;
 import com.example.juse.board.service.BoardService;
 import com.example.juse.exception.CustomRuntimeException;
 import com.example.juse.exception.ExceptionCode;
+import com.example.juse.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -20,28 +21,25 @@ public class ApplicationServiceImpl implements ApplicationService{
     private final ApplicationRepository applicationRepository;
     private final BoardRepository boardRepository;
     private final BoardService boardService;
+    private final NotificationService notificationService;
 
     @Override
+    @Transactional
     public Application create(Application mappedObj) {
         long userId = mappedObj.getUser().getId();
-
         long boardId = mappedObj.getBoard().getId();
-
         Board board = boardService.verifyBoardById(boardId);
-
         String position = mappedObj.getPosition();
 
         checkPositionAvailability(board, position);
         checkDuplicatedByUserIdAndBoardId(userId, boardId);
 
-        Application findApply = findUserIdApplication(userId);
-        System.out.println("findApply.toString() = " + findApply.toString());
+//        Application findApply = findUserIdApplication(userId);
 
-//        if (findApply.getId() != null && userId == findApply.getUser().getId()) {
-//            throw new CustomRuntimeException(ExceptionCode.APPLICATION_DUPLICATED);
-//        }
+        Application createdApplication = applicationRepository.save(mappedObj);
+        notificationService.notifyNewApplication(board, createdApplication);
 
-        return applicationRepository.save(mappedObj);
+        return createdApplication;
     }
 
     @Override
