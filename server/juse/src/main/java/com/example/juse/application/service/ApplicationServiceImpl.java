@@ -33,8 +33,7 @@ public class ApplicationServiceImpl implements ApplicationService{
 
         checkPositionAvailability(board, position);
         checkDuplicatedByUserIdAndBoardId(userId, boardId);
-
-//        Application findApply = findUserIdApplication(userId);
+        checkSelfApplication(board, userId);
 
         Application createdApplication = applicationRepository.save(mappedObj);
         notificationService.notifyNewApplication(board, createdApplication);
@@ -125,15 +124,22 @@ public class ApplicationServiceImpl implements ApplicationService{
         );
     }
 
-    public void checkDuplicatedByUserIdAndBoardId(long userId, long boardId) {
+    private void checkDuplicatedByUserIdAndBoardId(long userId, long boardId) {
         if (applicationRepository.findByUserIdAndBoardId(userId, boardId).isPresent()) {
             throw new CustomRuntimeException(ExceptionCode.APPLICATION_DUPLICATED);
         }
     }
 
-    public void checkPositionAvailability(Board board, String position) {
+    private void checkPositionAvailability(Board board, String position) {
         if (!board.isPositionAvailable(position)) {
             throw new CustomRuntimeException(ExceptionCode.APPLICATION_POSITION_UNAVAILABLE);
         }
     }
+
+    private void checkSelfApplication(Board board, long userId) {
+        if (board.isCreatedBy(userId)) {
+            throw new CustomRuntimeException(ExceptionCode.SELF_APPLICATION_NOT_ALLOWED);
+        }
+    }
+
 }
