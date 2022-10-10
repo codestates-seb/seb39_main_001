@@ -1,12 +1,8 @@
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset'; // style-reset 패키지
-import { normalize } from 'styled-normalize';
-import theme from './Theme';
 
 const GlobalStyles = createGlobalStyle`
   ${reset}
-  ${normalize}
-  
   a{
       text-decoration: none;
       color: inherit;

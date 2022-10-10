@@ -1,71 +1,75 @@
-import React, { useEffect, useRef } from 'react';
-import { Editor } from '@toast-ui/react-editor';
-import '@toast-ui/editor/dist/toastui-editor.css';
 import styled from 'styled-components';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const TextEditor = ({ formData, setFormData }) => {
-  const editorRef = useRef();
+  // react-quill setting
+  const toolbarOptions = [
+    [{ header: [1, 2, 3, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    ['blockquote', 'code-block'],
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    [{ color: [] }, { background: [] }],
+    [{ align: [] }],
+  ];
+  const modules = {
+    toolbar: {
+      container: toolbarOptions,
+    },
+  };
 
-  useEffect(() => {
-    editorRef.current?.getInstance().setMarkdown(formData.content);
-  }, [formData.content]);
-
-  const onChange = () => {
-    const data = editorRef.current?.getInstance().getMarkdown();
-    setFormData({
-      ...formData,
-      content: data,
-    });
+  // content input handler
+  const inputChange = (e, delta, source, editor) => {
+    setFormData((prev) => ({ ...prev, content: e }));
+    console.log(editor.getContents());
   };
 
   return (
     <TextEditorWrapper>
-      <Editor
-        initialValue={formData.content}
-        previewStyle='tab'
-        height='400px'
-        initialEditType='markdown'
-        useCommandShortcut={false}
-        hideModeSwitch={true}
-        ref={editorRef}
-        onChange={onChange}
-        toolbarItems={[
-          ['bold', 'italic'],
-          ['link', 'quote', 'image'],
-          ['ol', 'ul', 'indent', 'outdent'],
-        ]}
-        language='ko-KR'
+      <ReactQuill
+        placeholder='본문을 입력해주세요.'
+        value={formData.content || ''}
+        theme='snow'
+        modules={modules}
+        onChange={inputChange}
       />
     </TextEditorWrapper>
   );
 };
 
 const TextEditorWrapper = styled.div`
-	display: flex;
-	flex-direction: column;
-	width: 800px;
-	height: 500px;
-	.tab-item {
-		display: none;
-	}
-	.toastui-editor-defaultUI-toolbar {
-		background-color: ${({ theme }) => theme.background};
-	}
-	.toastui-editor-toolbar-icons {
-		border: none;
-	}
-	.toastui-editor-defaultUI {
-		border: 1px solid ${({ theme }) => theme.colors.grey4};
-	}
-	.toastui-editor-md-tab-container {
-		background: ${({ theme }) => theme.background};
-	}
-	.ProseMirror {
-		color: ${({ theme }) => theme.text};
-	}
-	.toastui-editor-toolbar-divider {
-		background-color: ${({ theme }) => theme.colors.grey1};
-	}
+  display: flex;
+  flex-direction: column;
+  width: 800px;
+  height: 500px;
+  > .quill {
+    height: 400px;
+    > div {
+      border: 1px solid ${({ theme }) => theme.colors.grey3};
+      &.ql-toolbar {
+        border-radius: 4px 4px 0 0;
+      }
+      &.ql-container {
+        border-radius: 0 0 4px 4px;
+        > .ql-editor {
+          font-family: pretendard;
+          font-size: 16px;
+          h1,
+          h2,
+          h3 {
+            font-weight: 600;
+          }
+          em {
+            font-style: italic;
+          }
+        }
+        // placeholder style
+        .ql-blank::before {
+          color: ${({ theme }) => theme.colors.grey4};
+        }
+      }
+    }
+  }
 `;
 
 export default TextEditor;
