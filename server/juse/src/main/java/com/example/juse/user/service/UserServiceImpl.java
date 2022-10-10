@@ -51,11 +51,18 @@ public class UserServiceImpl implements UserService {
 
             // profile 이미지를 uri 형식으로 전송
             String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("images/")
+                    .path("images/resize/")
                     .path(savedName)
                     .toUriString();
 
             user.setImg(uri);
+
+            String myUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("images/")
+                    .path(savedName)
+                    .toUriString();
+
+            user.setMyImg(myUri);
         }
 
         long userId = mappedObj.getSocialUser().getId();
@@ -127,11 +134,18 @@ public class UserServiceImpl implements UserService {
             String savedName = storageService.store(profileImg);
 
             String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("images/")
+                    .path("images/resize/")
                     .path(savedName)
                     .toUriString();
 
             user.setImg(uri);
+
+            String myUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("images/")
+                    .path(savedName)
+                    .toUriString();
+
+            user.setMyImg(myUri);
         }
 
         if (!user.getUserTagList().isEmpty()) {

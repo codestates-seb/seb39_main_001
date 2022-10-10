@@ -35,6 +35,9 @@ public class User extends Auditing {
     @Lob
     private String img;
 
+    @Lob
+    private String myImg;
+
 
     @Column(nullable = false)
     private String introduction;
