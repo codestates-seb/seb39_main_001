@@ -5,6 +5,9 @@ import com.example.juse.helper.filterings.FilterOptions;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 public interface BoardService {
 
     Board create(Board post);
@@ -19,5 +22,5 @@ public interface BoardService {
 
     Board verifyBoardById(long boardId);
 
-    void addViewCount(Board board);
+    void addViewCount(Board board, HttpServletRequest request, HttpServletResponse response, Long boardId);
 }

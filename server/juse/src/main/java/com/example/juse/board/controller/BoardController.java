@@ -12,6 +12,7 @@ import com.example.juse.exception.validator.NotEmptyToken;
 import com.example.juse.helper.filterings.FilterOptions;
 import com.example.juse.security.oauth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -30,6 +33,7 @@ import java.util.stream.Collectors;
 @Validated
 @RequestMapping("/boards")
 @RestController
+@Slf4j
 public class BoardController {
 
     private final BoardService boardService;
@@ -52,7 +56,8 @@ public class BoardController {
     @GetMapping("/{board-id}")
     public ResponseEntity<SingleResponseDto<BoardResponseDto.Single>> getBoard(
             @AuthenticationPrincipal PrincipalDetails principalDetails,
-            @PathVariable("board-id") @Positive long boardId
+            @PathVariable("board-id") @Positive long boardId,
+            HttpServletRequest request, HttpServletResponse response
     ) {
         Board foundEntity = boardService.getBoard(boardId);
 
@@ -60,11 +65,11 @@ public class BoardController {
 
         try {
             Long userId = principalDetails.getSocialUser().getUser().getId();
-
-            boardService.addViewCount(foundEntity);
+            log.info("userId " + userId);
 
             if (userId != null && foundEntity.isCreatedBy(userId)) {
                 responseDto.setAuth(true);
+                log.info("responseDto.getAuth " + responseDto.isAuth());
             }
 
             if (foundEntity.isBookmarkedBy(userId)) {
@@ -82,6 +87,8 @@ public class BoardController {
         } catch (NullPointerException npe) {
             responseDto.setAuth(false);
         }
+
+        boardService.addViewCount(foundEntity, request, response, boardId);
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
