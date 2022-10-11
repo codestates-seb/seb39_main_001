@@ -107,7 +107,9 @@ const NewMeeting = () => {
     }
 
     // Post 요청
-    apis.postBoard(token, formData).then(navigate('/'));
+    apis.postBoard(token, formData).then(() => {
+      navigate('/');
+    });
   };
 
   return (

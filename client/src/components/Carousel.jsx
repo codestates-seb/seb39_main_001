@@ -46,7 +46,7 @@ const Carousel = () => {
           </SlideContainer>
         </div>
         <div>
-          <SlideContainer fill={'#da77a8'}>
+          <SlideContainer fill={theme.colors.tiffanyblue}>
             <TeamContainer>
               <h2>Team ChickenMilktea</h2>
               <ChickenMilktea>

@@ -14,6 +14,7 @@ const theme = {
     grey5: '#495057',
     purple1: `#be99ff`,
     purple2: '#6f2dbd',
+    tiffanyblue: '#81d8cf',
   },
 };
 
@@ -36,8 +37,10 @@ export const darkTheme = {
     grey3: '#495057',
     grey4: '#b4b4b4',
     grey5: '#e9ecef',
+    purple0: '#f2caff',
     purple1: `#be99ff`,
-    purple2: '#6f2dbd',
+    purple2: '#8c6acb',
+    tiffanyblue: '#81d8cf',
   },
 };
 
@@ -58,7 +61,9 @@ export const lightTheme = {
     grey3: '#adb5bd',
     grey4: '#7e858d',
     grey5: '#495057',
+    purple0: '#f2caff',
     purple1: `#be99ff`,
-    purple2: '#6f2dbd',
+    purple2: '#8c6acb',
+    tiffanyblue: '#81d8cf',
   },
 };

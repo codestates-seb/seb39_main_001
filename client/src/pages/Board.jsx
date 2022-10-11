@@ -8,11 +8,11 @@ import { ReactComponent as BookmarkCheckedIcon } from '../assets/icons/bookmark-
 import { apis } from '../apis/axios';
 import { useCookies } from 'react-cookie';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import ReactMarkdown from 'react-markdown';
-import { normalize, Normalize } from 'styled-normalize';
 import * as LottiePlayer from '@lottiefiles/lottie-player';
 import { NullBoards } from './Home';
 import { useState } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.bubble.css';
 
 const Board = () => {
   const [cookies] = useCookies();
@@ -181,8 +181,7 @@ const Board = () => {
         </RightInfo>
       </TopTemplate>
       <Main>
-        <Normalize />
-        <ReactMarkdown>{data.content}</ReactMarkdown>
+        <ReactQuill value={data.content} readOnly={true} theme={'bubble'} />
       </Main>
       <QuestionAnswer data={data} />
     </BoardContainer>
@@ -232,7 +231,7 @@ const StatusType = styled.div`
     padding: 10px;
   }
   > .study-card {
-    background: #64b5f6;
+    background: ${({ theme }) => theme.colors.tiffanyblue};
     border-radius: 4px;
     color: #fff;
     padding: 10px;
@@ -360,6 +359,22 @@ const Main = styled.div`
   padding: 15px 0;
   min-height: 200px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.grey2};
+  .ql-editor {
+    padding: 0;
+    font-family: pretendard;
+    font-size: 16px;
+    h1,
+    h2,
+    h3 {
+      font-weight: 600;
+    }
+    em {
+      font-style: italic;
+    }
+    strong {
+      font-weight: 700;
+    }
+  }
 `;
 
 const DeleteBtn = styled.div`
