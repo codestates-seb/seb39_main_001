@@ -6,6 +6,7 @@ import com.example.juse.board.repository.BoardRepository;
 import com.example.juse.exception.CustomRuntimeException;
 import com.example.juse.exception.ExceptionCode;
 import com.example.juse.helper.filterings.FilterOptions;
+import com.example.juse.notification.service.NotificationService;
 import com.example.juse.tag.entity.BoardTag;
 import com.example.juse.tag.entity.Tag;
 import com.example.juse.tag.repository.BoardTagRepository;
@@ -34,6 +35,7 @@ public class BoardServiceImpl implements BoardService {
     private final BoardMapper boardMapper;
     private final BoardTagRepository boardTagRepository;
     private final BoardTagService boardTagService;
+    private final NotificationService notificationService;
 
     @Override
     @Transactional
@@ -107,8 +109,13 @@ public class BoardServiceImpl implements BoardService {
 
         board.getBoardTagList().removeAll(difference);
 
-        return boardRepository.save(board);
+        Board savedBoard = boardRepository.save(board);
 
+        if (savedBoard.getStatus() == Board.Status.CLOSED) {
+            notificationService.notifyBoardClosed(savedBoard);
+        }
+
+        return savedBoard;
     }
 
     @Override

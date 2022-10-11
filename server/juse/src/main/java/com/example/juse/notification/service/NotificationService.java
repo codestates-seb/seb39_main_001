@@ -82,4 +82,20 @@ public class NotificationService {
 
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void notifyBoardClosed(Board board) {
+        board.getApplicationList().forEach(
+                application -> {
+                    Notification notification = new Notification();
+                    notification.setBoard(board);
+                    notification.setSender(board.getUser());
+                    notification.setReceiver(application.getUser());
+                    notification.setType(Notification.Type.CLOSE);
+                    notificationRepository.save(notification);
+                }
+        );
+
+        log.info("{} 번 게시글 작성자 {}번 사용자가 해당 게시글에 지원한 {} 명 유저에게 모집이 마감되었다고 알림을 보냄",
+                board.getId(), board.getUser().getId(), board.getApplicationList().size());
+    }
 }
