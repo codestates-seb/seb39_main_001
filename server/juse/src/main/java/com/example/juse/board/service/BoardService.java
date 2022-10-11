@@ -22,5 +22,7 @@ public interface BoardService {
 
     Board verifyBoardById(long boardId);
 
+    void addViewCount(Board board);
+
     void addViewCount(Board board, HttpServletRequest request, HttpServletResponse response, Long boardId);
 }

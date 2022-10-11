@@ -3,6 +3,8 @@ package com.example.juse.notification.service;
 import com.example.juse.answer.entity.Answer;
 import com.example.juse.application.entity.Application;
 import com.example.juse.board.entity.Board;
+import com.example.juse.bookmark.entity.Bookmark;
+import com.example.juse.bookmark.repository.BookmarkRepository;
 import com.example.juse.notification.entity.Notification;
 import com.example.juse.notification.repository.NotificationRepository;
 import com.example.juse.question.entity.Question;
@@ -10,6 +12,7 @@ import com.example.juse.user.entity.User;
 import com.example.juse.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -134,5 +137,22 @@ public class NotificationService {
 
         log.info("{} 번 게시글에 {} 번 사용자가 문의한 글에 답변이 달렸습니다",
                 board.getId(), receiver.getId());
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void notifyRemainingDaysOfBookmarkedBoards(Bookmark bookmark) {
+        Board board = bookmark.getBoard();
+        User receiver = bookmark.getUser();
+
+        Notification notification = new Notification();
+        notification.setType(Notification.Type.UPCOMING);
+        notification.setBoard(board);
+        notification.setReceiver(receiver);
+
+        notificationRepository.save(notification);
+        log.info("북마크한 {} 번 게시글의 마감일이 3일 남았습니다, {} 번 사용자여"
+                , board.getId(), receiver.getId()
+        );
+
     }
 }

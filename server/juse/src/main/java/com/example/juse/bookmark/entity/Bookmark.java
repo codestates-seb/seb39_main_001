@@ -27,4 +27,5 @@ public class Bookmark {
     @JoinColumn(name = "BOARD_ID")
     private Board board;
 
+    private boolean isNotified;
 }

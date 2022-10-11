@@ -189,6 +189,11 @@ public class BoardServiceImpl implements BoardService {
                         () -> new CustomRuntimeException(ExceptionCode.BOARD_NOT_FOUND)
                 );
     }
+
+    @Override
+    public void addViewCount(Board board) {
+
+    }
 }
 
 
