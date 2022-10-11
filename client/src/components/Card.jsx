@@ -57,7 +57,7 @@ const Card = ({ data, refetch }) => {
   };
 
   return (
-    <CardContainer status={data.status}>
+    <CardContainer status={data.status} type={data.type}>
       {data.status === 'CLOSED' ? <Closed>모집 완료</Closed> : ''}
       <CardHeader>
         <CardType
@@ -133,7 +133,9 @@ const CardContainer = styled.div`
   opacity: ${({ status }) => (status === 'CLOSED' ? 0.5 : 1)};
   :hover {
     transition: all 0.5s linear;
-    border: 2px solid ${({ theme }) => theme.colors.purple1};
+    border: 2px solid
+      ${({ theme, type }) =>
+        type === 'PROJECT' ? theme.colors.purple1 : theme.colors.tiffanyblue};
   }
 `;
 
@@ -157,7 +159,7 @@ const CardType = styled.div`
     border-radius: 4px;
   }
   &.study-card {
-    background-color: #64b5f6;
+    background-color: ${({ theme }) => theme.colors.tiffanyblue};
     color: white;
     font-size: 13px;
     padding: 7px 10px;

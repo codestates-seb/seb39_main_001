@@ -231,7 +231,7 @@ const StatusType = styled.div`
     padding: 10px;
   }
   > .study-card {
-    background: #64b5f6;
+    background: ${({ theme }) => theme.colors.tiffanyblue};
     border-radius: 4px;
     color: #fff;
     padding: 10px;
