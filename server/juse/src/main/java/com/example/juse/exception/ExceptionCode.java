@@ -30,6 +30,7 @@ public enum ExceptionCode {
     ANSWER_NOT_FOUND(-1000, "답변을 찾을 수 없습니다"),
     ANSWER_BOARD_WRITER_NOT_MATCHED(-1001, "게시글 작성자만 질문에 답변을 남길 수 있습니다"),
     ANSWER_WRITER_NOT_MATCHED(-1002, "답변 작성자만 수정 또는 삭제할 수 있습니다"),
+    QUESTION_ALREADY_ANSWERED(-1003, "이미 답변된 문의입니다."),
 
     BOOKMARK_NOT_FOUND(-1100, "북마크 정보가 없습니다"),
     BOOKMARK_DUPLICATED(-1101, "이미 저장된 북마크 정보가 있습니다"),

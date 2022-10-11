@@ -1,5 +1,6 @@
 package com.example.juse.notification.service;
 
+import com.example.juse.answer.entity.Answer;
 import com.example.juse.application.entity.Application;
 import com.example.juse.board.entity.Board;
 import com.example.juse.notification.entity.Notification;
@@ -87,10 +88,9 @@ public class NotificationService {
         board.getApplicationList().forEach(
                 application -> {
                     Notification notification = new Notification();
-                    notification.setBoard(board);
-                    notification.setSender(board.getUser());
-                    notification.setReceiver(application.getUser());
                     notification.setType(Notification.Type.CLOSE);
+                    notification.setBoard(board);
+                    notification.addUsers(board.getUser(), application.getUser());
                     notificationRepository.save(notification);
                 }
         );
@@ -106,13 +106,33 @@ public class NotificationService {
         User receiver = board.getUser();
 
         Notification notification = new Notification();
+        notification.setType(Notification.Type.QUESTION);
         notification.setBoard(board);
         notification.addUsers(sender, receiver);
-        notification.setType(Notification.Type.QUESTION);
         notification.setQuestion(question);
         notificationRepository.save(notification);
 
         log.info("{} 번 유저가 작성한 {} 번 게시글에 {}번 유저가 문의를 남김",
                 receiver.getId(), board.getId(), sender.getId());
+    }
+
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void notifyNewAnswer(Answer answer) {
+
+        Question question = answer.getQuestion();
+        Board board = question.getBoard();
+        User sender = board.getUser();
+        User receiver = question.getUser();
+
+        Notification notification = new Notification();
+        notification.setType(Notification.Type.ANSWER);
+        notification.setAnswer(answer);
+        notification.setBoard(board);
+        notification.addUsers(sender, receiver);
+        notificationRepository.save(notification);
+
+        log.info("{} 번 게시글에 {} 번 사용자가 문의한 글에 답변이 달렸습니다",
+                board.getId(), receiver.getId());
     }
 }

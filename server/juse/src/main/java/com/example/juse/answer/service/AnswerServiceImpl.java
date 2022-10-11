@@ -6,6 +6,7 @@ import com.example.juse.answer.repository.AnswerRepository;
 import com.example.juse.board.entity.Board;
 import com.example.juse.exception.CustomRuntimeException;
 import com.example.juse.exception.ExceptionCode;
+import com.example.juse.notification.service.NotificationService;
 import com.example.juse.question.entity.Question;
 import com.example.juse.question.service.QuestionService;
 import com.example.juse.user.entity.User;
@@ -24,12 +25,17 @@ public class AnswerServiceImpl implements AnswerService {
     private final QuestionService questionService;
     private final UserService userService;
     private final AnswerMapper answerMapper;
+    private final NotificationService notificationService;
 
     @Override
     @Transactional
     public Answer create(Answer mappedObj) {
 
-        Question question = questionService.verifyQuestionById(mappedObj.getQuestion().getId());
+        long questionId = mappedObj.getQuestion().getId();
+
+        checkQuestionAlreadyAnswered(questionId);
+
+        Question question = questionService.verifyQuestionById(questionId);
         Board board = question.getBoard();
         long userId = mappedObj.getUser().getId();
 
@@ -41,7 +47,9 @@ public class AnswerServiceImpl implements AnswerService {
         mappedObj.addQuestion(question);
         mappedObj.addUser(user);
 
-        return answerRepository.save(mappedObj);
+        Answer savedAnswer = answerRepository.save(mappedObj);
+        notificationService.notifyNewAnswer(savedAnswer);
+        return savedAnswer;
     }
 
     @Override
@@ -76,6 +84,12 @@ public class AnswerServiceImpl implements AnswerService {
         return answerRepository.findById(answerId).orElseThrow(
                 () -> new CustomRuntimeException(ExceptionCode.ANSWER_NOT_FOUND)
         );
+    }
+
+    public void checkQuestionAlreadyAnswered(long questionId) {
+        if (answerRepository.findByQuestionId(questionId).isPresent()) {
+            throw new CustomRuntimeException(ExceptionCode.QUESTION_ALREADY_ANSWERED);
+        }
     }
 
 }
