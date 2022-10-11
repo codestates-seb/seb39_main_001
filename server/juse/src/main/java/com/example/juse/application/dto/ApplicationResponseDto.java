@@ -1,5 +1,6 @@
 package com.example.juse.application.dto;
 
+import com.example.juse.application.entity.Application;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,7 @@ public class ApplicationResponseDto {
     private Long userId;
     private Long boardId;
     private String position;
-    private boolean isAccepted;
+    private Application.Status status;
     private String nickname;
 
 }

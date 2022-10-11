@@ -42,11 +42,6 @@ public class ApplicationServiceImpl implements ApplicationService{
     }
 
     @Override
-    public Application update(Application mappedObj) {
-        return null;
-    }
-
-    @Override
     @Transactional
     public Application accept(long applicationId, long userId) {
         Application findApply = findVerifiedApplication(applicationId);
@@ -55,7 +50,7 @@ public class ApplicationServiceImpl implements ApplicationService{
 
         findApply.checkApplicationWriter(userId);
         checkPositionAvailability(board, findApply.getPosition());
-        findApply.setAccepted(true);
+        findApply.setStatus(Application.Status.ACCEPTED);
 
         // 수락을 눌렀을 때, 지원자의 각 포지션 카운트 증가 후 Board 테이블에 저장.
         int curBack = board.getCurBackend();
@@ -92,6 +87,7 @@ public class ApplicationServiceImpl implements ApplicationService{
         Application findApply = findVerifiedApplication(applicationId);
         Board board = boardService.verifyBoardById(findApply.getBoard().getId());
         findApply.checkApplicationWriter(userId);
+        findApply.setStatus(Application.Status.DECLINED);
 
         // 거절을 눌렀을 때, 지원자의 각 포지션 카운트 감소 후 Board 테이블에 저장.
         int curBack = board.getCurBackend();
@@ -104,9 +100,9 @@ public class ApplicationServiceImpl implements ApplicationService{
         else if(findApply.getPosition().equals("designer") && curDesign > 0) board.setCurDesigner(--curDesign);
         else if(findApply.getPosition().equals("etc") && curEtc > 0) board.setCurEtc(--curEtc);
 
-        System.out.println("board.toString = " + board.toString());
-        boardRepository.save(board);
-        applicationRepository.deleteById(applicationId);
+        Board savedBoard = boardRepository.save(board);
+        Application savedApplication = applicationRepository.save(findApply);
+        notificationService.notifyApplicationDeclined(savedBoard, savedApplication);
 
     }
 

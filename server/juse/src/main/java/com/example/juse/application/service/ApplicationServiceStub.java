@@ -23,12 +23,6 @@ public class ApplicationServiceStub implements ApplicationService {
         return applicationRepository.save(mappedObj);
     }
 
-
-    @Override
-    public Application update(Application mappedObj) {
-        return null;
-    }
-
     @Override
     public Application accept(long applicationId, long userId) {
         return stubService.getAcceptedApplication();

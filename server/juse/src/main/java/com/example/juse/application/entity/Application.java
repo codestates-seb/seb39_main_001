@@ -29,7 +29,9 @@ public class Application extends Auditing {
     private String position;
 
     @Setter
-    private boolean isAccepted;
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.ON_WAIT;
 
     @ManyToOne
     @JoinColumn(name = "BOARD_ID")
@@ -43,6 +45,12 @@ public class Application extends Auditing {
     @OneToMany(mappedBy = "application", fetch = FetchType.LAZY)
     private List<Notification> notificationList = new ArrayList<>();
 
+    @Getter
+    public enum Status{
+        ON_WAIT,
+        ACCEPTED,
+        DECLINED
+    }
 
     public void checkApplicationWriter(long userId) {
         if (this.getBoard().getUser().getId() != userId) {

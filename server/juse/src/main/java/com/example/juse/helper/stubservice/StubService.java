@@ -131,7 +131,7 @@ public class StubService {
                                         .board(stub)
                                         .user(User.builder()
                                                 .id(1L).build())
-                                        .isAccepted(false)
+//                                        .isAccepted(false)
                                         .position("backend")
                                         .build(),
                                 Application.builder()
@@ -139,7 +139,7 @@ public class StubService {
                                         .board(stub)
                                         .user(User.builder()
                                                 .id(2L).build())
-                                        .isAccepted(true)
+//                                        .isAccepted(true)
                                         .position("backend")
                                         .build()
                         )
@@ -174,7 +174,7 @@ public class StubService {
                 .user(getUser())
                 .board(getBoard())
                 .position("backend")
-                .isAccepted(true)
+//                .isAccepted(true)
                 .build();
     }
 
@@ -293,7 +293,7 @@ public class StubService {
                                                                         .build()
                                                         ).build()
                                         )
-                                        .isAccepted(true)
+//                                        .isAccepted(true)
                                         .build(),
                                 Application.builder()
                                         .board(
@@ -312,7 +312,7 @@ public class StubService {
                                                                         .build()
                                                         ).build()
                                         )
-                                        .isAccepted(false)
+//                                        .isAccepted(false)
                                         .build()
                         )
                 )

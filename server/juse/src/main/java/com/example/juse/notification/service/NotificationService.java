@@ -11,6 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.stylesheets.LinkStyle;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -56,7 +59,27 @@ public class NotificationService {
         notificationRepository.save(notification);
 
         log.info("{}번 게시글 {} 포지션에 지원한 {}번 사용자의 지원이 수락되었습니다",
-                board.getId(), application.getPosition(),accepted.getId());
+                board.getId(), application.getPosition(), accepted.getId());
 
     }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void notifyApplicationDeclined(Board board, Application application) {
+
+        User writer = board.getUser();
+        User declined = application.getUser();
+
+        Notification notification = new Notification();
+        notification.setType(Notification.Type.DECLINE);
+        notification.addUsers(writer, declined);
+        notification.setApplication(application);
+        notification.setBoard(board);
+
+        notificationRepository.save(notification);
+
+        log.info("{}번 게시글 {} 포지션에 지원한 {}번 사용자의 지원이 거절되었습니다",
+                board.getId(), application.getPosition(), declined.getId());
+
+    }
+
 }
