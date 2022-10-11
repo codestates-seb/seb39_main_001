@@ -6,8 +6,8 @@ const TextEditor = ({ formData, setFormData }) => {
   // react-quill setting
   const toolbarOptions = [
     [{ header: [1, 2, 3, false] }],
-    ['bold', 'italic', 'underline', 'strike'],
-    ['blockquote', 'code-block'],
+    ['bold', 'italic', 'underline'],
+    ['blockquote'],
     [{ list: 'ordered' }, { list: 'bullet' }],
     [{ color: [] }, { background: [] }],
     [{ align: [] }],
@@ -21,7 +21,7 @@ const TextEditor = ({ formData, setFormData }) => {
   // content input handler
   const inputChange = (e, delta, source, editor) => {
     setFormData((prev) => ({ ...prev, content: e }));
-    console.log(editor.getContents());
+    console.log(formData.content);
   };
 
   return (
@@ -61,6 +61,9 @@ const TextEditorWrapper = styled.div`
           }
           em {
             font-style: italic;
+          }
+          strong {
+            font-weight: 700;
           }
         }
         // placeholder style

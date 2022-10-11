@@ -371,6 +371,9 @@ const Main = styled.div`
     em {
       font-style: italic;
     }
+    strong {
+      font-weight: 700;
+    }
   }
 `;
 

@@ -69,9 +69,9 @@ const EditNewMeeting = () => {
     }
 
     // Patch 요청
-    apis
-      .patchBoard(token, formData, boardId)
-      .then(navigate(`/boards/${boardId}`));
+    apis.patchBoard(token, formData, boardId).then(() => {
+      navigate(`/boards/${boardId}`);
+    });
   };
 
   return (
