@@ -4,6 +4,7 @@ import com.example.juse.application.entity.Application;
 import com.example.juse.board.entity.Board;
 import com.example.juse.notification.entity.Notification;
 import com.example.juse.notification.repository.NotificationRepository;
+import com.example.juse.question.entity.Question;
 import com.example.juse.user.entity.User;
 import com.example.juse.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.List;
 
@@ -97,5 +97,22 @@ public class NotificationService {
 
         log.info("{} 번 게시글 작성자 {}번 사용자가 해당 게시글에 지원한 {} 명 유저에게 모집이 마감되었다고 알림을 보냄",
                 board.getId(), board.getUser().getId(), board.getApplicationList().size());
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void notifyNewQuestion(Question question) {
+        Board board = question.getBoard();
+        User sender = question.getUser();
+        User receiver = board.getUser();
+
+        Notification notification = new Notification();
+        notification.setBoard(board);
+        notification.addUsers(sender, receiver);
+        notification.setType(Notification.Type.QUESTION);
+        notification.setQuestion(question);
+        notificationRepository.save(notification);
+
+        log.info("{} 번 유저가 작성한 {} 번 게시글에 {}번 유저가 문의를 남김",
+                receiver.getId(), board.getId(), sender.getId());
     }
 }

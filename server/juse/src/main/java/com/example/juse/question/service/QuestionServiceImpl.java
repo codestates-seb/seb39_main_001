@@ -4,6 +4,7 @@ import com.example.juse.board.entity.Board;
 import com.example.juse.board.service.BoardService;
 import com.example.juse.exception.CustomRuntimeException;
 import com.example.juse.exception.ExceptionCode;
+import com.example.juse.notification.service.NotificationService;
 import com.example.juse.question.entity.Question;
 import com.example.juse.question.mapper.QuestionMapper;
 import com.example.juse.question.repository.QuestionRepository;
@@ -25,6 +26,7 @@ public class QuestionServiceImpl implements QuestionService{
     private final UserService userService;
     private final QuestionRepository questionRepository;
     private final QuestionMapper questionMapper;
+    private final NotificationService notificationService;
 
     @Override
     @Transactional
@@ -38,7 +40,11 @@ public class QuestionServiceImpl implements QuestionService{
         post.addBoard(board);
         post.addUser(user);
 
-        return questionRepository.save(post);
+        Question savedQuestion = questionRepository.save(post);
+
+        notificationService.notifyNewQuestion(savedQuestion);
+
+        return savedQuestion;
     }
 
     @Override
