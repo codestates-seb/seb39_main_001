@@ -97,9 +97,9 @@ VALUES(1, 'img', 'user1', 'hsbang.thom@gmail.com', 'test', 0, 'nickname', 1);
 
 INSERT INTO USERS (id, img, introduction, email, portfolio, liked, nickname, social_user_id)
 VALUES(2, 'img2', 'user2', 'gatzby3645@gmail.com', 'test2', 0,'nickname2', 2);
---
---INSERT INTO USERS (id, img, introduction, email, portfolio, liked, nickname, social_user_id)
---VALUES(3, 'img3', 'user3', 'tayloredwings@gmail.com', 'test3', 0, 'nickname3', 3);
+
+INSERT INTO USERS (id, img, introduction, email, portfolio, liked, nickname, social_user_id)
+VALUES(3, 'img3', 'user3', 'tayloredwings@gmail.com', 'test3', 0, 'nickname3', 3);
 
 
 INSERT INTO BOARDS
