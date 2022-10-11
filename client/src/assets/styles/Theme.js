@@ -34,16 +34,8 @@ export const darkTheme = {
     grey1: '#7e858d',
     grey2: '#495057',
     grey3: '#495057',
-    grey4: '#e9ecef',
-    grey5: '#b4b4b4',
-    // grey1: '#e9ecef',
-    // grey2: '#dee2e6',
-    // grey3: '#adb5bd',
-    // grey4: '#7e858d',
-    // grey5: '#495057',
-    // #474A48 (darker)
-    // #2C302E (middle)
-    // #909590 (lighter)
+    grey4: '#b4b4b4',
+    grey5: '#e9ecef',
     purple1: `#be99ff`,
     purple2: '#6f2dbd',
   },

@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -18,6 +20,11 @@ import java.util.List;
 public class BoardServiceStub implements BoardService {
     @Override
     public void addViewCount(Board board) {
+
+    }
+
+    @Override
+    public void addViewCount(Board board, HttpServletRequest request, HttpServletResponse response, Long boardId) {
 
     }
 
