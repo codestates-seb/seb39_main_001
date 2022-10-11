@@ -5,10 +5,10 @@ import { ReactComponent as BookmarkIcon } from '../assets/icons/bookmark.svg';
 import { ReactComponent as BookmarkCheckedIcon } from '../assets/icons/bookmark-check-fill.svg';
 import { ReactComponent as Eye } from '../assets/icons/eye.svg';
 import { apis } from '../apis/axios';
-import { useQueryClient, useMutation } from 'react-query';
+import { useMutation } from 'react-query';
 import { useState } from 'react';
 
-const Card = ({ data }) => {
+const Card = ({ data, refetch }) => {
   const [cookies] = useCookies();
   const token = cookies.user;
   const [bookmarked, setBookmarked] = useState(data.bookmarked);
@@ -29,6 +29,7 @@ const Card = ({ data }) => {
     () => apis.postBookmark(token, data.id),
     {
       onSuccess: (data, variables, context) => {
+        if (refetch) refetch();
         setBookmarked(true);
         setBookCount((prev) => prev + 1);
       },
@@ -39,6 +40,7 @@ const Card = ({ data }) => {
     () => apis.deleteBookmark(token, data.id),
     {
       onSuccess: (data, variables, context) => {
+        if (refetch) refetch();
         setBookmarked(false);
         setBookCount((prev) => prev - 1);
       },
@@ -130,6 +132,7 @@ const CardContainer = styled.div`
   padding: 20px 30px;
   opacity: ${({ status }) => (status === 'CLOSED' ? 0.5 : 1)};
   :hover {
+    transition: all 0.5s linear;
     border: 2px solid ${({ theme }) => theme.colors.purple1};
   }
 `;

@@ -8,6 +8,11 @@ import { ReactComponent as BookmarkCheckedIcon } from '../assets/icons/bookmark-
 import { apis } from '../apis/axios';
 import { useCookies } from 'react-cookie';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
+import ReactMarkdown from 'react-markdown';
+import { normalize, Normalize } from 'styled-normalize';
+import * as LottiePlayer from '@lottiefiles/lottie-player';
+import { NullBoards } from './Home';
+import { useState } from 'react';
 
 const Board = () => {
   const [cookies] = useCookies();
@@ -16,13 +21,20 @@ const Board = () => {
   const boardId = param.boardId;
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const { data, isLoading, isError, error } = useQuery(
+  const { data, isError, error } = useQuery(
     'board',
     () => apis.getBoardDetail(token, boardId),
     {
       onError: (error) => {
         console.log(error);
+      },
+      // 일부러 로딩을 줌...;;
+      onSuccess: (data) => {
+        // setTimeout(() => {
+        setIsLoading(false);
+        // }, 400);
       },
     }
   );
@@ -168,11 +180,26 @@ const Board = () => {
           </TagsContainer>
         </RightInfo>
       </TopTemplate>
-      <Main>{data.content}</Main>
+      <Main>
+        <Normalize />
+        <ReactMarkdown>{data.content}</ReactMarkdown>
+      </Main>
       <QuestionAnswer data={data} />
     </BoardContainer>
   ) : (
-    ''
+    <>
+      <lottie-player
+        src='https://assets5.lottiefiles.com/packages/lf20_8szgr2ma.json'
+        background='transparent'
+        speed='1'
+        style={{ width: '300px', height: '300px', margin: 'auto' }}
+        loop
+        autoplay
+      />
+      <NullBoards style={{ paddingTop: '0', marginTop: '-50px' }}>
+        로딩 중입니다..
+      </NullBoards>
+    </>
   );
 };
 
@@ -312,8 +339,9 @@ const RightInfo = styled.div`
 `;
 
 const Category = styled.div`
-  color: ${({ theme }) => theme.colors.grey4};
+  color: ${({ theme }) => theme.text};
   font-size: 18px;
+  font-weight: 500;
   width: 150px;
 `;
 

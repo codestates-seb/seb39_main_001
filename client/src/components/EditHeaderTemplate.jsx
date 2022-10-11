@@ -156,8 +156,10 @@ const EditHeaderTemplate = ({ formData, setFormData }) => {
               inputFormat='YYYY-MM-DD'
               renderInput={(params) => (
                 <TextField
+                  size='small'
                   {...params}
                   sx={{
+                    width: 245,
                     svg: { color: '#7e858d' },
                     input: { color: '#7e858d' },
                     '& .MuiOutlinedInput-root': {
@@ -187,8 +189,10 @@ const EditHeaderTemplate = ({ formData, setFormData }) => {
               inputFormat='YYYY-MM-DD'
               renderInput={(params) => (
                 <TextField
+                  size='small'
                   {...params}
                   sx={{
+                    width: 245,
                     svg: { color: '#7e858d' },
                     input: { color: '#7e858d' },
                     '& .MuiOutlinedInput-root': {
@@ -303,7 +307,7 @@ const SelectDisable = styled.div`
     display: block;
     font-size: 16px;
     font-weight: 700;
-    padding: 10px;
+    padding: 10px 10px 10px 0px;
   }
   > .type-edit-message {
     display: flex;
@@ -332,7 +336,7 @@ const SelectButton = styled.div`
     display: block;
     font-size: 16px;
     font-weight: 700;
-    padding: 10px;
+    padding: 10px 10px 10px 0px;
   }
   > div {
     font-size: 14px;
@@ -366,6 +370,9 @@ const SelectButton = styled.div`
     :focus {
       outline: 1px solid ${({ theme }) => theme.colors.purple1};
     }
+    :focus::-webkit-input-placeholder {
+      color: transparent;
+    }
     :hover {
       border: 1px solid ${({ theme }) => theme.colors.purple1};
     }
@@ -379,7 +386,7 @@ const SelectType = styled.div`
     display: block;
     font-size: 16px;
     font-weight: 700;
-    padding: 10px;
+    padding: 10px 10px 10px 0px;
   }
   > .css-1s2u09g-control {
     background-color: ${({ theme }) => theme.background};
@@ -408,7 +415,10 @@ const SelectSingle = styled.div`
     display: block;
     font-size: 16px;
     font-weight: 700;
-    padding: 10px;
+    padding: 10px 10px 10px 0px;
+    &.individual-selection {
+      padding-bottom: 0;
+    }
   }
 
   .select-btn {
@@ -444,8 +454,8 @@ const SelectPositionContainer = styled.div`
     > label {
       font-size: 16px;
       font-weight: 700;
-      padding: 10px;
-      width: 250px;
+      padding: 10px 10px 10px 0px;
+      width: 245px;
     }
   }
   > .position-edit-message {
