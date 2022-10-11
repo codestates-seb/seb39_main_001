@@ -312,4 +312,57 @@ export const apis = {
       pagination.page === pagination.totalPages || pagination.totalPages === 0;
     return { data, isLast, nextPage: page + 1 };
   },
+
+  // 알림함 무한스크롤 및 필터링
+  getNotifications: async (token, tab, page) => {
+    let read = tab;
+    if (read) {
+      read = read === 'new' ? false : true;
+    }
+
+    const res = await axios.get(
+      `https://jusemain.duckdns.org:8080/users/notifications/inbox${
+        typeof read === 'boolean' ? `?read=${read}` : ''
+      }`,
+      {
+        headers: {
+          Auth: token,
+        },
+      }
+    );
+    const { data, pagination } = res.data;
+    const isLast =
+      pagination.page === pagination.totalPages || pagination.totalPages === 0;
+    return { data, isLast, nextPage: page + 1 };
+  },
+
+  // 알림 제거
+  deleteNotification: async (token, notificationId) => {
+    await axios
+      .delete(
+        `https://jusemain.duckdns.org:8080/notifications/${notificationId}`,
+        {
+          headers: {
+            Auth: token,
+          },
+        }
+      )
+      .then((res) => console.log(res.data.data));
+  },
+
+  // 알림 모두 읽음 처리
+  patchNotifications: async (token) => {
+    await axios
+      .patch(
+        `https://jusemain.duckdns.org:8080/notifications`,
+        {},
+        {
+          headers: {
+            Auth: token,
+          },
+        }
+      )
+      .then((res) => console.log(res.data.data))
+      .catch((err) => console.log(err));
+  },
 };

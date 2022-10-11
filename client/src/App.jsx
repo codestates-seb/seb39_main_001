@@ -15,6 +15,7 @@ import { ThemeProvider } from 'styled-components';
 import GlobalStyles from './assets/styles/GlobalStyle';
 import { lightTheme, darkTheme } from './assets/styles/Theme';
 import useDarkMode from './hooks/useDarkMode';
+import Notification from './pages/Notification';
 
 // 프록시:https://cors-jwy.herokuapp.com/
 function App() {
@@ -52,6 +53,7 @@ function App() {
           <Route path='/boards' element={<NewMeeting />} />
           <Route path='/users/myjuse' element={<MyJuse />} />
           <Route path='/boards/edit' element={<EditNewMeeting />} />
+          <Route path='/notifications' element={<Notification />} />
         </Routes>
       </>
     </ThemeProvider>
