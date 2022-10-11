@@ -67,13 +67,13 @@ export const apis = {
       new Blob([JSON.stringify(data)], { type: 'application/json' })
     );
     formData.append('profileImg', img);
-    await axios
+    return await axios
       .patch(`https://jusemain.duckdns.org:8080/users`, formData, {
         headers: {
           Auth: token,
         },
       })
-      .then((res) => console.log(res))
+      .then((res) => res)
       .catch((err) => console.log(err));
   },
 
