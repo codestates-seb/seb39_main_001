@@ -27,12 +27,12 @@ public class BookmarkNotificationScheduler {
 
         bookmarkRepository.findAll().stream()
                 .filter(bookmark -> !bookmark.isNotified())
-                .filter(bookmark -> Period.between(currentDate, bookmark.getBoard().getDueDate()).getDays() == 3)
+                .filter(bookmark -> Period.between(currentDate, bookmark.getBoard().getDueDate()).getDays() <= 3)
                 .forEach(bookmark ->
                         {
                             bookmark.setNotified(true);
-                            bookmarkRepository.save(bookmark);
-                            notificationService.notifyRemainingDaysOfBookmarkedBoards(bookmark);
+                            Bookmark savedBookmark = bookmarkRepository.save(bookmark);
+                            notificationService.notifyRemainingDaysOfBookmarkedBoards(savedBookmark);
                             log.info("today : {} , due date :{}, remaining days: {}"
                                     , currentDate, bookmark.getBoard().getDueDate(), Period.between(currentDate, bookmark.getBoard().getDueDate()).getDays());
                         }

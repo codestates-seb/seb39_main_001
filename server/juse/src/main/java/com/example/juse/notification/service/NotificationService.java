@@ -5,6 +5,7 @@ import com.example.juse.application.entity.Application;
 import com.example.juse.board.entity.Board;
 import com.example.juse.bookmark.entity.Bookmark;
 import com.example.juse.bookmark.repository.BookmarkRepository;
+import com.example.juse.like.entity.Like;
 import com.example.juse.notification.entity.Notification;
 import com.example.juse.notification.repository.NotificationRepository;
 import com.example.juse.question.entity.Question;
@@ -150,9 +151,25 @@ public class NotificationService {
         notification.setReceiver(receiver);
 
         notificationRepository.save(notification);
-        log.info("북마크한 {} 번 게시글의 마감일이 3일 남았습니다, {} 번 사용자여"
+        log.info("북마크한 {} 번 게시글의 마감일이 3일 이내로 남았습니다, {} 번 사용자여"
                 , board.getId(), receiver.getId()
         );
 
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void notifySomeoneLikedUser(Like like) {
+
+        User sender = like.getWhoLikes();
+        User receiver = like.getWhoIsLiked();
+
+        Notification notification = new Notification();
+        notification.setType(Notification.Type.LIKE);
+        notification.addUsers(sender, receiver);
+        notification.setLike(like);
+
+        notificationRepository.save(notification);
+
+        log.info("{} 번 사용자가 {}번 사용자를 좋아요 했습니다.", sender.getId(), receiver.getId());
     }
 }

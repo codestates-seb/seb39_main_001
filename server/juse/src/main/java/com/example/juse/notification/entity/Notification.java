@@ -4,6 +4,7 @@ import com.example.juse.answer.entity.Answer;
 import com.example.juse.application.entity.Application;
 import com.example.juse.audit.Auditing;
 import com.example.juse.board.entity.Board;
+import com.example.juse.like.entity.Like;
 import com.example.juse.question.entity.Question;
 import com.example.juse.user.entity.User;
 import lombok.*;
@@ -46,6 +47,10 @@ public class Notification extends Auditing {
     @ManyToOne
     @JoinColumn(name = "APPLICATION_ID")
     private Application application;
+
+    @ManyToOne
+    @JoinColumn(name = "LIKE_ID")
+    private Like like;
 
     private boolean isRead;
 
