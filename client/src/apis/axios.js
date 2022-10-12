@@ -305,11 +305,24 @@ export const apis = {
         headers: {
           Auth: token,
         },
-      }
+      },
+      { withCredentials: true },
     );
     const { data, pagination } = res.data;
     const isLast =
       pagination.page === pagination.totalPages || pagination.totalPages === 0;
     return { data, isLast, nextPage: page + 1 };
   },
+
+  // Navbar 알림 조회
+  getRecentNotifications: async (token) => {
+    return await axios
+      .get(`https://jusemain.duckdns.org:8080/users/notifications`, {
+        headers: {
+          Auth: token,
+        },
+      })
+      .then((res) => console.log(res.data.data))
+      .catch((err) => console.log(err));
+  }
 };
