@@ -48,10 +48,6 @@ public class Notification extends Auditing {
     @JoinColumn(name = "APPLICATION_ID")
     private Application application;
 
-    @ManyToOne
-    @JoinColumn(name = "LIKE_ID")
-    private Like like;
-
     private boolean isRead;
 
     @Enumerated(EnumType.STRING)

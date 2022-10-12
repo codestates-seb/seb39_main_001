@@ -23,9 +23,6 @@ public class LikeServiceImpl implements LikeService {
     private final UserRepository userRepository;
     private final NotificationService notificationService;
 
-    //todo : user1번이 user2번을 또 누르면 어떻게 할것인가?
-    //todo : 하나의 api로 합치는 방법
-    //todo :
     @Override
     @Transactional
     public Like create(long whoLikes, long whoIsLiked) {
@@ -64,7 +61,6 @@ public class LikeServiceImpl implements LikeService {
         int liked = whoIsLike.getLiked();
 
         whoIsLike.setLiked(--liked);
-        Notification notification = verifyAndretutruneEntiy;
 
         likeRepository.delete(like);
     }

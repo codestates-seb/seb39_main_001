@@ -166,7 +166,6 @@ public class NotificationService {
         Notification notification = new Notification();
         notification.setType(Notification.Type.LIKE);
         notification.addUsers(sender, receiver);
-        notification.setLike(like);
 
         notificationRepository.save(notification);
 
