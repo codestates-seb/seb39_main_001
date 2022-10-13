@@ -19,51 +19,44 @@ import Notification from './pages/Notification';
 
 // 프록시:https://cors-jwy.herokuapp.com/
 function App() {
-  const [cookies, setCookie, removeCookie] = useCookies();
-  const [theme, toggleTheme, mountedComponent] = useDarkMode();
-  const themeMode = theme === 'light' ? lightTheme : darkTheme;
+	const [cookies, setCookie, removeCookie] = useCookies();
+	const [theme, toggleTheme, mountedComponent] = useDarkMode();
+	const themeMode = theme === 'light' ? lightTheme : darkTheme;
 
-  if (!mountedComponent) return <div />;
+	if (!mountedComponent) return <div />;
 
-  // setCookie(
-  //   'user',
-  //   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ3amRkbmR5ZDIwMDJAZ21haWwuY29tIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY2NTI5OTY5OSwiZXhwIjoxNjc0Mjk5Njk5fQ.UkrlclVELBgnx_m87bDNPa-kkILqKTibNvXtHnXhzd0'
-  // );
-  // setCookie('userId', '12');
-
-  return (
-    <ThemeProvider theme={themeMode}>
-      <GlobalStyles />
-      <>
-        {cookies.user ? (
-          <NavbarPrivate
-            removeCookie={removeCookie}
-            theme={theme}
-            toggleTheme={toggleTheme}
-          />
-        ) : (
-          <NavbarPublic theme={theme} toggleTheme={toggleTheme} />
-        )}
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/join' element={<Join />} />
-          <Route path='/boards/:boardId' element={<Board />} />
-          <Route path='/oauth2/redirect' element={<OAuth />} />
-          {/* 같은 컴포넌트인데 path가 다를 때는 unique key를 지정*/}
-          <Route path='/users/' element={<UserInfo key='myPage' />} />
-          <Route
-            path='/users/:userId'
-            element={<UserInfo key='othersPage' />}
-          />
-          <Route path='/users/edit' element={<EditUser />} />
-          <Route path='/boards' element={<NewMeeting />} />
-          <Route path='/users/myjuse' element={<MyJuse />} />
-          <Route path='/boards/edit' element={<EditNewMeeting />} />
-          <Route path='/notifications' element={<Notification />} />
-        </Routes>
-      </>
-    </ThemeProvider>
-  );
+	return (
+		<ThemeProvider theme={themeMode}>
+			<GlobalStyles />
+			<>
+				{cookies.user ? (
+					<NavbarPrivate
+						removeCookie={removeCookie}
+						theme={theme}
+						toggleTheme={toggleTheme}
+					/>
+				) : (
+					<NavbarPublic theme={theme} toggleTheme={toggleTheme} />
+				)}
+				<Routes>
+					<Route path='/' element={<Home />} />
+					<Route path='/join' element={<Join />} />
+					<Route path='/boards/:boardId' element={<Board />} />
+					<Route path='/oauth2/redirect' element={<OAuth />} />
+					{/* 같은 컴포넌트인데 path가 다를 때는 unique key를 지정*/}
+					<Route path='/users/' element={<UserInfo key='myPage' />} />
+					<Route
+						path='/users/:userId'
+						element={<UserInfo key='othersPage' />}
+					/>
+					<Route path='/users/edit' element={<EditUser />} />
+					<Route path='/boards' element={<NewMeeting />} />
+					<Route path='/users/myjuse' element={<MyJuse />} />
+					<Route path='/boards/edit' element={<EditNewMeeting />} />
+				</Routes>
+			</>
+		</ThemeProvider>
+	);
 }
 
 export default App;
