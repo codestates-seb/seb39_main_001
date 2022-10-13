@@ -84,6 +84,7 @@ export const apis = {
         headers: {
           Auth: token,
         },
+        withCredentials: true,
       })
       .then((res) => res.data.data)
       .catch((err) => console.log(err));
@@ -305,6 +306,7 @@ export const apis = {
         headers: {
           Auth: token,
         },
+        withCredentials: true,
       }
     );
     const { data, pagination } = res.data;

@@ -25,6 +25,12 @@ function App() {
 
   if (!mountedComponent) return <div />;
 
+  // setCookie(
+  //   'user',
+  //   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ3amRkbmR5ZDIwMDJAZ21haWwuY29tIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY2NTI5OTY5OSwiZXhwIjoxNjc0Mjk5Njk5fQ.UkrlclVELBgnx_m87bDNPa-kkILqKTibNvXtHnXhzd0'
+  // );
+  // setCookie('userId', '12');
+
   return (
     <ThemeProvider theme={themeMode}>
       <GlobalStyles />
