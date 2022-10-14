@@ -1,5 +1,5 @@
 import { rest } from 'msw';
-import { boards } from './db';
+import { boards, notifications } from './db';
 import { board1 } from './db';
 
 export const handlers = [
@@ -31,4 +31,11 @@ export const handlers = [
   rest.get('/boards/2', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(board1));
   }),
+
+  rest.get(
+    'https://jusemain.duckdns.org:8080/users/notifications/inbox?read=false',
+    (req, res, ctx) => {
+      return res(ctx.json(notifications));
+    }
+  ),
 ];

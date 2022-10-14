@@ -15,6 +15,7 @@ import { ThemeProvider } from 'styled-components';
 import GlobalStyles from './assets/styles/GlobalStyle';
 import { lightTheme, darkTheme } from './assets/styles/Theme';
 import useDarkMode from './hooks/useDarkMode';
+import Notification from './pages/Notification';
 
 // 프록시:https://cors-jwy.herokuapp.com/
 function App() {

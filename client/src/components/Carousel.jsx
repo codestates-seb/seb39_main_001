@@ -126,6 +126,7 @@ const Introduction = styled.div`
 
 const TeamContainer = styled.div`
   width: 412px;
+  margin-bottom: 12px;
   > h2 {
     font-weight: 700;
     color: ${({ theme }) => theme.colors.purple5};
@@ -163,12 +164,13 @@ const ChickenMilktea = styled.span`
     }
   }
   > .slide-in {
-    animation: slideIn 1s forwards;
+    animation: slideIn 1.5s forwards;
     transform: translate3d(0, -100%, 0);
   }
   > .slide-out {
-    animation: slideOut 1s forwards;
+    animation: slideOut 1.5s forwards;
     transform: translate3d(0, -100%, 0);
+    display: none;
   }
   @keyframes slideIn {
     0% {
