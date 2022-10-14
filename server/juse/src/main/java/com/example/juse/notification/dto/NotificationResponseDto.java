@@ -6,18 +6,21 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class NotificationResponseLikeDto extends NotificationResponse {
+public class NotificationResponseDto {
 
-    private Long userId;
-    private String userNickname;
-    private Notification.Type type = Notification.Type.LIKE;
+    private long boardId;
+    private String boardTitle;
+    private long senderId;
+    private String senderNickname;
+    private long receiverId;
+    private String receiverNickname;
+    private Notification.Type type;
     private LocalDateTime createdAt;
     private boolean isRead;
 

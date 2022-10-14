@@ -4,7 +4,6 @@ import com.example.juse.answer.entity.Answer;
 import com.example.juse.application.entity.Application;
 import com.example.juse.board.entity.Board;
 import com.example.juse.bookmark.entity.Bookmark;
-import com.example.juse.bookmark.repository.BookmarkRepository;
 import com.example.juse.like.entity.Like;
 import com.example.juse.notification.entity.Notification;
 import com.example.juse.notification.repository.NotificationRepository;
@@ -13,7 +12,6 @@ import com.example.juse.user.entity.User;
 import com.example.juse.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -170,5 +168,10 @@ public class NotificationService {
         notificationRepository.save(notification);
 
         log.info("{} 번 사용자가 {}번 사용자를 좋아요 했습니다.", sender.getId(), receiver.getId());
+    }
+
+    public List<Notification> getNotifications() {
+
+        return notificationRepository.findFirst5ByOrderByCreatedAtDesc();
     }
 }
