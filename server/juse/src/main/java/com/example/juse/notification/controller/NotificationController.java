@@ -1,38 +1,38 @@
 package com.example.juse.notification.controller;
 
 
-import com.example.juse.dto.MultiResponseDto;
 import com.example.juse.dto.SingleResponseDto;
+import com.example.juse.exception.validator.NotEmptyToken;
 import com.example.juse.notification.dto.NotificationResponseDto;
 import com.example.juse.notification.entity.Notification;
 import com.example.juse.notification.mapper.NotificationMapper;
 import com.example.juse.notification.service.NotificationService;
+import com.example.juse.security.oauth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/notifications")
-@RestController
+@Controller
 public class NotificationController {
 
     private final NotificationService notificationService;
     private final NotificationMapper notificationMapper;
 
-    @RequestMapping("/main")
-    public ResponseEntity<SingleResponseDto<? extends List<NotificationResponseDto>>> getNotifications() {
 
-        List<Notification> notificationList = notificationService.getNotifications();
+    @GetMapping("/{notification-id}")
+    public String redirect(@PathVariable("notification-id") long notificationId) {
 
-        List<NotificationResponseDto> response = notificationMapper.mapToNotificationResponseDtoList(notificationList);
+        Notification notification = notificationService.getNotificationById(notificationId);
 
-        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+        return "redirect:/boards/" + notification.getBoard().getId();
     }
-
 }

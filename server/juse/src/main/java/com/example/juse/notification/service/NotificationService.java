@@ -4,6 +4,8 @@ import com.example.juse.answer.entity.Answer;
 import com.example.juse.application.entity.Application;
 import com.example.juse.board.entity.Board;
 import com.example.juse.bookmark.entity.Bookmark;
+import com.example.juse.exception.CustomRuntimeException;
+import com.example.juse.exception.ExceptionCode;
 import com.example.juse.like.entity.Like;
 import com.example.juse.notification.entity.Notification;
 import com.example.juse.notification.repository.NotificationRepository;
@@ -12,11 +14,14 @@ import com.example.juse.user.entity.User;
 import com.example.juse.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -170,8 +175,25 @@ public class NotificationService {
         log.info("{} 번 사용자가 {}번 사용자를 좋아요 했습니다.", sender.getId(), receiver.getId());
     }
 
-    public List<Notification> getNotifications() {
+    public List<Notification> getUnreadNotifications(long receiverId) {
 
-        return notificationRepository.findFirst5ByOrderByCreatedAtDesc();
+        return notificationRepository.findFirst5ByReceiverIdOrderByCreatedAtDesc(receiverId)
+                .stream()
+                .filter(notification -> !notification.isRead())
+                .collect(Collectors.toList());
+    }
+
+    public Page<Notification> getAllNotifications(Pageable pageable, long receiverId, Boolean isRead) {
+
+        return notificationRepository.getPagedNotificationWithCondition(pageable, receiverId, isRead);
+    }
+
+    public Notification getNotificationById(long notificationId) {
+
+        Notification notification = notificationRepository.findById(notificationId).orElseThrow(() -> new CustomRuntimeException(ExceptionCode.NOTIFICATION_NOT_FOUND));
+        notification.setRead(true);
+
+        return notificationRepository.save(notification);
+
     }
 }

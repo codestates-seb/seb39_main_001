@@ -1,7 +1,14 @@
 package com.example.juse.user.controller;
 
+import com.example.juse.board.dto.BoardResponseDto;
+import com.example.juse.dto.MultiResponseDto;
+import com.example.juse.dto.Pagination;
 import com.example.juse.dto.SingleResponseDto;
 import com.example.juse.exception.validator.NotEmptyToken;
+import com.example.juse.notification.dto.NotificationResponseDto;
+import com.example.juse.notification.entity.Notification;
+import com.example.juse.notification.mapper.NotificationMapper;
+import com.example.juse.notification.service.NotificationService;
 import com.example.juse.security.oauth.PrincipalDetails;
 import com.example.juse.social.entity.SocialUser;
 import com.example.juse.user.dto.UserRequestDto;
@@ -11,6 +18,9 @@ import com.example.juse.user.mapper.UserMapper;
 import com.example.juse.user.repository.UserRepository;
 import com.example.juse.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 
 @RestController
@@ -32,6 +43,9 @@ public class UserController {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final UserService userService;
+
+    private final NotificationService notificationService;
+    private final NotificationMapper notificationMapper;
 
     @GetMapping("/join")
     public ResponseEntity joinUser() {
@@ -145,4 +159,35 @@ public class UserController {
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
+
+    @GetMapping("/notifications")
+    public ResponseEntity<SingleResponseDto<? extends List<NotificationResponseDto>>> getNotificationsOnMain(
+            @NotEmptyToken @AuthenticationPrincipal PrincipalDetails principalDetails
+    ) {
+
+        List<Notification> notificationList = notificationService.getUnreadNotifications(principalDetails.getSocialUser().getUser().getId());
+        List<NotificationResponseDto> response = notificationMapper.mapToNotificationResponseDtoList(notificationList);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+    }
+
+    @GetMapping("/notifications/inbox")
+    public ResponseEntity<MultiResponseDto<NotificationResponseDto>> getNotifications(
+            @NotEmptyToken @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @RequestParam(name = "read" , required = false) Boolean isRead,
+            @RequestParam(name = "page", required = true, defaultValue = "1") int page
+    ) {
+        long receiverId = principalDetails.getSocialUser().getUser().getId();
+        Pageable pageable = PageRequest.of(page - 1, 8);
+
+        Page<Notification> pagedNotifications = notificationService.getAllNotifications(pageable, receiverId, isRead);
+
+        List<Notification> notificationList = pagedNotifications.getContent();
+        List<NotificationResponseDto> notificationResponseDtoList = notificationMapper.mapToNotificationResponseDtoList(notificationList);
+        Pagination pagination = Pagination.of(pagedNotifications);
+
+        return new ResponseEntity<>(new MultiResponseDto<>(notificationResponseDtoList, pagination), HttpStatus.OK);
+
+    }
+
 }

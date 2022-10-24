@@ -19,13 +19,22 @@ public class Pagination {
     private int totalPages;
     private FilterOptions filterOptions;
 
-    public static Pagination of(Page page, FilterOptions filterOptions) {
+    public static Pagination of(Page<?> page, FilterOptions filterOptions) {
         return Pagination.builder()
                 .page(page.getNumber() + 1)
                 .size(page.getSize())
                 .totalElements(page.getTotalElements())
                 .totalPages(page.getTotalPages())
                 .filterOptions(filterOptions)
+                .build();
+    }
+
+    public static Pagination of(Page<?> page) {
+        return Pagination.builder()
+                .page(page.getNumber() + 1)
+                .size(page.getSize())
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
                 .build();
     }
 }

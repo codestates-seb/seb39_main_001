@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 public class NotificationResponseDto {
 
+    private long notificationId;
     private long boardId;
     private String boardTitle;
     private long senderId;

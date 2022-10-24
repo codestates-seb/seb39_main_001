@@ -10,6 +10,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface NotificationMapper {
 
+    @Mapping(target = "notificationId", source = "id")
     @Mapping(target = "boardId", source = "board.id")
     @Mapping(target = "boardTitle", source = "board.title")
     @Mapping(target = "senderId", source = "sender.id")

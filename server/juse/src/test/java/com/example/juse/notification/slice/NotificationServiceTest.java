@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.test.context.support.WithMockUser;
 
 @ExtendWith(MockitoExtension.class)
 public class NotificationServiceTest {
@@ -26,7 +27,6 @@ public class NotificationServiceTest {
     public void givenBoardAndApplication_thenNotificationIsSent() {
 
         Board mockedBoard = Mockito.mock(Board.class);
-
 
     }
 
