@@ -174,9 +174,10 @@ public class UserController {
     @GetMapping("/notifications/inbox")
     public ResponseEntity<MultiResponseDto<NotificationResponseDto>> getNotifications(
             @NotEmptyToken @AuthenticationPrincipal PrincipalDetails principalDetails,
-            @RequestParam(name = "read" , required = false) Boolean isRead,
+            @RequestParam(name = "read", required = false) Boolean isRead,
             @RequestParam(name = "page", required = true, defaultValue = "1") int page
     ) {
+
         long receiverId = principalDetails.getSocialUser().getUser().getId();
         Pageable pageable = PageRequest.of(page - 1, 8);
 
@@ -190,4 +191,13 @@ public class UserController {
 
     }
 
+    @PatchMapping("/notifications")
+    public ResponseEntity<SingleResponseDto<String>> setAsRead(
+            @NotEmptyToken @AuthenticationPrincipal PrincipalDetails principalDetails
+    ) {
+        long userId = principalDetails.getSocialUser().getUser().getId();
+        notificationService.setAllNotificationsAsRead(userId);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(("set all notifications as read")), HttpStatus.OK);
+    }
 }

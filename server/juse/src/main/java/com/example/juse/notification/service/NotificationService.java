@@ -196,4 +196,10 @@ public class NotificationService {
         return notificationRepository.save(notification);
 
     }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void setAllNotificationsAsRead(long userId) {
+        userService.verifyUserById(userId);
+        notificationRepository.setAllUnreadNotificationAsReadByUserId(userId);
+    }
 }
