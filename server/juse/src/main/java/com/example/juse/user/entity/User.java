@@ -54,36 +54,36 @@ public class User extends Auditing {
     private String nickname;
 
     @Builder.Default
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Board> boardList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Bookmark> bookmarkList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "whoLikes", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "whoLikes", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Like> whoLikesList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "whoIsLiked", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "whoIsLiked", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Like> whoIsLikeList = new ArrayList<>();
 
 
     @Builder.Default
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<UserTag> userTagList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Question> questionList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Answer> answerList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Application> applicationList = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.REMOVE)

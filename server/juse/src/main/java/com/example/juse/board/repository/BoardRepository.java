@@ -26,5 +26,12 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
             @Param("tag") List<String> tag,
             @Param("period") List<String> period);
 
+
+    @Query(
+            "SELECT b FROM Board b " +
+            "WHERE b.status = com.example.juse.board.entity.Board$Status.OPENING " +
+            "AND b.dueDate = current_date "
+    )
+    List<Board> findCurrentlyOpened();
 }
 

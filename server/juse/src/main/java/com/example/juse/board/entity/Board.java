@@ -78,11 +78,11 @@ public class Board extends Auditing {
     private User user;
 
     @Builder.Default
-    @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private List<Question> questionList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Bookmark> bookmarkList = new ArrayList<>();
 
     @Builder.Default
@@ -94,7 +94,7 @@ public class Board extends Auditing {
 //    private List<Like> likeList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Application> applicationList = new ArrayList<>();
 
     @Builder.Default
