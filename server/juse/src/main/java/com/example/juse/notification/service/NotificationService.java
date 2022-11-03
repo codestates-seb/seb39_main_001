@@ -3,6 +3,7 @@ package com.example.juse.notification.service;
 import com.example.juse.answer.entity.Answer;
 import com.example.juse.application.entity.Application;
 import com.example.juse.board.entity.Board;
+import com.example.juse.board.repository.BoardRepository;
 import com.example.juse.bookmark.entity.Bookmark;
 import com.example.juse.exception.CustomRuntimeException;
 import com.example.juse.exception.ExceptionCode;
@@ -30,6 +31,8 @@ public class NotificationService {
 
     private final UserService userService;
     private final NotificationRepository notificationRepository;
+
+    private final BoardRepository boardRepository;
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void notifyNewApplication(Board board, Application application) {
@@ -201,5 +204,20 @@ public class NotificationService {
     public void setAllNotificationsAsRead(long userId) {
         userService.verifyUserById(userId);
         notificationRepository.setAllUnreadNotificationAsReadByUserId(userId);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void updateBoardAsClosed() {
+        List<Board> openedBoardList = boardRepository.findCurrentlyOpened();
+
+        log.info("opened boards : {}", openedBoardList.size());
+
+        for (Board board : openedBoardList) {
+            board.setStatus(Board.Status.CLOSED);
+            notifyBoardClosed(board);
+        }
+
+        boardRepository.saveAll(openedBoardList);
+
     }
 }

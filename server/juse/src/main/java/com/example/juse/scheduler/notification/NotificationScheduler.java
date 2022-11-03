@@ -43,8 +43,8 @@ public class NotificationScheduler {
     }
 
     @Scheduled(cron = "0 * * * * MON-SUN")
-    public void checkBoardIsClosed() {
-        final LocalDate currentDate = LocalDate.now(Clock.systemDefaultZone());
+    public void updateOpenedBoardAsClosed() {
+
 
     }
 

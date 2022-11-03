@@ -37,4 +37,23 @@ public class BoardRepositoryTest {
         assertThat(queriedBoardList).isNotEmpty();
         assertThat(queriedBoardList.get(0).getDueDate()).isEqualTo(LocalDate.now());
     }
+
+    @Test
+    @DisplayName("Board update test whose due date is after current date")
+    public void updateQueryTest() {
+        BoardStub boardStub = new BoardStub(10, LocalDate.of(2022, 10, 29));
+
+        userRepository.save(boardStub.getUser());
+        boardRepository.saveAll(boardStub.getBoardList());
+
+        boardRepository.updateBoardAsClosed();
+
+        List<Board> boardList = boardRepository.findAll();
+        assertThat(boardList.stream().anyMatch(board -> board.getStatus() == Board.Status.CLOSED)).isTrue();
+        boardList.forEach(
+                board -> {
+                    System.out.println(board.getId() + " : " + board.getStatus());
+                }
+        );
+    }
 }
