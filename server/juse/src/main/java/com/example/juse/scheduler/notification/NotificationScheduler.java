@@ -44,8 +44,8 @@ public class NotificationScheduler {
 
     @Scheduled(cron = "0 * * * * MON-SUN")
     public void updateOpenedBoardAsClosed() {
-
-
+        notificationService.setBoardStatusAsClosed();
+        log.info("boards are closed");
     }
 
 }

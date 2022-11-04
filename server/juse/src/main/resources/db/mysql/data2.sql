@@ -132,11 +132,11 @@ VALUES(7, current_timestamp, current_timestamp, 1, 0, '', '', 0, 0, 0, 0, 0, '20
 
 INSERT INTO BOARDS
 (id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id, cur_people)
-VALUES(8, current_timestamp, current_timestamp, 1, 0, '', '', 0, 0, 0, 0, 0, '2022-10-15', 0, 0, '', 0, 'long', '2022-10-10', 'CLOSED', '', 'STUDY', 0, 2, 0);
+VALUES(8, current_timestamp, current_timestamp, 1, 0, '', '', 0, 0, 0, 0, 0, '2022-11-04', 0, 0, '', 0, 'long', '2022-10-10', 'OPENING', '', 'STUDY', 0, 2, 0);
 
 INSERT INTO BOARDS
 (id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id, cur_people)
-VALUES(9, current_timestamp, current_timestamp, 2, 0, '', '', 0, 0, 0, 0, 0, '2023-12-11', 0, 0, '', 0, '6', '2022-10-10', 'CLOSED', '', 'STUDY', 0, 2, 0);
+VALUES(9, current_timestamp, current_timestamp, 2, 0, '', '', 0, 0, 0, 0, 0, '2022-11-04', 0, 0, '', 0, '6', '2022-10-10', 'OPENING', '', 'STUDY', 0, 2, 0);
 
 --INSERT INTO BOARDS
 --(id, created_at, modified_at, backend, bookmarks, contact, content, cur_backend, cur_designer, cur_etc, cur_frontend, designer, due_date, etc, frontend, on_offline, people, period, starting_date, status, title, type, views, user_id)
@@ -206,3 +206,9 @@ VALUES (4, false, 8, 3);
 
 INSERT INTO BOOKMARKS (id, is_notified, board_id, user_id)
 VALUES (5, false, 9, 1);
+
+INSERT INTO APPLICATIONS (id, position, status, board_id, user_id, created_at, modified_at)
+VALUES (1, 'backend', 'ON_WAIT', 8, 3, current_timestamp, current_timestamp);
+
+INSERT INTO APPLICATIONS (id, position, status, board_id, user_id, created_at, modified_at)
+VALUES (2, 'frontend', 'ON_WAIT', 9, 1, current_timestamp, current_timestamp);

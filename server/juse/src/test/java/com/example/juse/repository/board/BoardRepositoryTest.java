@@ -35,7 +35,12 @@ public class BoardRepositoryTest {
         List<Board> queriedBoardList = boardRepository.findCurrentlyOpened();
 
         assertThat(queriedBoardList).isNotEmpty();
-        assertThat(queriedBoardList.get(0).getDueDate()).isEqualTo(LocalDate.now());
+        queriedBoardList.forEach(
+                board -> {
+                    System.out.println(board.getId());
+                    System.out.println(board.getDueDate());
+                }
+        );
     }
 
     @Test

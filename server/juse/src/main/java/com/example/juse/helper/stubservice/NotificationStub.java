@@ -13,10 +13,12 @@ public class NotificationStub {
     private final Notification notification;
     private final List<Notification> notificationList;
 
-    private final User user;
+    private final User receiver;
+    private final User sender;
 
     public NotificationStub(long userId, long count) {
-        this.user = buildUserStub(userId);
+        this.receiver = buildUserStub(userId);
+        this.sender = buildUserStub(userId + 1);
         this.notification = buildNotificationStub();
         this.notificationList = buildNotificationListStub(count);
     }
@@ -32,7 +34,7 @@ public class NotificationStub {
     private Notification buildNotificationStub() {
         return Notification.builder()
                 .id(1L)
-                .receiver(user)
+                .receiver(receiver)
                 .board(Board.builder().id(1L).build())
                 .build();
     }
@@ -50,8 +52,9 @@ public class NotificationStub {
             notificationList.add(
                     Notification.builder()
                             .id(i)
-                            .receiver(user)
-                            .board(boardList.get((int) (i-1L)))
+                            .receiver(receiver)
+                            .sender(sender)
+                            .board(boardList.get((int) (i - 1L)))
                             .build()
             );
         }
@@ -72,7 +75,7 @@ public class NotificationStub {
         return Board.builder()
                 .id(boardId)
                 .title("board" + boardId)
-                .user(user)
+                .user(receiver)
                 .content("board stub" + boardId)
                 .backend(5)
                 .frontend(2)

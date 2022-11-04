@@ -207,17 +207,22 @@ public class NotificationService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void updateBoardAsClosed() {
+    public void setBoardStatusAsClosed() {
         List<Board> openedBoardList = boardRepository.findCurrentlyOpened();
 
         log.info("opened boards : {}", openedBoardList.size());
 
-        for (Board board : openedBoardList) {
-            board.setStatus(Board.Status.CLOSED);
-            notifyBoardClosed(board);
-        }
+        if (openedBoardList.size() > 0) {
+            for (int i = 0; i < openedBoardList.size(); i++) {
+                Board board = openedBoardList.get(i);
+                board.setStatus(Board.Status.CLOSED);
+                if (board.getApplicationList().size() > 0) {
+                    notifyBoardClosed(board);
+                }
+            }
 
-        boardRepository.saveAll(openedBoardList);
+            boardRepository.saveAll(openedBoardList);
+        }
 
     }
 }

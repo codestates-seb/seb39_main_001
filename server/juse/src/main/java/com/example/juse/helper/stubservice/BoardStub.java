@@ -1,5 +1,6 @@
 package com.example.juse.helper.stubservice;
 
+import com.example.juse.application.entity.Application;
 import com.example.juse.board.entity.Board;
 import com.example.juse.user.entity.User;
 import lombok.Getter;
@@ -15,10 +16,15 @@ public class BoardStub {
     private final List<Board> boardList;
     private final User user;
 
+    private final List<User> userList;
+    private final List<Application> applicationList;
+
     public BoardStub() {
         this.user = buildUserStub();
         this.board = buildPlainBoardStub();
         this.boardList = new ArrayList<>();
+        this.userList = new ArrayList<>();
+        this.applicationList = new ArrayList<>();
     }
 
     public BoardStub(LocalDate dueDate) {
@@ -26,9 +32,9 @@ public class BoardStub {
         this.board.setDueDate(dueDate);
     }
 
-    public BoardStub(int count, LocalDate dueDate) {
+    public BoardStub(int numberOfBoards, LocalDate dueDate) {
         this(dueDate);
-        buildPlainBoardListStub(count, dueDate);
+        buildPlainBoardListStub(numberOfBoards, dueDate);
     }
 
     private Board buildPlainBoardStub() {
@@ -50,9 +56,9 @@ public class BoardStub {
                 .build();
     }
 
-    private void buildPlainBoardListStub(int count, LocalDate dueDate) {
+    private void buildPlainBoardListStub(int numberOfBoards, LocalDate dueDate) {
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < numberOfBoards; i++) {
             Board stub = buildPlainBoardStub();
             stub.setId((long) i + 1);
             stub.setDueDate(dueDate.plusDays(i));
@@ -70,5 +76,26 @@ public class BoardStub {
                 .build();
     }
 
+    public void setApplicationsForBoard() {
+
+        for (int i = 1; i <= 5; i++) {
+            User user = buildUserStub();
+            user.setId((long) i);
+            user.setIntroduction("introduction" + i);
+
+            Application application = Application
+                    .builder()
+                    .board(this.board)
+                    .id((long) i)
+                    .user(user)
+                    .position("backend")
+                    .build();
+
+            applicationList.add(application);
+        }
+
+        this.board.setApplicationList(applicationList);
+
+    }
 
 }
