@@ -4,13 +4,13 @@
 
 ## 👨‍👧프로젝트 소개
 
-### 개발 입문자와 주니어 개발자를 위한 프로젝트 / 스터디 모집 플랫폼, [JUSE](https://junior-to-senior-private.netlify.app/)와 함께 성장해요!
+### 개발 입문자와 주니어 개발자를 위한 프로젝트 / 스터디 모집 플랫폼, [JUSE](https://junior-to-senior.netlify.app/)와 함께 성장해요!
 
 개발자 개인 역량 강화에는 프로젝트와 끊임 없는 공부가 필수!
 
 혼자가 아닌 함께 하고 싶은데, 어디서 어떻게 어떤 사람들과 함께 해야 할지 고민하고 있다면 주씨에서 찾아보세요.
 
-[🔗 배포 링크](https://junior-to-senior-private.netlify.app/)
+[🔗 배포 링크](https://junior-to-senior.netlify.app/)
 <br/>
 
 > 개발 기간: 2022.09.07 - 2022.10.12 (5주)
@@ -54,7 +54,6 @@
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 
-<br/>
 
 ### Backend
 
@@ -66,7 +65,6 @@
 
 ![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
 
-<br/>
 
 ### Tools & Collaboration
 
